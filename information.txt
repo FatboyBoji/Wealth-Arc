@@ -1,0 +1,119 @@
+SESA Web Application Template
+===========================
+
+Project Structure Cleanup Plan
+----------------------------
+
+1. Directory Structure
+   ├── public/                 # Static files
+   │   ├── fonts/             # Custom fonts
+   │   ├── images/            # Static images
+   │   └── keys/              # Public keys
+   │
+   ├── src/
+   │   ├── app/               # Next.js app router
+   │   ├── components/        # React components
+   │   │   ├── admin/        # Admin-related components
+   │   │   ├── common/       # Shared/reusable components
+   │   │   ├── icons/        # SVG icons as components
+   │   │   ├── layout/       # Layout components
+   │   │   └── ui/           # UI components
+   │   │
+   │   ├── config/           # Configuration files
+   │   ├── hooks/            # Custom React hooks
+   │   ├── lib/              # Utility functions
+   │   ├── services/         # API services
+   │   ├── styles/           # Global styles
+   │   └── types/            # TypeScript type definitions
+   │
+   ├── server_backend/       # Backend Node.js server
+   │   ├── src/
+   │   │   ├── config/      # Server configuration
+   │   │   ├── controllers/ # Route controllers
+   │   │   ├── middleware/  # Express middleware
+   │   │   ├── models/      # Database models
+   │   │   ├── routes/      # API routes
+   │   │   └── utils/       # Server utilities
+   │   └── dist/            # Compiled backend code
+   │
+   └── scripts/             # Deployment/management scripts
+
+2. Configuration Files Setup
+   - Update .env files structure
+   - Reset configuration files to template state
+   - Document required environment variables
+   - Standardize port configuration in management scripts
+
+3. Styling Setup
+   - Consolidate global.css
+   - Create consistent theme configuration
+   - Setup Tailwind with proper configuration
+   - Define reusable CSS utilities
+
+4. Component Organization
+   - Clean up component folder structure
+   - Standardize component naming conventions
+   - Create base UI components library
+   - Document component usage
+
+5. Script Updates
+   - Update manage-server.sh
+   - Update manage-backend.sh
+   - Add port configuration section
+   - Document deployment process
+
+Theme Configuration
+------------------
+Font: Chakra Petch
+Sizes:
+- Header: 32/150
+- Button: 18/150
+- Text: 14/150
+
+Colors:
+- Background: #192A38
+- Primary: #09BC8A
+- Secondary: #004346
+- Additional: #212121, #F3FFFC
+
+Tech Stack
+---------
+Frontend:
+- Next.js
+- TypeScript
+- Tailwind CSS
+
+Backend:
+- Node.js
+- PostgreSQL
+
+Next Steps
+---------
+1. Create new directory structure
+2. Move files to appropriate locations
+3. Update configuration files
+4. Clean up component organization
+5. Update management scripts
+
+i am building a budgeting web application witha 2 aspects. 
+one mobile version that will do one thing. and the desktop application will be able to the same but more.
+
+
+design/theme:
+
+font: Chakra Petch
+Header 32/150
+button size 18/150
+text size 14/150
+
+
+color palete
+
+Background: 192A38
+ primary: 09BC8A
+ secondary: 004346
+ also those 2: 212121, F3FFFC
+
+
+ we will have a frontend - nextjS , tailwindCSS, js
+ and a backend           - nodeJS , postgres 

@@ -1,0 +1,124 @@
+# Budgeting App Backend Conversion Plan
+
+## 1. Database Schema Updates
+1. Drop existing news_updates table
+2. Modify users table:
+   - Add email field (VARCHAR(255), UNIQUE, NOT NULL)
+   - Keep existing fields (id, username, password_hash, created_at)
+
+3. Create new tables:
+   a. income_entries
+      - id (SERIAL PRIMARY KEY)
+      - user_id (FOREIGN KEY to users)
+      - name (VARCHAR(100))
+      - amount (DECIMAL(10,2))
+      - frequency (ENUM: 'one_time', 'daily', 'weekly', 'monthly')
+      - start_date (TIMESTAMP)
+      - end_date (TIMESTAMP, nullable)
+      - created_at (TIMESTAMP)
+      - updated_at (TIMESTAMP)
+
+   b. expense_entries
+      - id (SERIAL PRIMARY KEY)
+      - user_id (FOREIGN KEY to users)
+      - name (VARCHAR(100))
+      - amount (DECIMAL(10,2))
+      - frequency (ENUM: 'one_time', 'daily', 'weekly', 'monthly')
+      - start_date (TIMESTAMP)
+      - end_date (TIMESTAMP, nullable)
+      - created_at (TIMESTAMP)
+      - updated_at (TIMESTAMP)
+
+## 2. Model Updates
+1. Update User Model:
+   - Add email field
+   - Update validation
+   - Update interfaces/types
+
+2. Create Income Model:
+   - CRUD operations
+   - Validation
+   - User association
+
+3. Create Expense Model:
+   - CRUD operations
+   - Validation
+   - User association
+
+## 3. Controller Updates
+1. Remove NewsController
+2. Update AuthController:
+   - Add email handling
+   - Update validation
+
+3. Create IncomeController:
+   - Create
+   - Read (single & all for user)
+   - Update
+   - Delete
+   - List with filters (by date, frequency)
+
+4. Create ExpenseController:
+   - Create
+   - Read (single & all for user)
+   - Update
+   - Delete
+   - List with filters (by date, frequency)
+
+## 4. Route Updates
+1. Remove news routes
+2. Update auth routes for email handling
+3. Create income routes:
+   - POST /api/income
+   - GET /api/income
+   - GET /api/income/:id
+   - PUT /api/income/:id
+   - DELETE /api/income/:id
+
+4. Create expense routes:
+   - POST /api/expenses
+   - GET /api/expenses
+   - GET /api/expenses/:id
+   - PUT /api/expenses/:id
+   - DELETE /api/expenses/:id
+
+## 5. Middleware Updates
+1. Update validation middleware for new schemas
+2. Update authentication to include user data in requests
+3. Add role-based authorization for future admin features
+
+## 6. Security & Optimization
+1. Add input validation for financial data
+2. Implement rate limiting for financial endpoints
+3. Add data sanitization for new fields
+4. Ensure proper error handling for financial operations
+5. Additional Security Measures:
+    Use HTTPS in production
+    Implement rate limiting per user (not just per IP)
+    Set proper CORS settings
+    Add request validation
+    Use secure session cookies
+    Implement CSRF protection
+
+## 7. Future Enhancements
+1. Admin dashboard functionality
+2. Budget categories and tags
+3. Financial reports and analytics
+4. Data export functionality
+5. Budget goals and alerts
+
+## 8. Testing Plan
+1. Unit tests for new models
+2. Integration tests for financial endpoints
+3. Authentication with email tests
+4. Data validation tests
+5. User isolation tests
+
+## Implementation Order:
+1. Database schema updates
+2. User model and authentication updates
+3. Income/Expense models
+4. Controllers and routes
+5. Testing and validation
+6. Security improvements
+7. Admin features (future phase)

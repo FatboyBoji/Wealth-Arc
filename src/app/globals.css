@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #192A38;
+  --primary: #09BC8A;
+  --secondary: #004346;
+  --dark: #212121;
+  --light: #F3FFFC;
+  --font-primary: 'Chakra Petch';
+  /* --background: #D5DFFF;
+  --foreground: #171717;
+  --font-primary: 'Inter', sans-serif;
+  --font-secondary: 'Georgia', serif;
+  --font-size-xs: calc(0.75rem * var(--font-scale)); 
+  --font-size-sm: calc(0.875rem * var(--font-scale)); 
+  --font-size-base: calc(1rem * var(--font-scale)); 
+  --font-size-lg: calc(1.125rem * var(--font-scale)); 
+  --font-size-xl: calc(1.25rem * var(--font-scale)); 
+  --font-size-2xl: calc(1.5rem * var(--font-scale)); 
+  --font-size-3xl: calc(1.875rem * var(--font-scale)); 
+  --sidebar-width: 0px; 72rem = 288px */
+}
+
+body {
+  color: var(--light);
+  background: var(--background);
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-header font-medium;
+  }
+
+  button {
+    @apply text-button;
+  }
+
+  p {
+    @apply text-body;
+  }
+}
+
+@layer components {
+  .nav-item {
+    @apply text-button text-light hover:text-primary transition-colors;
+  }
+
+  .card {
+    @apply bg-secondary rounded-lg p-4;
+  }
+}
+
+.text-sm {
+  font-size: var(--font-size-sm);
+}
+
+.text-base {
+  font-size: var(--font-size-base);
+}
+
+.text-lg {
+  font-size: var(--font-size-lg);
+}
+
+.text-xl {
+  font-size: var(--font-size-xl);
+}
+
+.text-2xl {
+  font-size: var(--font-size-2xl);
+}
+
+.text-3xl {
+  font-size: var(--font-size-3xl);
+}
+
+.font-primary {
+  font-family: var(--font-primary);
+}
+
+.font-secondary {
+  font-family: var(--font-secondary);
+}
+
+canvas {
+  pointer-events: auto;
+}
+
+.text-responsive {
+  font-size: clamp(0.05rem, 2vw + 1rem, 3rem);
+}
+
+.text-responsive-contact {
+  font-size: clamp(0.875rem, 1.5vw, 1.5rem); 
+}
+
+img, svg {
+  width: 100%;
+  height: auto;
+}
+
+.nav-custom-blur {
+  backdrop-filter: blur(15px);
+}
+
+.backdrop-blur-md {
+  backdrop-filter: blur(10px);
+}
+
+
+.service-card:hover {
+  background: linear-gradient(to bottom right, white, #f8fafc);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+/* Main content layout adjustments */
+@media (min-width: 1024px) {
+  .main-content {
+    margin-left: var(--sidebar-width);
+    transition: margin-left 0.3s ease-in-out;
+  }
+}
+
+/* Add any other global styles below */
