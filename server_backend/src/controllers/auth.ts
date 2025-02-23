@@ -1,55 +1,31 @@
 import { Request, Response } from 'express';
 import { UserModel } from '../models/User';
-import { generateToken } from '../config/auth';
+import { TokenService } from '../config/auth';
+import { authenticateUser } from '../services/auth';
 
 export const login = async (req: Request, res: Response): Promise<void> => {
     try {
         const { username, password } = req.body;
         console.log('Login attempt:', { username, body: req.body });
 
-        // Find user
-        const user = await UserModel.findByUsername(username);
-        console.log('User found:', { 
-            userId: user?.id, 
-            exists: !!user,
-            userDetails: user ? {
-                username: user.username,
-                passwordHashLength: user.password_hash?.length,
-                passwordHash: user.password_hash
-            } : null
-        });
-        
-        if (!user) {
-            console.log('User not found');
-            res.status(401).json({ error: 'Invalid credentials' });
-            return;
+        // Get device info from request headers
+        const deviceInfo = {
+            userAgent: req.headers['user-agent'],
+            ip: req.ip,
+            timestamp: new Date().toISOString()
+        };
+
+        const result = await authenticateUser(
+            username, 
+            password, 
+            JSON.stringify(deviceInfo)
+        );
+
+        if (result.success) {
+            res.json(result);
+        } else {
+            res.status(401).json(result);
         }
-
-        // Verify password
-        console.log('Attempting password verification with:', {
-            providedPassword: password,
-            storedHash: user.password_hash
-        });
-        const isValidPassword = await UserModel.verifyPassword(user, password);
-        console.log('Password verification:', { isValid: isValidPassword });
-        
-        if (!isValidPassword) {
-            console.log('Invalid password');
-            res.status(401).json({ error: 'Invalid credentials' });
-            return;
-        }
-
-        // Generate token
-        const token = generateToken(user);
-        console.log('Token generated successfully');
-
-        res.json({
-            token,
-            user: {
-                id: user.id,
-                username: user.username
-            }
-        });
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ error: 'Internal server error' });
@@ -70,8 +46,14 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         // Create new user
         const user = await UserModel.create({ username, password });
 
-        // Generate token
-        const token = generateToken(user);
+        // Generate token using TokenService instead of generateToken
+        const deviceInfo = {
+            userAgent: req.headers['user-agent'],
+            ip: req.ip,
+            timestamp: new Date().toISOString()
+        };
+
+        const token = await TokenService.generateToken(user, JSON.stringify(deviceInfo));
 
         res.status(201).json({
             token,

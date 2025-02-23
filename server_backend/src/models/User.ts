@@ -1,4 +1,4 @@
-import { pool } from '../config/database';
+import { query } from '../config/database';
 import bcrypt from 'bcrypt';
 
 export interface User {
@@ -16,7 +16,7 @@ export interface UserCreate {
 export class UserModel {
     static async create({ username, password }: UserCreate): Promise<User> {
         const password_hash = await bcrypt.hash(password, 10);
-        const result = await pool.query(
+        const result = await query(
             'INSERT INTO users (username, password_hash) VALUES ($1, $2) RETURNING *',
             [username, password_hash]
         );
@@ -24,7 +24,7 @@ export class UserModel {
     }
 
     static async findByUsername(username: string): Promise<User | null> {
-        const result = await pool.query(
+        const result = await query(
             'SELECT * FROM users WHERE username = $1',
             [username]
         );
@@ -34,13 +34,14 @@ export class UserModel {
     static async verifyPassword(user: User, password: string): Promise<boolean> {
         console.log('Verifying password:', {
             userPasswordHash: user.password_hash,
-            passwordLength: password.length
+            passwordLength: password.length,
+            timestamp: new Date().toISOString()
         });
         return bcrypt.compare(password, user.password_hash);
     }
 
     static async findById(id: number): Promise<User | null> {
-        const result = await pool.query(
+        const result = await query(
             'SELECT * FROM users WHERE id = $1',
             [id]
         );

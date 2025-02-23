@@ -8,6 +8,7 @@ import expressSanitizer from 'express-sanitizer';
 import authRoutes from './routes/auth';
 import newsRoutes from './routes/news';
 import path from 'path';
+import { cleanupInactiveSessions } from './jobs/cleanupSessions';
 
 // Extend Express Request type to include csrfToken
 declare global {
@@ -161,4 +162,7 @@ app.use(errorHandler);
 // Start server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
+    
+    // Start the cleanup job
+    cleanupInactiveSessions();
 });

@@ -116,38 +116,86 @@ api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
 api.interceptors.response.use(
     response => response,
     error => {
-        if (error.message === 'Network Error') {
-            console.error('CORS or Network Error:', error);
-            // You might want to show a user-friendly message here
-        } else if (error.response) {
-            console.error('Response Error:', error.response.data);
-            console.error('Status:', error.response.status);
+        if (error.response) {
+            const status = error.response.status;
+            
+            // Handle authentication errors
+            if (status === 401 || status === 403) {
+                authService.logout();
+                window.location.href = '/admin/login';
+                return Promise.reject(new ApiError('Session expired. Please login again.', status));
+            }
+            
+            const data = error.response.data || { message: 'Unknown server error' };
+            
+            // Log error details without exposing sensitive information
+            console.error('API Response Error:', {
+                status,
+                message: data.message,
+                timestamp: new Date().toISOString(),
+                endpoint: error.config?.url
+            });
+
+            switch (status) {
+                case 404:
+                    throw new ApiError(data.message || 'Resource not found', status);
+                case 429:
+                    throw new ApiError(data.message || 'Too many attempts. Please try again later.', status);
+                case 500:
+                    throw new ApiError(data.message || 'Internal server error', status);
+                default:
+                    throw new ApiError(
+                        data.message || 'An unexpected error occurred',
+                        status
+                    );
+            }
         } else if (error.request) {
-            console.error('Request Error:', error.request);
+            console.error('Request Error:', {
+                error: error.request,
+                timestamp: new Date().toISOString()
+            });
+            throw new ApiError('No response received from server', 0);
         } else {
-            console.error('Error:', error.message);
+            console.error('Error:', {
+                error: error.message,
+                timestamp: new Date().toISOString()
+            });
+            throw new ApiError(error.message, 0);
         }
-
-        if (error.response && error.response.status === 401) {
-            localStorage.removeItem('auth_token');
-        }
-
-        return Promise.reject(error);
     }
 );
 
 // Authentication Service
 export const authService = {
     async login(credentials: LoginCredentials): Promise<AuthResponse> {
-        const response = await api.post('/auth/login', credentials);
-        const { token, user } = response.data;
-        localStorage.setItem('auth_token', token);
-        return { token, user };
+        try {
+            const response = await api.post('/auth/login', credentials);
+            const { token, user } = response.data;
+            localStorage.setItem('auth_token', token);
+            return { token, user };
+        } catch (error) {
+            if (error instanceof ApiError) {
+                throw error;
+            }
+            throw new ApiError('Login failed. Please check your credentials.', 401);
+        }
     },
 
-    logout(): void {
-        localStorage.removeItem('auth_token');
-        csrfToken = null;
+    async logout() {
+        try {
+            const token = localStorage.getItem('auth_token');
+            if (!token) return;
+
+            // Use the configured axios instance instead of fetch
+            await api.post('/auth/logout');
+            
+            // Clear local storage/token after successful logout
+            localStorage.removeItem('auth_token');
+        } catch (error) {
+            console.error('Logout error:', error);
+            // Clear token even if request fails
+            localStorage.removeItem('auth_token');
+        }
     },
 
     isAuthenticated(): boolean {
@@ -156,9 +204,18 @@ export const authService = {
 
     async verifyToken(): Promise<boolean> {
         try {
-            await api.get('/auth/verify');
-            return true;
+            const token = localStorage.getItem('auth_token');
+            if (!token) return false;
+
+            const response = await api.get('/auth/verify');
+            return response.data.valid;
         } catch (error) {
+            console.error('Token verification failed:', {
+                error,
+                timestamp: new Date().toISOString()
+            });
+            // Clear token if verification fails
+            this.logout();
             return false;
         }
     },

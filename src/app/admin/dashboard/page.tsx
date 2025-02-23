@@ -3,8 +3,9 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { newsService, NewsUpdate, NewsType, ApiError } from '@/services/api';
+import { withAuth } from '@/components/auth/withAuth';
 
-export default function DashboardPage() {
+function DashboardPage() {
     const [news, setNews] = useState<NewsUpdate[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string>('');
@@ -200,4 +201,6 @@ export default function DashboardPage() {
             </div>
         </div>
     );
-} 
+}
+
+export default withAuth(DashboardPage); 

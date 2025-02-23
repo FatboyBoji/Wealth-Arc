@@ -93,12 +93,12 @@
 3. Add data sanitization for new fields
 4. Ensure proper error handling for financial operations
 5. Additional Security Measures:
-    Use HTTPS in production
-    Implement rate limiting per user (not just per IP)
-    Set proper CORS settings
-    Add request validation
-    Use secure session cookies
-    Implement CSRF protection
+    - Use HTTPS in production
+    - Implement rate limiting per user (not just per IP)
+    - Set proper CORS settings
+    - Add request validation
+    - Use secure session cookies
+    - Implement CSRF protection
 
 ## 7. Future Enhancements
 1. Admin dashboard functionality

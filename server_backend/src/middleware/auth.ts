@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { verifyToken, TokenPayload } from '../config/auth';
+import { TokenService, TokenPayload } from '../config/auth';
 import { UserModel } from '../models/User';
 import { RequestHandler } from 'express';
 
@@ -19,26 +19,57 @@ export const authenticateToken: RequestHandler = async (
 ): Promise<void> => {
     try {
         const authHeader = req.headers['authorization'];
-        const token = authHeader?.split(' ')[1]; // Bearer TOKEN
+        const token = authHeader?.split(' ')[1];
 
         if (!token) {
-            res.status(401).json({ error: 'Authentication token required' });
+            console.log('No token provided');
+            res.status(401).json({ 
+                error: 'Authentication token required',
+                message: 'No token provided'
+            });
             return;
         }
 
-        const decoded = verifyToken(token);
-        
-        // Verify user still exists
-        const user = await UserModel.findById(decoded.userId);
-        if (!user) {
-            res.status(401).json({ error: 'User no longer exists' });
-            return;
-        }
+        try {
+            const decoded = await TokenService.verifyToken(token);
+            
+            // Verify user still exists
+            const user = await UserModel.findById(decoded.userId);
+            if (!user) {
+                console.log('User no longer exists:', {
+                    userId: decoded.userId,
+                    tokenId: decoded.tokenId
+                });
+                // Clean up the session if user doesn't exist
+                await TokenService.invalidateSession(decoded.tokenId);
+                res.status(401).json({ 
+                    error: 'Authentication failed',
+                    message: 'User no longer exists'
+                });
+                return;
+            }
 
-        req.user = decoded;
-        next();
+            req.user = decoded;
+            next();
+        } catch (tokenError) {
+            console.error('Token verification failed:', {
+                error: tokenError,
+                timestamp: new Date().toISOString()
+            });
+            res.status(403).json({ 
+                error: 'Authentication failed',
+                message: 'Invalid or expired token'
+            });
+        }
     } catch (error) {
-        res.status(403).json({ error: 'Invalid or expired token' });
+        console.error('Authentication middleware error:', {
+            error,
+            timestamp: new Date().toISOString()
+        });
+        res.status(500).json({ 
+            error: 'Authentication failed',
+            message: 'Internal server error'
+        });
     }
 };
 
@@ -53,7 +84,7 @@ export const optionalAuthenticateToken: RequestHandler = async (
         const token = authHeader?.split(' ')[1];
 
         if (token) {
-            const decoded = verifyToken(token);
+            const decoded = await TokenService.verifyToken(token);
             const user = await UserModel.findById(decoded.userId);
             if (user) {
                 req.user = decoded;
