@@ -1,20 +1,28 @@
 export const logToFile = async (message: string, data?: any) => {
     try {
-        const timestamp = new Date().toISOString();
-        const logMessage = `[${timestamp}] ${message}\n${data ? JSON.stringify(data, null, 2) + '\n' : ''}`;
+        const logEntry = {
+            timestamp: new Date().toISOString(),
+            message,
+            data,
+            source: 'frontend'
+        };
         
+        console.log(`[Frontend Log] ${message}:`, data); // Add immediate console logging
+
         const response = await fetch('/api/debug-log', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ message: logMessage }),
+            body: JSON.stringify(logEntry),
         });
 
         if (!response.ok) {
-            console.error('Failed to write to log file');
+            console.error('[Logger] Failed to write to log file:', await response.text());
         }
     } catch (error) {
-        console.error('Logging error:', error);
+        console.error('[Logger] Error:', error);
+        // Fallback to console
+        console.log(`[${new Date().toISOString()}] ${message}`, data);
     }
 }; 

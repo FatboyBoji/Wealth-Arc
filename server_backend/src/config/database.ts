@@ -2,21 +2,25 @@ import { Pool, PoolConfig, QueryResult, QueryResultRow } from 'pg';
 import dotenv from 'dotenv';
 import path from 'path';
 import rateLimit from 'express-rate-limit';
+import { Logger } from '../services/logger';
 
 // Load environment variables based on NODE_ENV
 const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
 dotenv.config({ path: path.resolve(process.cwd(), envFile) });
 
 const config: PoolConfig = {
-    host: process.env.DB_HOST || 'localhost',
-    port: parseInt(process.env.DB_PORT || '5000'),
-    database: process.env.DB_NAME || 'sesa_news_db',
     user: process.env.DB_USER || 'postgres',
-    password: process.env.DB_PASSWORD || 'bojidar',
+    password: process.env.DB_PASSWORD,
+    host: process.env.DB_HOST || 'localhost',
+    port: parseInt(process.env.DB_PORT || '5432'),
+    database: process.env.DB_NAME || 'sesa_news_db',
+    // Add connection timeout settings
+    connectionTimeoutMillis: 10000, // 10 seconds
+    idleTimeoutMillis: 30000,      // 30 seconds
+    max: 20,                       // Max 20 clients
+    statement_timeout: 30000,      // 30 seconds
+    query_timeout: 30000,          // 30 seconds
     // Connection pool settings
-    max: 20,                        // Maximum number of clients in the pool
-    idleTimeoutMillis: 30000,       // How long a client is allowed to remain idle before being closed
-    connectionTimeoutMillis: 2000,  // How long to wait for a connection
     maxUses: 7500,                   // Number of times a connection can be used before being closed
     application_name: 'sesa_news_backend',
     // Set schema based on environment
@@ -71,38 +75,27 @@ export class RateLimiter {
 
 class DatabasePool {
     private pool: Pool;
+    private static instance: DatabasePool;
     private isConnected: boolean = false;
-    private retryCount: number = 0;
-    private readonly maxRetries: number = 5;
-    private readonly retryInterval: number = 5000;
+    private reconnectAttempts: number = 0;
+    private readonly MAX_RECONNECT_ATTEMPTS = 5;
+    private readonly RECONNECT_DELAY = 5000; // 5 seconds
 
-    constructor() {
+    private constructor() {
         this.pool = new Pool(config);
         this.setupEventHandlers();
-        this.logPoolMetrics();
     }
 
     private setupEventHandlers() {
-        // Log when a client connects
-        this.pool.on('connect', (client) => {
-            this.isConnected = true;
-            console.log('Database client connected:', {
-                timestamp: new Date().toISOString(),
-                poolSize: this.pool.totalCount,
-                idleCount: this.pool.idleCount
-            });
-        });
-
-        // Handle errors on the pool level
         this.pool.on('error', (err) => {
-            console.error('Unexpected error on idle client', err);
-            this.isConnected = false;
-            this.attemptReconnect();
+            Logger.error('Unexpected database error', err);
+            this.handleConnectionError(err);
         });
 
-        // Handle when a client is removed
-        this.pool.on('remove', (client) => {
-            console.log('Database client removed:', {
+        this.pool.on('connect', () => {
+            this.isConnected = true;
+            this.reconnectAttempts = 0;
+            Logger.info('Database client connected', {
                 timestamp: new Date().toISOString(),
                 poolSize: this.pool.totalCount,
                 idleCount: this.pool.idleCount
@@ -110,107 +103,71 @@ class DatabasePool {
         });
     }
 
-    private async attemptReconnect() {
-        if (this.retryCount >= this.maxRetries) {
-            console.error('Max reconnection attempts reached');
-            return;
-        }
+    private async handleConnectionError(error: Error) {
+        this.isConnected = false;
+        
+        if (this.reconnectAttempts < this.MAX_RECONNECT_ATTEMPTS) {
+            this.reconnectAttempts++;
+            Logger.warn('Database connection lost, attempting to reconnect', {
+                attempt: this.reconnectAttempts,
+                maxAttempts: this.MAX_RECONNECT_ATTEMPTS
+            });
 
-        this.retryCount++;
-        console.log(`Attempting to reconnect (attempt ${this.retryCount}/${this.maxRetries})`);
-
-        try {
-            // Try to end the current pool
-            await this.pool.end();
-        } catch (error) {
-            console.error('Error ending pool:', error);
-        }
-
-        // Create a new pool
-        this.pool = new Pool(config);
-        this.setupEventHandlers();
-
-        try {
-            // Test the connection
-            const client = await this.pool.connect();
-            client.release();
-            console.log('Successfully reconnected to database');
-            this.retryCount = 0;
-        } catch (error) {
-            console.error('Reconnection failed:', error);
-            // Schedule another retry
-            setTimeout(() => this.attemptReconnect(), this.retryInterval);
+            await new Promise(resolve => setTimeout(resolve, this.RECONNECT_DELAY));
+            
+            try {
+                await this.pool.connect();
+            } catch (err) {
+                Logger.error('Reconnection attempt failed', err);
+            }
+        } else {
+            Logger.error('Max reconnection attempts reached', {
+                attempts: this.reconnectAttempts
+            });
+            process.exit(1); // Exit if we can't reconnect
         }
     }
 
-    public async getConnection() {
-        if (!this.isConnected) {
-            try {
-                const client = await this.pool.connect();
-                client.release();
-                this.isConnected = true;
-            } catch (error) {
-                console.error('Failed to get database connection:', error);
-                throw error;
-            }
+    public static getInstance(): DatabasePool {
+        if (!DatabasePool.instance) {
+            DatabasePool.instance = new DatabasePool();
         }
-        return this.pool;
+        return DatabasePool.instance;
     }
 
     public async query<T extends QueryResultRow = any>(
-        text: string, 
+        text: string,
         params?: any[]
     ): Promise<QueryResult<T>> {
+        const client = await this.pool.connect();
         try {
-            const pool = await this.getConnection();
             const start = Date.now();
-            const res = await pool.query<T>(text, params);
+            const result = await client.query<T>(text, params);
             const duration = Date.now() - start;
             
-            console.log('Executed query:', {
+            await Logger.debug('Executed query', {
                 text,
                 duration: `${duration}ms`,
-                rows: res.rowCount
+                rows: result.rowCount
             });
             
-            return res;
-        } catch (error) {
-            console.error('Database query error:', {
-                error,
-                query: text,
-                params
-            });
-            throw error;
+            return result;
+        } finally {
+            client.release();
         }
     }
 
-    private logPoolMetrics() {
-        setInterval(() => {
-            console.log('Database pool metrics:', {
-                totalCount: this.pool.totalCount,
-                idleCount: this.pool.idleCount,
-                waitingCount: this.pool.waitingCount
-            });
-        }, 60000); // Log every minute
+    public async end(): Promise<void> {
+        await this.pool.end();
     }
 }
 
-// Create and export a single instance
-const databasePool = new DatabasePool();
-
-// Export the query function
 export const query = async <T extends QueryResultRow = any>(
-    text: string, 
+    text: string,
     params?: any[]
 ): Promise<QueryResult<T>> => {
-    return databasePool.query<T>(text, params);
+    return DatabasePool.getInstance().query<T>(text, params);
 };
-
-// Export the pool instance directly if needed
-export const pool = databasePool.getConnection();
-
-// Export the DatabasePool class for type information
-export { DatabasePool };
 
 // General API rate limiting
 export const rateLimiter = rateLimit({

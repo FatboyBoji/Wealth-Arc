@@ -21,32 +21,81 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ComputerIcon from '@mui/icons-material/Computer';
 import PhoneIcon from '@mui/icons-material/Phone';
 import TabletIcon from '@mui/icons-material/Tablet';
+import { logToFile } from '@/utils/logger';
+import { authService } from '@/services/api';
+import { MaxSessionsError } from '@/types/errors';
 
 interface DeviceSessionModalProps {
     open: boolean;
     onClose: () => void;
     sessions: DeviceSession[];
-    onTerminateSession: (sessionId: string) => Promise<void>;
     isLoading?: boolean;
     currentSessionId?: string;
     isLoginAttempt?: boolean;
+    onTerminateSession?: (sessionId: string) => Promise<void>;
 }
 
-export const DeviceSessionModal: React.FC<DeviceSessionModalProps> = ({
+export const DeviceSessionModal = ({
     open,
     onClose,
     sessions,
-    onTerminateSession,
-    isLoading,
+    isLoading = false,
     currentSessionId,
-    isLoginAttempt = false
-}) => {
+    isLoginAttempt = true,
+    onTerminateSession
+}: DeviceSessionModalProps) => {
     const [terminatingId, setTerminatingId] = React.useState<string | null>(null);
+    const [error, setError] = React.useState<string | null>(null);
 
     const handleTerminate = async (sessionId: string) => {
+        if (terminatingId) return;
+        
+        setTerminatingId(sessionId);
+        setError(null);
+        
         try {
-            setTerminatingId(sessionId);
-            await onTerminateSession(sessionId);
+            await logToFile('Session termination initiated', { 
+                sessionId,
+                isLoginAttempt 
+            });
+
+            if (onTerminateSession) {
+                await onTerminateSession(sessionId);
+                
+                // Wait for session to be fully terminated
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                await logToFile('Session termination completed', {
+                    sessionId,
+                    isLoginAttempt
+                });
+                
+                if (isLoginAttempt) {
+                    try {
+                        await authService.retryLogin();
+                        onClose();
+                    } catch (retryError) {
+                        if (retryError instanceof MaxSessionsError) {
+                            // Update the sessions list instead of closing
+                            setError('Session terminated, but maximum sessions still reached. Please terminate another session.');
+                            if (onTerminateSession) {
+                                // Refresh sessions list
+                                await onTerminateSession(sessionId);
+                            }
+                        } else {
+                            throw retryError;
+                        }
+                    }
+                } else {
+                    onClose();
+                }
+            }
+        } catch (error) {
+            await logToFile('Session termination error', {
+                sessionId,
+                error: error instanceof Error ? error.message : 'Unknown error'
+            });
+            setError(error instanceof Error ? error.message : 'Failed to terminate session');
         } finally {
             setTerminatingId(null);
         }
@@ -82,6 +131,11 @@ export const DeviceSessionModal: React.FC<DeviceSessionModalProps> = ({
             )}
 
             <DialogContent>
+                {error && (
+                    <Alert severity="error" sx={{ mb: 2 }}>
+                        {error}
+                    </Alert>
+                )}
                 {isLoading ? (
                     <Box display="flex" justifyContent="center" p={3}>
                         <CircularProgress />
@@ -130,7 +184,7 @@ export const DeviceSessionModal: React.FC<DeviceSessionModalProps> = ({
                                         <IconButton 
                                             edge="end" 
                                             onClick={() => handleTerminate(session.id)}
-                                            disabled={!!terminatingId}
+                                            disabled={isLoading || !!terminatingId}
                                             color={isLoginAttempt ? "primary" : "default"}
                                         >
                                             {terminatingId === session.id ? (

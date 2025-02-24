@@ -1,18 +1,1 @@
-[2025-02-24T12:38:36.466Z] Login attempt
-{
-  "username": "admin"
-}
-[2025-02-24T12:38:36.570Z] Max sessions reached
-{
-  "username": "admin",
-  "sessionCount": 3
-}
-[2025-02-24T12:38:53.847Z] Terminating session
-{
-  "sessionId": "17"
-}
-[2025-02-24T12:38:53.889Z] Session termination failed
-{
-  "sessionId": "17",
-  "error": "Failed to terminate session"
-}
+Session termination initiatedSession termination completedSession termination errorLogin successful

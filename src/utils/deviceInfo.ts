@@ -2,7 +2,7 @@ export interface DeviceInfo {
     type: string;
     browser: string;
     os: string;
-    timestamp?: string;
+    timestamp: string;
     screenSize?: {
         width: number;
         height: number;
@@ -18,7 +18,11 @@ export function getDeviceInfo(): DeviceInfo {
             type: 'unknown',
             browser: 'unknown',
             os: 'unknown',
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            screenSize: typeof window !== 'undefined' ? {
+                width: (window as Window & typeof globalThis).screen.width,
+                height: (window as Window & typeof globalThis).screen.height
+            } : undefined
         };
     }
 
@@ -52,8 +56,8 @@ export function getDeviceInfo(): DeviceInfo {
         os,
         timestamp: new Date().toISOString(),
         screenSize: typeof window !== 'undefined' ? {
-            width: window.screen.width,
-            height: window.screen.height
+            width: (window as Window & typeof globalThis).screen.width,
+            height: (window as Window & typeof globalThis).screen.height
         } : undefined
     };
 

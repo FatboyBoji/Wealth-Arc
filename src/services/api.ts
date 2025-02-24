@@ -1,5 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig, AxiosError } from 'axios';
 import { getDeviceInfo, getDeviceFriendlyName } from '../utils/deviceInfo';
+import { DeviceInfo } from '../types/sessions';
+import { logToFile } from '@/utils/logger';
 
 // Move interfaces to the top and export them
 export interface DeviceSession {
@@ -87,7 +89,7 @@ const getDomainConfig = () => {
 const domainConfig = getDomainConfig();
 const API_BASE_URL = domainConfig?.apiBase || 'http://178.254.26.117:45600/api';
 
-const api = axios.create({
+export const axiosInstance = axios.create({
     baseURL: API_BASE_URL,
     withCredentials: true,
     headers: {
@@ -103,7 +105,7 @@ const getCsrfToken = async (): Promise<string> => {
     if (csrfToken) return csrfToken;
 
     try {
-        const response = await api.get<{ csrfToken: string }>('/csrf-token');
+        const response = await axiosInstance.get<{ csrfToken: string }>('/csrf-token');
         csrfToken = response.data.csrfToken;
         return csrfToken;
     } catch (error) {
@@ -113,7 +115,7 @@ const getCsrfToken = async (): Promise<string> => {
 };
 
 // Request interceptor with domain-aware configuration
-api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
+axiosInstance.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
     // Add auth token if it exists
     const token = localStorage.getItem('auth_token');
     if (token) {
@@ -126,7 +128,7 @@ api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
 });
 
 // Modified response interceptor with better error handling
-api.interceptors.response.use(
+axiosInstance.interceptors.response.use(
     response => response,
     error => {
         if (error.response) {
@@ -175,35 +177,56 @@ api.interceptors.response.use(
 
 // Authentication Service
 export const authService = {
+    async retryLogin(): Promise<void> {
+        const pendingLogin = localStorage.getItem('pending_login');
+        if (!pendingLogin) return;
+
+        try {
+            const credentials = JSON.parse(pendingLogin);
+            // Add delay to ensure DB is updated
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            await this.login(credentials);
+            localStorage.removeItem('pending_login');
+        } catch (error) {
+            console.error('Failed to retry login:', error);
+            if (error instanceof MaxSessionsError) {
+                // If we still get max sessions, clear pending login
+                localStorage.removeItem('pending_login');
+            }
+            throw error;
+        }
+    },
+
     async login(credentials: LoginCredentials): Promise<AuthResponse> {
         try {
             const deviceInfo = getDeviceInfo();
-            const response = await api.post<AuthResponse>('/auth/login', {
+            // Store credentials for retry after session termination
+            if (!localStorage.getItem('pending_login')) {
+                localStorage.setItem('pending_login', JSON.stringify(credentials));
+            }
+
+            const response = await axiosInstance.post<AuthResponse>('/auth/login', {
                 ...credentials,
                 deviceInfo
             });
 
-            const { token, user } = response.data;
-            localStorage.setItem('auth_token', token);
+            if (response.data.token) {
+                localStorage.setItem('auth_token', response.data.token);
+                localStorage.removeItem('pending_login'); // Clear pending login on success
+            }
+
             return response.data;
-        } catch (error: unknown) {
-            // Type guard for Axios error
-            if (axios.isAxiosError(error)) {
-                // Now TypeScript knows this is an AxiosError
-                if (error.response?.status === 400 && 
-                    error.response.data?.error === 'MAX_SESSIONS_REACHED') {
-                    const errorData = error.response.data;
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response?.status === 400) {
+                if (error.response.data?.error === 'MAX_SESSIONS_REACHED') {
                     throw new MaxSessionsError(
-                        errorData.sessions,
-                        errorData.userId,
-                        errorData.message || 'Maximum number of sessions reached'
+                        error.response.data.sessions,
+                        error.response.data.userId,
+                        error.response.data.message || 'Maximum sessions reached'
                     );
                 }
             }
-            // Re-throw as ApiError with better message
-            throw new ApiError(
-                error instanceof Error ? error.message : 'Login failed'
-            );
+            throw error;
         }
     },
 
@@ -216,7 +239,7 @@ export const authService = {
             }
 
             // Call logout endpoint with empty object instead of null
-            await api.post('/auth/logout', {}, {
+            await axiosInstance.post('/auth/logout', {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
@@ -236,12 +259,16 @@ export const authService = {
         return !!localStorage.getItem('auth_token');
     },
 
+    getToken(): string | null {
+        return localStorage.getItem('auth_token');
+    },
+
     async verifyToken(): Promise<boolean> {
         try {
             const token = localStorage.getItem('auth_token');
             if (!token) return false;
 
-            const response = await api.get('/auth/verify');
+            const response = await axiosInstance.get('/auth/verify');
             return response.data.valid;
         } catch (error) {
             console.error('Token verification failed:', {
@@ -256,7 +283,7 @@ export const authService = {
 
     async getActiveSessions(): Promise<DeviceSession[]> {
         try {
-            const response = await api.get<SessionResponse>('/auth/active-sessions');
+            const response = await axiosInstance.get<SessionResponse>('/auth/active-sessions');
             return response.data.sessions;
         } catch (error) {
             console.error('Failed to fetch active sessions:', error);
@@ -264,12 +291,24 @@ export const authService = {
         }
     },
 
-    async terminateSession(sessionId: string): Promise<void> {
+    async terminateSession(sessionId: string, userId: number): Promise<void> {
         try {
-            await api.delete(`/auth/terminate-session/${sessionId}`);
+            const response = await axiosInstance.post('/sessions/terminate-pre-login', {
+                userId,
+                sessionId
+            });
+
+            if (!response.data.success) {
+                throw new Error(response.data.message || 'Failed to terminate session');
+            }
+
+            // Wait for session cleanup
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            return response.data;
         } catch (error) {
-            console.error('Failed to terminate session:', error);
-            throw new ApiError('Failed to terminate session');
+            console.error('Session termination failed:', error);
+            throw error;
         }
     },
 
@@ -290,18 +329,18 @@ export const authService = {
 export const newsService = {
     async getAll(type?: NewsType): Promise<NewsUpdate[]> {
         const params = type ? { type } : undefined;
-        const response = await api.get('/news', { params });
+        const response = await axiosInstance.get('/news', { params });
         return response.data.data;
     },
 
     async getById(id: number): Promise<NewsUpdate> {
-        const response = await api.get(`/news/${id}`);
+        const response = await axiosInstance.get(`/news/${id}`);
         return response.data.data;
     },
 
     async create(news: Omit<NewsUpdate, 'id' | 'published_at' | 'updated_at'>): Promise<NewsUpdate> {
         const token = await getCsrfToken();
-        const response = await api.post('/news', news, {
+        const response = await axiosInstance.post('/news', news, {
             headers: { 'CSRF-Token': token }
         });
         return response.data.data;
@@ -309,7 +348,7 @@ export const newsService = {
 
     async update(id: number, news: Partial<NewsUpdate>): Promise<NewsUpdate> {
         const token = await getCsrfToken();
-        const response = await api.put(`/news/${id}`, news, {
+        const response = await axiosInstance.put(`/news/${id}`, news, {
             headers: { 'CSRF-Token': token }
         });
         return response.data.data;
@@ -317,7 +356,7 @@ export const newsService = {
 
     async delete(id: number): Promise<void> {
         const token = await getCsrfToken();
-        await api.delete(`/news/${id}`, {
+        await axiosInstance.delete(`/news/${id}`, {
             headers: { 'CSRF-Token': token }
         });
     }
@@ -340,11 +379,9 @@ export class MaxSessionsError extends Error {
     constructor(
         public sessions: DeviceSession[],
         public userId: number,
-        public message: string
+        message: string
     ) {
         super(message);
         this.name = 'MaxSessionsError';
     }
-}
-
-export default api; 
+} 

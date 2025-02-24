@@ -9,6 +9,7 @@ import { TokenPayload, DeviceInfo, TokenResponse } from '../types/auth';
 import { AuthError } from '../services/errors';
 import { UserOfWA } from '../types/user';
 import { QueryResult } from 'pg';
+import { scheduleMarkedSessionCleanup } from '../jobs/markedSessionsCleanup';
 
 function requireEnvVar(name: string, fallback?: string): string {
     const value = process.env[name];
@@ -148,7 +149,11 @@ export class TokenService {
         // Create session
         await this.createSession(user.id, tokenId, deviceInfo);
 
-        return { token, refreshToken };
+        return { 
+            token, 
+            refreshToken,
+            sessionId: tokenId
+        };
     }
 
     private static async enforceSessionLimit(userId: number): Promise<void> {
@@ -483,6 +488,30 @@ export class TokenService {
             };
         } catch (error) {
             Logger.error('Token cleanup failed', error);
+            throw error;
+        }
+    }
+
+    static async generateTokensWithPreLogin(userId: number, deviceInfo: DeviceInfo, oldSessionId: string): Promise<TokenResponse> {
+        await query('BEGIN');
+        try {
+            // Mark old session
+            await query(
+                `UPDATE user_sessions_wa SET is_marked_for_deletion = TRUE, marked_at = NOW() 
+                 WHERE id = $1 AND user_id = $2`,
+                [oldSessionId, userId]
+            );
+
+            // Generate new session
+            const tokens = await this.generateTokens(userId, deviceInfo);
+            
+            // Schedule cleanup
+            scheduleMarkedSessionCleanup(oldSessionId);
+            
+            await query('COMMIT');
+            return tokens;
+        } catch (error) {
+            await query('ROLLBACK');
             throw error;
         }
     }

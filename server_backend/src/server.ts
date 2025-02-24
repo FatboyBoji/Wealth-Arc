@@ -10,6 +10,8 @@ import newsRoutes from './routes/news';
 import path from 'path';
 import { cleanupInactiveSessions } from './jobs/cleanupSessions';
 import { Request, Response, NextFunction } from 'express';
+import { Logger } from './services/logger';
+import sessionRoutes from './routes/sessions';
 
 // Extend Express Request type to include csrfToken
 declare global {
@@ -130,6 +132,7 @@ app.get('/api/csrf-token', csrfProtection, (req, res) => {
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/news', newsRoutes);
+app.use('/api/sessions', sessionRoutes);
 
 // Add body parser error handling
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
@@ -140,18 +143,28 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     next();
 });
 
-// Log incoming requests in development
-if (process.env.NODE_ENV !== 'production') {
-    app.use((req: Request, res: Response, next: NextFunction) => {
-        console.log('Incoming request:', {
-            method: req.method,
-            path: req.path,
-            body: req.body,
-            headers: req.headers
-        });
-        next();
+// Logging middleware
+app.use(async (req, res, next) => {
+    await Logger.info('Incoming request', {
+        method: req.method,
+        path: req.path,
+        body: req.body,
+        query: req.query,
+        ip: req.ip
     });
-}
+    next();
+});
+
+// Error logging middleware
+app.use(async (err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    await Logger.error('Server error', {
+        error: err.message,
+        stack: err.stack,
+        path: req.path,
+        method: req.method
+    });
+    next(err);
+});
 
 // Error handling middleware - must have 4 parameters for Express to recognize it as error handler
 const errorHandler: express.ErrorRequestHandler = (err, req, res, next) => {
@@ -189,3 +202,5 @@ app.listen(port, () => {
     // Start the cleanup job
     cleanupInactiveSessions();
 });
+
+export default app;

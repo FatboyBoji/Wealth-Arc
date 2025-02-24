@@ -17,4 +17,5 @@ export interface DeviceInfo {
 export interface TokenResponse {
     token: string;
     refreshToken: string;
+    sessionId: string;
 } 

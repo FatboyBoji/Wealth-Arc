@@ -26,18 +26,15 @@ interface LoginFormProps {
 export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string>('');
+    const [error, setError] = useState<string | null>(null);
     
     // Session management state
     const [showSessionModal, setShowSessionModal] = useState(false);
     const [sessions, setSessions] = useState<DeviceSession[]>([]);
-    const [isTerminating, setIsTerminating] = useState(false);
+    const [username, setUsername] = useState('');
     
     // Store credentials temporarily for retry after session termination
-    const [pendingCredentials, setPendingCredentials] = useState<{
-        username: string;
-        password: string;
-    } | null>(null);
+    const [pendingUserId, setPendingUserId] = useState<number | null>(null);
 
     const [formData, setFormData] = useState({
         username: '',
@@ -51,7 +48,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
 
     // Add new states for smooth transitions
     const [loginState, setLoginState] = useState<'idle' | 'attempting' | 'retrying'>('idle');
-    const [sessionTerminationState, setSessionTerminationState] = useState<'idle' | 'terminating' | 'success'>('idle');
 
     const validateField = (name: string, value: string): string => {
         switch (name) {
@@ -101,25 +97,24 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
         return !Object.values(newErrors).some(error => error);
     };
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        setTouched({ username: true, password: true });
-
-        if (!validateForm()) {
-            return;
-        }
-
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
         try {
             setIsLoading(true);
-            setError('');
-            await handleLogin(formData.username, formData.password);
+            setError(null);
+            
+            const response = await authService.login(formData);
+            
+            await logToFile('Login successful', { username: formData.username });
+            
+            // Make sure we call onSuccess after successful login
+            if (onSuccess) {
+                onSuccess();
+            }
         } catch (error) {
             if (error instanceof MaxSessionsError) {
-                await logToFile('Max sessions reached during login', {
-                    sessions: error.sessions.length
-                });
                 setSessions(error.sessions);
-                setPendingCredentials(formData);
+                setPendingUserId(error.userId);
                 setShowSessionModal(true);
             } else {
                 setError(error instanceof Error ? error.message : 'Login failed');
@@ -129,79 +124,32 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
         }
     };
 
-    const handleLogin = async (username: string, password: string) => {
-        try {
-            setLoginState('attempting');
-            setError('');
-            await logToFile('Login attempt', { username });
-            await authService.login({ username, password });
-            
-            await logToFile('Login successful', { username });
-            onSuccess?.();
-            router.push('/admin/dashboard');
-        } catch (error) {
-            if (error instanceof MaxSessionsError) {
-                await logToFile('Max sessions reached', { 
-                    username,
-                    sessionCount: error.sessions.length 
-                });
-                setSessions(error.sessions);
-                setPendingCredentials(formData);
-                setShowSessionModal(true);
-            } else {
-                const errorMessage = error instanceof Error ? error.message : 'Login failed';
-                setError(errorMessage);
-                await logToFile('Login failed', { error: errorMessage });
-            }
-        } finally {
-            setLoginState('idle');
-        }
-    };
-
-    const handleSessionTermination = async (sessionId: string) => {
-        if (!pendingCredentials) return;
+    const handleSessionTerminate = async (sessionId: string) => {
+        if (!pendingUserId) return;
 
         try {
-            setSessionTerminationState('terminating');
-            await logToFile('Terminating session', { sessionId });
+            setIsLoading(true);
+            setLoginState('retrying');
             
             // First terminate the session
-            await authService.terminateSession(sessionId);
-            setSessionTerminationState('success');
+            await authService.terminateSession(sessionId, pendingUserId);
             
-            // Brief pause for UX
-            await new Promise(resolve => setTimeout(resolve, 500));
+            // Wait for the session to be fully terminated
+            await new Promise(resolve => setTimeout(resolve, 1500));
             
-            // Then retry the login
-            setLoginState('retrying');
-            await authService.login(pendingCredentials);
+            // Retry login with stored credentials
+            await authService.login(formData);
             
-            await logToFile('Session terminated and login successful', { sessionId });
-            
-            // Clean up and redirect
+            // Close modal and redirect
             setShowSessionModal(false);
-            setPendingCredentials(null);
+            setPendingUserId(null);
             onSuccess?.();
-            router.push('/admin/dashboard');
         } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Failed to terminate session';
-            setError(errorMessage);
-            await logToFile('Session termination failed', { 
-                sessionId, 
-                error: errorMessage 
-            });
-        } finally {
-            setSessionTerminationState('idle');
+            setError(error instanceof Error ? error.message : 'Failed to terminate session');
             setLoginState('idle');
+        } finally {
+            setIsLoading(false);
         }
-    };
-
-    const handleModalClose = () => {
-        setShowSessionModal(false);
-        setPendingCredentials(null);
-        setError('');
-        setSessionTerminationState('idle');
-        setLoginState('idle');
     };
 
     return (
@@ -269,10 +217,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
 
             <DeviceSessionModal
                 open={showSessionModal}
-                onClose={handleModalClose}
+                onClose={() => setShowSessionModal(false)}
                 sessions={sessions}
-                onTerminateSession={handleSessionTermination}
-                isLoading={sessionTerminationState === 'terminating'}
+                onTerminateSession={handleSessionTerminate}
+                isLoading={isLoading}
                 isLoginAttempt={true}
             />
 

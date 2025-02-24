@@ -6,7 +6,9 @@ import { Logger } from '../services/logger';
 import { AuthError, ValidationError, AppError } from '../services/errors';
 import { UserCreateInput, UserResponse, UserOfWA } from '../types/user';
 import { DeviceInfo } from '../types/auth';
-import { loginRateLimiter } from '../config/database';
+import { loginRateLimiter, query } from '../config/database';
+import { v4 as uuidv4 } from 'uuid';
+import { scheduleMarkedSessionCleanup } from '../jobs/markedSessionsCleanup';
 
 // Helper function to format user response
 const formatUserResponse = (user: UserOfWA): UserResponse => ({
@@ -288,4 +290,64 @@ export const handleLogout = async (req: Request, res: Response): Promise<void> =
             message: 'Failed to logout' 
         });
     }
+};
+
+export const preLoginWithSessionTermination = async (req: Request, res: Response) => {
+    const { username, password, deviceInfo, sessionToTerminate } = req.body;
+    const startTime = Date.now();
+
+    try {
+        await query('BEGIN');
+
+        // 1. Mark the old session for deletion
+        await query(
+            `UPDATE user_sessions_wa 
+             SET is_marked_for_deletion = TRUE,
+                 marked_at = NOW(),
+                 marked_by_session_id = $3
+             WHERE id = $1 AND user_id = $2`,
+            [sessionToTerminate.id, sessionToTerminate.userId, uuidv4()]
+        );
+
+        // 2. Create new session (reuse existing login logic)
+        const loginResult = await createLoginSession(username, password, deviceInfo);
+
+        // 3. Schedule cleanup of marked session
+        scheduleMarkedSessionCleanup(sessionToTerminate.id);
+
+        await query('COMMIT');
+
+        await Logger.session('Pre-login session switch completed', {
+            oldSessionId: sessionToTerminate.id,
+            newSessionId: loginResult.sessionId,
+            duration: Date.now() - startTime
+        });
+
+        res.json(loginResult);
+    } catch (error) {
+        await query('ROLLBACK');
+        throw error;
+    }
+};
+
+const createLoginSession = async (username: string, password: string, deviceInfo: DeviceInfo) => {
+    const user = await UserModel.findByUsername(username);
+    if (!user) {
+        throw new AuthError('Invalid credentials');
+    }
+
+    const isValid = await UserModel.verifyPassword(user, password);
+    if (!isValid) {
+        throw new AuthError('Invalid credentials');
+    }
+
+    const { token, refreshToken, sessionId } = await TokenService.generateTokens(user.id, deviceInfo);
+    await UserModel.updateLastLogin(user.id);
+
+    return {
+        token,
+        refreshToken,
+        user: formatUserResponse(user),
+        sessionId
+    };
 }; 

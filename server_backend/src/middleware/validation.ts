@@ -85,10 +85,26 @@ export const ValidationRules = {
 export const ValidationMessages = {
     required: (field: string) => `${field} is required`,
     minLength: (field: string, min: number) => `${field} must be at least ${min} characters long`,
-    maxLength: (field: string, max: number) => `${field} must not exceed ${max} characters`,
-    invalid: (field: string) => `Invalid ${field}`,
+    maxLength: (field: string, max: number) => `${field} cannot exceed ${max} characters`,
+    invalid: (field: string) => `Invalid ${field.toLowerCase()}`,
     exists: (field: string) => `${field} already exists`,
     notFound: (field: string) => `${field} not found`,
     invalidEnum: (field: string, values: string[]) => 
         `${field} must be one of: ${values.join(', ')}`
-}; 
+};
+
+export const validatePreLoginTermination: ValidationChain[] = [
+    body('username')
+        .trim()
+        .notEmpty().withMessage(ValidationMessages.required('Username'))
+        .isLength({ max: 50 }).withMessage(ValidationMessages.maxLength('Username', 50)),
+    
+    body('sessionId')
+        .trim()
+        .notEmpty().withMessage(ValidationMessages.required('Session ID'))
+        .isNumeric().withMessage(ValidationMessages.invalid('Session ID')),
+    
+    body('deviceInfo')
+        .optional()
+        .isObject().withMessage(ValidationMessages.invalid('Device info'))
+]; 
