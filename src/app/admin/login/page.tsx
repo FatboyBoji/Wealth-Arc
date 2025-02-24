@@ -8,62 +8,46 @@ import {
     DeviceSession,
     ApiError
 } from '@/services/api';
-import { DeviceSessionModal } from '@/components/DeviceSessionModal';
-import { LoginForm } from '@/components/LoginForm';
+import { DeviceSessionModal } from '@/components/admin/DeviceSessionModal';
+import { LoginForm } from '@/components/admin/LoginForm';
 import { logToFile } from '@/utils/logger';
-
-interface LoginState {
-    username: string;
-    password: string;
-}
+import { Box, Container, Paper } from '@mui/material';
 
 export default function LoginPage() {
     const router = useRouter();
-    const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     const [showSessionModal, setShowSessionModal] = useState(false);
     const [activeSessions, setActiveSessions] = useState<DeviceSession[]>([]);
-    const [pendingLogin, setPendingLogin] = useState<LoginState | null>(null);
+    const [pendingCredentials, setPendingCredentials] = useState<{
+        username: string;
+        password: string;
+    } | null>(null);
 
     const handleLogin = async (username: string, password: string) => {
-        await logToFile('LoginPage: Starting login attempt', { username });
-        setError(null);
-        setIsLoading(true);
-
         try {
-            const response = await authService.login({ username, password });
-            await logToFile('LoginPage: Login response received', { success: !!response.token });
+            setIsLoading(true);
+            setError(null);
             
-            if (response.token) {
-                await logToFile('LoginPage: Login successful, redirecting...');
-                localStorage.setItem('auth_token', response.token);
-                sessionStorage.removeItem('pendingLogin'); // Clean up
-                router.push('/admin/dashboard');
-            }
+            await logToFile('Login attempt', { username });
+            await authService.login({ username, password });
+            
+            router.push('/admin/dashboard');
         } catch (error) {
             if (error instanceof MaxSessionsError) {
-                await logToFile('LoginPage: Max sessions reached', { 
-                    sessionCount: error.sessions.length,
-                    userId: error.userId
-                });
-                
-                // Store credentials for session termination
-                sessionStorage.setItem('pendingLogin', JSON.stringify({
+                await logToFile('Max sessions reached', { 
                     username,
-                    password,
-                    userId: error.userId
-                }));
-                
-                setActiveSessions(error.sessions.map(session => ({
-                    ...session,
-                    isCurrentSession: false
-                })));
+                    sessionCount: error.sessions.length 
+                });
+                setActiveSessions(error.sessions);
+                setPendingCredentials({ username, password });
                 setShowSessionModal(true);
-                setPendingLogin({ username, password });
             } else {
-                const message = error instanceof ApiError ? error.message : 'Login failed';
-                await logToFile('LoginPage: Login error', { error: message });
-                setError(message);
+                const errorMessage = error instanceof ApiError 
+                    ? error.message 
+                    : 'Login failed. Please try again.';
+                setError(errorMessage);
+                await logToFile('Login failed', { error: errorMessage });
             }
         } finally {
             setIsLoading(false);
@@ -71,29 +55,33 @@ export default function LoginPage() {
     };
 
     const handleSessionTerminate = async (sessionId: string) => {
-        await logToFile('LoginPage: Starting session termination', { sessionId });
-        setIsLoading(true);
-        
-        try {
-            const storedLogin = sessionStorage.getItem('pendingLogin');
-            if (!storedLogin) {
-                throw new Error('No pending login found');
-            }
+        if (!pendingCredentials) return;
 
-            const { username, password } = JSON.parse(storedLogin);
+        try {
+            setIsLoading(true);
+            await logToFile('Terminating session', { sessionId });
             
+            // First terminate the session
             await authService.terminateSession(sessionId);
-            await logToFile('LoginPage: Session terminated successfully', { sessionId });
             
-            // Retry login with stored credentials
-            await handleLogin(username, password);
+            // Then retry the login
+            await authService.login(pendingCredentials);
+            
+            await logToFile('Session terminated and login successful', { sessionId });
+            
+            // Clean up and redirect
+            setShowSessionModal(false);
+            setPendingCredentials(null);
+            router.push('/admin/dashboard');
         } catch (error) {
-            const errorMessage = 'Failed to terminate session. Please try again.';
-            await logToFile('LoginPage: Session termination failed', { 
-                sessionId, 
-                error 
-            });
+            const errorMessage = error instanceof Error 
+                ? error.message 
+                : 'Failed to terminate session';
             setError(errorMessage);
+            await logToFile('Session termination failed', { 
+                sessionId, 
+                error: errorMessage 
+            });
         } finally {
             setIsLoading(false);
         }
@@ -101,27 +89,42 @@ export default function LoginPage() {
 
     const handleModalClose = () => {
         setShowSessionModal(false);
-        setPendingLogin(null);
+        setPendingCredentials(null);
         setError(null);
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8">
-                <LoginForm 
-                    onSubmit={handleLogin}
-                    isLoading={isLoading}
-                    error={error}
-                />
+        <Container maxWidth="sm">
+            <Box
+                sx={{
+                    minHeight: '100vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    py: 8
+                }}
+            >
+                <Paper
+                    elevation={3}
+                    sx={{
+                        p: 4,
+                        width: '100%',
+                        borderRadius: 2
+                    }}
+                >
+                    <LoginForm 
+                        onSuccess={() => router.push('/admin/dashboard')}
+                    />
 
-                <DeviceSessionModal
-                    open={showSessionModal}
-                    onClose={handleModalClose}
-                    sessions={activeSessions}
-                    onTerminateSession={handleSessionTerminate}
-                    isLoading={isLoading}
-                />
-            </div>
-        </div>
+                    <DeviceSessionModal
+                        open={showSessionModal}
+                        onClose={handleModalClose}
+                        sessions={activeSessions}
+                        onTerminateSession={handleSessionTerminate}
+                        isLoading={isLoading}
+                    />
+                </Paper>
+            </Box>
+        </Container>
     );
 } 

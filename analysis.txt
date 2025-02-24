@@ -330,4 +330,249 @@ Step 4: Route Protection
 - Rate limiting
 - Input validation
 
+
+
+############################################################
+############################################################
+
 Would you like to start with Step 1: Core Authentication, focusing on the AuthService implementation while maintaining the multi-device session management feature?
+## Multi-Device Session Management Implementation Plan
+### 1. Frontend Components Needed
+
+a) DeviceSessionModal
+- Display active sessions list
+- Allow session termination
+- Show current device indicator
+- Display last active time
+- Show device details (browser, OS, etc.)
+
+b) SessionManager Component
+- Handle session limit logic
+- Manage session termination
+- Display session count
+- Handle session refresh
+
+### 2. API Service Updates
+
+a) Update AuthService class
+```typescript
+interface DeviceSession {
+    id: string;
+    deviceName: string;
+    deviceType: string;
+    browser: string;
+    os: string;
+    lastActive: string;
+    isCurrentSession: boolean;
+}
+
+interface MaxSessionsError {
+    sessions: DeviceSession[];
+    userId: number;
+    message: string;
+}
+
+class AuthService {
+    async login(credentials: LoginCredentials): Promise<AuthResponse> {
+        try {
+            // ... existing login logic
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 400 && 
+                    error.response.data?.error === 'MAX_SESSIONS_REACHED') {
+                    const errorData = error.response.data;
+                    throw new MaxSessionsError(
+                        errorData.sessions,
+                        errorData.userId,
+                        errorData.message || 'Maximum number of sessions reached'
+                    );
+                }
+            }
+            throw new ApiError(
+                error instanceof Error ? error.message : 'Login failed'
+            );
+        }
+    }
+
+    async getActiveSessions(): Promise<DeviceSession[]>;
+    async terminateSession(sessionId: string): Promise<void>;
+    async terminateAllOtherSessions(): Promise<void>;
+}
+```
+
+### 3. Implementation Steps
+
+1. Error Handling
+   - Update MaxSessionsError handling
+   - Add proper type checking
+   - Improve error messages
+
+2. Session Modal
+   - Create reusable modal component
+   - Add session list display
+   - Implement session termination
+   - Add loading states
+
+3. Login Flow
+   - Update login component to handle max sessions
+   - Add session selection/termination flow
+   - Improve UX for session management
+
+4. Session Management
+   - Add active session tracking
+   - Implement session refresh logic
+   - Add session cleanup on logout
+
+### 4. User Interface Improvements
+
+1. Session List Display
+```tsx
+<SessionList>
+    {sessions.map(session => (
+        <SessionItem
+            key={session.id}
+            session={session}
+            onTerminate={handleTerminate}
+            isCurrentSession={session.isCurrentSession}
+        />
+    ))}
+</SessionList>
+```
+
+2. Session Management Modal
+```tsx
+<DeviceSessionModal
+    open={showModal}
+    sessions={activeSessions}
+    onClose={handleClose}
+    onTerminate={handleTerminate}
+    isLoading={isTerminating}
+/>
+```
+
+### 5. State Management
+
+1. Session State
+```typescript
+interface SessionState {
+    activeSessions: DeviceSession[];
+    isLoading: boolean;
+    error: string | null;
+    currentSessionId: string | null;
+}
+```
+
+2. Actions
+- FETCH_SESSIONS
+- TERMINATE_SESSION
+- UPDATE_SESSION
+- SET_CURRENT_SESSION
+
+### 6. Testing Plan
+
+1. Unit Tests
+- Session management logic
+- Error handling
+- Component rendering
+
+2. Integration Tests
+- Login flow with max sessions
+- Session termination
+- Session refresh
+
+### 7. Implementation Priority
+
+1. Critical (Immediate)
+- ✅ Fix MaxSessionsError handling
+    - Added proper error constructor with message
+    - Updated login method to handle max sessions error
+    - Added type safety for error handling
+- Implement basic session modal
+- Add session termination
+
+2. Important (Next Phase)
+- Improve UI/UX
+- Add session refresh
+- Enhance error handling
+
+3. Enhancement (Later)
+- Add analytics
+- Improve performance
+- Add advanced features
+
+### Current Progress (2024-02-24)
+
+1. Completed:
+   - ✅ Fixed MaxSessionsError implementation
+   - ✅ Added proper type definitions
+   - ✅ Improved error handling in login flow
+   - ✅ Organized component structure
+   - ✅ Fixed dependency issues
+   - ✅ Implemented DeviceSessionModal component
+   - ✅ Enhanced Login Implementation
+   - ✅ Completed Session Management
+   - ❌ Session Management UX Improvement Needed
+       - Current: User must manually logout from other sessions
+       - Problem: Poor user experience when hitting session limit
+       - Solution: Implement immediate session management during login
+
+2. Next Steps:
+   - ❌ Test Login Flow Integration
+       - Test session limit handling
+       - Verify error states
+       - Check responsive design
+   - ✅ Added Form Validation
+       - Real-time validation
+       - Field-level error messages
+       - Password requirements
+       - Username format validation
+       - Touched state handling
+   - ❌ Add Error Translations
+   - ❌ Enhance Theme Customization
+
+Would you like to start with implementing any specific part of this plan?
+
+this is a good plan. lets start with the implementtation step by step and only focus on what we are doing. dont delete crutial code in the backend. be carefull and efficient and create only 100% correct code on productionk level quality!
+
+### Session Management Enhancement Plan
+
+1. Login Flow Improvement
+   - ✅ Detect max sessions during login
+   - ✅ Show active sessions modal on max sessions
+   - ✅ Allow immediate session termination
+   - In Progress: Auto-continue login after termination
+       - ✅ Implementing credential preservation
+       - ✅ Adding automatic retry
+       - ✅ Handling transition states
+       - ✅ Fixed type safety issues
+
+2. UX Improvements
+   - ✅ Clear error messaging
+   - ✅ Session selection interface
+   - ✅ Smooth transition flow
+       - ✅ Added transition states
+       - ✅ Improved state management
+       - ✅ Type-safe state handling
+   - ✅ Loading states during process
+       - Added loading indicators
+       - Improved state feedback
+       - Enhanced user experience
+
+3. Implementation Details
+   - ✅ Updated DeviceSessionModal with login context
+   - ✅ Added clear instructions in modal
+   - ✅ Implemented auto-login after session termination
+   - ✅ Added proper error handling
+
+### Next Steps for Testing
+
+1. Test Cases
+   - ❌ Test max session detection
+   - ❌ Test session termination flow
+   - ❌ Test auto-login functionality
+   - ❌ Test error handling
+
+2. Integration Testing
+   - ❌ End-to-end login flow
+   - ❌ Session management
+   - ❌ Error scenarios

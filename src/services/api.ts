@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig, AxiosError } from 'axios';
 import { getDeviceInfo, getDeviceFriendlyName } from '../utils/deviceInfo';
 
 // Move interfaces to the top and export them
@@ -15,6 +15,7 @@ export interface DeviceSession {
 export interface SessionResponse {
     success: boolean;
     sessions: DeviceSession[];
+    currentSessionId: string;
 }
 
 // Existing interfaces
@@ -177,44 +178,29 @@ export const authService = {
     async login(credentials: LoginCredentials): Promise<AuthResponse> {
         try {
             const deviceInfo = getDeviceInfo();
-            const requestBody = {
-                username: credentials.username,
-                password: credentials.password,
+            const response = await api.post<AuthResponse>('/auth/login', {
+                ...credentials,
                 deviceInfo
-            };
-            
-            try {
-                const response = await api.post('/auth/login', requestBody);
-                return response.data;
-            } catch (error) {
-                if (axios.isAxiosError(error) && 
-                    error.response?.status === 400 && 
+            });
+
+            const { token, user } = response.data;
+            localStorage.setItem('auth_token', token);
+            return response.data;
+        } catch (error: unknown) {
+            // Type guard for Axios error
+            if (axios.isAxiosError(error)) {
+                // Now TypeScript knows this is an AxiosError
+                if (error.response?.status === 400 && 
                     error.response.data?.error === 'MAX_SESSIONS_REACHED') {
-                    
                     const errorData = error.response.data;
-                    console.log('Received error data:', errorData);
-
-                    // Validate the response data
-                    if (!Array.isArray(errorData.sessions) || typeof errorData.userId !== 'number') {
-                        console.error('Invalid response format:', errorData);
-                        throw new ApiError('Invalid session data received');
-                    }
-
-                    // Store credentials for session termination
-                    sessionStorage.setItem('pendingLogin', JSON.stringify({
-                        username: credentials.username,
-                        password: credentials.password,
-                        userId: errorData.userId
-                    }));
-
-                    throw new MaxSessionsError(errorData.sessions, errorData.userId);
+                    throw new MaxSessionsError(
+                        errorData.sessions,
+                        errorData.userId,
+                        errorData.message || 'Maximum number of sessions reached'
+                    );
                 }
-                throw error;
             }
-        } catch (error) {
-            if (error instanceof MaxSessionsError) {
-                throw error;
-            }
+            // Re-throw as ApiError with better message
             throw new ApiError(
                 error instanceof Error ? error.message : 'Login failed'
             );
@@ -280,34 +266,24 @@ export const authService = {
 
     async terminateSession(sessionId: string): Promise<void> {
         try {
-            console.log('API: Attempting to terminate session:', sessionId);
-            
-            // Get stored pending login credentials
-            const storedLogin = sessionStorage.getItem('pendingLogin');
-            if (!storedLogin) {
-                throw new Error('No pending login found');
-            }
-            
-            const { userId, username, password } = JSON.parse(storedLogin);
-            
-            const response = await api.delete(`/auth/terminate-session/${sessionId}`, {
-                data: {
-                    userId,
-                    username,
-                    password
-                }
-            });
-
-            console.log('API: Session termination response:', response.data);
-            
-            if (!response.data.success) {
-                throw new Error('Session termination failed');
-            }
+            await api.delete(`/auth/terminate-session/${sessionId}`);
         } catch (error) {
-            console.error('API: Failed to terminate session:', error);
+            console.error('Failed to terminate session:', error);
             throw new ApiError('Failed to terminate session');
         }
     },
+
+    async handleMaxSessions(error: any): Promise<void> {
+        if (error.response?.status === 400 && 
+            error.response.data?.error === 'MAX_SESSIONS_REACHED') {
+            throw new MaxSessionsError(
+                error.response.data.sessions,
+                error.response.data.userId,
+                error.response.data.message
+            );
+        }
+        throw error;
+    }
 };
 
 // News Service
@@ -363,9 +339,10 @@ export class ApiError extends Error {
 export class MaxSessionsError extends Error {
     constructor(
         public sessions: DeviceSession[],
-        public userId: number
+        public userId: number,
+        public message: string
     ) {
-        super('Maximum number of sessions reached');
+        super(message);
         this.name = 'MaxSessionsError';
     }
 }
