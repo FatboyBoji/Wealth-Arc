@@ -1,11 +1,14 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
-import { login, register } from '../controllers/auth';
-import { validate, ValidationMessages } from '../middleware/validation';
+import { login, register, getActiveSessions, terminateSession, refreshToken, handleLogout } from '../controllers/auth';
+import { validate, ValidationRules } from '../middleware/validation';
 import { authenticateToken } from '../middleware/auth';
 import { rateLimiter } from '../config/database';
 import { authenticateUser } from '../services/auth';
 import { TokenService } from '../config/auth';
+import { Request, Response } from 'express';
+import { MaxSessionsError } from '../config/auth';
+import { PasswordPolicyService } from '../services/passwordPolicy';
 
 // Add these interfaces
 interface AuthResult {
@@ -25,73 +28,78 @@ interface AuthError extends Error {
 
 const router = Router();
 
-// Validation rules
-const loginValidation = [
-    body('username')
-        .trim()
-        .notEmpty().withMessage(ValidationMessages.required('Username'))
-        .isLength({ min: 3 }).withMessage(ValidationMessages.minLength('Username', 3)),
-    body('password')
-        .notEmpty().withMessage(ValidationMessages.required('Password'))
+// Registration validation
+const registerValidation = [
+    ValidationRules.username(),
+    ValidationRules.email(),
+    ValidationRules.password(),
+    ValidationRules.firstName(),
+    ValidationRules.lastName()
 ];
 
-const registerValidation = [
-    body('username')
-        .trim()
-        .notEmpty().withMessage(ValidationMessages.required('Username'))
-        .isLength({ min: 3 }).withMessage(ValidationMessages.minLength('Username', 3))
-        .isLength({ max: 50 }).withMessage(ValidationMessages.maxLength('Username', 50))
-        .matches(/^[a-zA-Z0-9_]+$/).withMessage('Username can only contain letters, numbers, and underscores'),
-    body('password')
-        .notEmpty().withMessage(ValidationMessages.required('Password'))
-        .isLength({ min: 6 }).withMessage(ValidationMessages.minLength('Password', 6))
-        .matches(/\d/).withMessage('Password must contain at least one number')
-        .matches(/[a-z]/).withMessage('Password must contain at least one lowercase letter')
-        .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter')
+// Login validation
+const loginValidation = [
+    ValidationRules.username(),
+    ValidationRules.password(),
+    ValidationRules.deviceInfo()
+];
+
+// Refresh token validation
+const refreshTokenValidation = [
+    body('refreshToken')
+        .notEmpty().withMessage('Refresh token is required')
 ];
 
 // Routes
-router.post('/login', validate(loginValidation), async (req, res) => {
-    const { username, password } = req.body;
-    
+router.post('/login', async (req: Request, res: Response) => {
     try {
-        // Check rate limit before processing login
-        rateLimiter.checkRateLimit(username);
+        const { username, password, deviceInfo } = req.body;
         
-        // Use the authentication service instead of the controller directly
-        const authResult = await authenticateUser(username, password);
-        
-        if (authResult.success && authResult.token && authResult.user) {
-            // Clear rate limit attempts on successful login
-            rateLimiter.clearAttempts(username);
-            res.json({ 
-                token: authResult.token, 
-                user: authResult.user 
-            });
-        } else {
-            res.status(401).json({ 
-                message: authResult.message || 'Invalid credentials' 
-            });
+        if (!username || !password) {
+            res.status(400).json({ error: 'Missing credentials' });
+            return;
         }
-    } catch (error: unknown) {
-        // Type guard for error handling
-        if (error instanceof Error) {
-            if (error.message.includes('Too many login attempts')) {
-                res.status(429).json({ message: error.message });
+
+        try {
+            const result = await authenticateUser(username, password, deviceInfo);
+            if (result.success) {
+                res.json(result);
             } else {
-                console.error('Login error:', error);
-                res.status(500).json({ 
-                    message: 'Internal server error',
-                    error: process.env.NODE_ENV === 'development' ? error.message : undefined
-                });
+                res.status(401).json(result);
             }
-        } else {
-            res.status(500).json({ message: 'An unknown error occurred' });
+        } catch (error) {
+            if (error instanceof MaxSessionsError) {
+                // Format sessions for frontend
+                const formattedSessions = error.sessions.map(session => ({
+                    id: session.id,
+                    deviceName: session.friendly_name,
+                    deviceType: session.device_type,
+                    browser: session.device_browser,
+                    os: session.device_os,
+                    lastActive: session.last_active,
+                    isCurrentSession: session.is_current_session
+                }));
+
+                res.status(400).json({
+                    error: 'MAX_SESSIONS_REACHED',
+                    message: 'Maximum number of sessions reached',
+                    sessions: formattedSessions
+                });
+                return;
+            }
+            throw error; // Re-throw other errors
         }
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
-router.post('/register', validate(registerValidation), register);
+router.post('/register', 
+    rateLimiter,
+    validate(registerValidation), 
+    register
+);
 
 router.get('/verify', authenticateToken, (req, res) => {
     try {
@@ -134,80 +142,22 @@ router.delete('/sessions/:tokenId', authenticateToken, async (req, res) => {
     }
 });
 
-router.post('/logout', authenticateToken, async (req, res) => {
-    try {
-        if (!req.user?.tokenId) {
-            console.warn('Logout attempted without token ID:', {
-                user: req.user,
-                timestamp: new Date().toISOString()
-            });
-            res.status(400).json({ error: 'No active session' });
-            return;
-        }
+router.post('/logout', authenticateToken, handleLogout);
 
-        console.log('Starting logout process:', {
-            userId: req.user.userId,
-            tokenId: req.user.tokenId,
-            timestamp: new Date().toISOString()
-        });
+router.get('/active-sessions', 
+    authenticateToken, 
+    getActiveSessions
+);
 
-        // First check if session exists
-        const sessionExists = await TokenService.isSessionValid(req.user.tokenId);
-        console.log('Session check before logout:', {
-            exists: sessionExists,
-            tokenId: req.user.tokenId,
-            timestamp: new Date().toISOString()
-        });
+router.delete('/terminate-session/:sessionId', 
+    authenticateToken,
+    terminateSession
+);
 
-        // Attempt to remove session
-        await TokenService.invalidateSession(req.user.tokenId);
-
-        // Verify session was removed
-        const sessionStillExists = await TokenService.isSessionValid(req.user.tokenId);
-        console.log('Session check after logout:', {
-            exists: sessionStillExists,
-            tokenId: req.user.tokenId,
-            timestamp: new Date().toISOString()
-        });
-
-        if (sessionStillExists) {
-            console.error('Session persisted after logout attempt:', {
-                tokenId: req.user.tokenId,
-                timestamp: new Date().toISOString()
-            });
-
-            // Try one more time with direct query
-            const { query } = await import('../config/database');
-            const result = await query(
-                'DELETE FROM user_sessions_wa WHERE token_id = $1',
-                [req.user.tokenId]
-            );
-
-            console.log('Forced session deletion result:', {
-                success: result?.rowCount ? result.rowCount > 0 : false,
-                rowsAffected: result?.rowCount ?? 0,
-                tokenId: req.user.tokenId,
-                timestamp: new Date().toISOString()
-            });
-        }
-
-        // Add after session invalidation attempt
-        await TokenService.debugSessionState(req.user.tokenId);
-
-        res.json({ 
-            message: 'Logged out successfully',
-            sessionCleanedUp: !sessionStillExists
-        });
-
-    } catch (error) {
-        console.error('Logout error:', {
-            error,
-            userId: req.user?.userId,
-            tokenId: req.user?.tokenId,
-            timestamp: new Date().toISOString()
-        });
-        res.status(500).json({ error: 'Failed to logout' });
-    }
-});
+router.post('/refresh-token',
+    rateLimiter,
+    validate(refreshTokenValidation),
+    refreshToken
+);
 
 export default router; 

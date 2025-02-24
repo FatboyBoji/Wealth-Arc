@@ -9,6 +9,7 @@ import authRoutes from './routes/auth';
 import newsRoutes from './routes/news';
 import path from 'path';
 import { cleanupInactiveSessions } from './jobs/cleanupSessions';
+import { Request, Response, NextFunction } from 'express';
 
 // Extend Express Request type to include csrfToken
 declare global {
@@ -54,7 +55,7 @@ app.use(cors({
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin', 'Access-Control-Allow-Headers', 'Access-Control-Request-Headers', 'Access-Control-Allow-Origin', 'CSRF-Token'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'CSRF-Token'],
     exposedHeaders: ['Access-Control-Allow-Origin']
 }));
 
@@ -64,8 +65,8 @@ app.use(helmet({
     crossOriginOpenerPolicy: { policy: "unsafe-none" }
 }));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 app.use(expressSanitizer());
 
 // Cookie parser is required for CSRF
@@ -129,6 +130,28 @@ app.get('/api/csrf-token', csrfProtection, (req, res) => {
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/news', newsRoutes);
+
+// Add body parser error handling
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    if (err instanceof SyntaxError && 'body' in err) {
+        console.error('JSON Parse Error:', err);
+        return res.status(400).json({ error: 'Invalid JSON' });
+    }
+    next();
+});
+
+// Log incoming requests in development
+if (process.env.NODE_ENV !== 'production') {
+    app.use((req: Request, res: Response, next: NextFunction) => {
+        console.log('Incoming request:', {
+            method: req.method,
+            path: req.path,
+            body: req.body,
+            headers: req.headers
+        });
+        next();
+    });
+}
 
 // Error handling middleware - must have 4 parameters for Express to recognize it as error handler
 const errorHandler: express.ErrorRequestHandler = (err, req, res, next) => {

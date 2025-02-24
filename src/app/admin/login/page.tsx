@@ -1,106 +1,126 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { authService } from '@/services/api';
-import Image from 'next/image';
-// import SesaIcon from '../../../components/icons/sesalogoComb';
+import { 
+    authService, 
+    MaxSessionsError,
+    DeviceSession,
+    ApiError
+} from '@/services/api';
+import { DeviceSessionModal } from '@/components/DeviceSessionModal';
+import { LoginForm } from '@/components/LoginForm';
+import { logToFile } from '@/utils/logger';
+
+interface LoginState {
+    username: string;
+    password: string;
+}
 
 export default function LoginPage() {
     const router = useRouter();
-    const [error, setError] = useState<string>('');
-    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [showSessionModal, setShowSessionModal] = useState(false);
+    const [activeSessions, setActiveSessions] = useState<DeviceSession[]>([]);
+    const [pendingLogin, setPendingLogin] = useState<LoginState | null>(null);
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setError('');
-        setLoading(true);
-
-        const formData = new FormData(e.currentTarget);
-        const username = formData.get('username') as string;
-        const password = formData.get('password') as string;
+    const handleLogin = async (username: string, password: string) => {
+        await logToFile('LoginPage: Starting login attempt', { username });
+        setError(null);
+        setIsLoading(true);
 
         try {
-            await authService.login({ username, password });
-            router.push('/admin/dashboard');
-        } catch (err) {
-            setError('Invalid credentials. Please try again.');
+            const response = await authService.login({ username, password });
+            await logToFile('LoginPage: Login response received', { success: !!response.token });
+            
+            if (response.token) {
+                await logToFile('LoginPage: Login successful, redirecting...');
+                localStorage.setItem('auth_token', response.token);
+                sessionStorage.removeItem('pendingLogin'); // Clean up
+                router.push('/admin/dashboard');
+            }
+        } catch (error) {
+            if (error instanceof MaxSessionsError) {
+                await logToFile('LoginPage: Max sessions reached', { 
+                    sessionCount: error.sessions.length,
+                    userId: error.userId
+                });
+                
+                // Store credentials for session termination
+                sessionStorage.setItem('pendingLogin', JSON.stringify({
+                    username,
+                    password,
+                    userId: error.userId
+                }));
+                
+                setActiveSessions(error.sessions.map(session => ({
+                    ...session,
+                    isCurrentSession: false
+                })));
+                setShowSessionModal(true);
+                setPendingLogin({ username, password });
+            } else {
+                const message = error instanceof ApiError ? error.message : 'Login failed';
+                await logToFile('LoginPage: Login error', { error: message });
+                setError(message);
+            }
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     };
-    // src\public\Logo\SESA.svg
+
+    const handleSessionTerminate = async (sessionId: string) => {
+        await logToFile('LoginPage: Starting session termination', { sessionId });
+        setIsLoading(true);
+        
+        try {
+            const storedLogin = sessionStorage.getItem('pendingLogin');
+            if (!storedLogin) {
+                throw new Error('No pending login found');
+            }
+
+            const { username, password } = JSON.parse(storedLogin);
+            
+            await authService.terminateSession(sessionId);
+            await logToFile('LoginPage: Session terminated successfully', { sessionId });
+            
+            // Retry login with stored credentials
+            await handleLogin(username, password);
+        } catch (error) {
+            const errorMessage = 'Failed to terminate session. Please try again.';
+            await logToFile('LoginPage: Session termination failed', { 
+                sessionId, 
+                error 
+            });
+            setError(errorMessage);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleModalClose = () => {
+        setShowSessionModal(false);
+        setPendingLogin(null);
+        setError(null);
+    };
+
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-400 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-8">
-                <div>
-                    {/* <div className="relative w-100 h-100 mx-auto pb-5">
-                        <SesaIcon className={`text-black w-full h-full`} />
-                    </div> */}
-                    <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                        Admin Login
-                    </h2>
-                    <p className="mt-2 text-center text-sm text-gray-600">
-                        Sign in to access the admin dashboard
-                    </p>
-                </div>
+                <LoginForm 
+                    onSubmit={handleLogin}
+                    isLoading={isLoading}
+                    error={error}
+                />
 
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                    {error && (
-                        <div className="rounded-md bg-red-50 p-4">
-                            <div className="text-sm text-red-700">{error}</div>
-                        </div>
-                    )}
-
-                    <div className="rounded-md shadow-sm -space-y-px">
-                        <div>
-                            <label htmlFor="username" className="sr-only">
-                                Username
-                            </label>
-                            <input
-                                id="username"
-                                name="username"
-                                type="text"
-                                required
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 
-                                         border border-gray-300 placeholder-gray-500 text-gray-900 
-                                         rounded-t-md focus:outline-none focus:ring-blue-500 
-                                         focus:border-blue-500 focus:z-10 sm:text-sm"
-                                placeholder="Username"
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="password" className="sr-only">
-                                Password
-                            </label>
-                            <input
-                                id="password"
-                                name="password"
-                                type="password"
-                                required
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 
-                                         border border-gray-300 placeholder-gray-500 text-gray-900 
-                                         rounded-b-md focus:outline-none focus:ring-blue-500 
-                                         focus:border-blue-500 focus:z-10 sm:text-sm"
-                                placeholder="Password"
-                            />
-                        </div>
-                    </div>
-
-                    <div>
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="group relative w-full flex justify-center py-2 px-4 border 
-                                     border-transparent text-sm font-medium rounded-md text-white 
-                                     bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 
-                                     focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 
-                                     disabled:cursor-not-allowed"
-                        >
-                            {loading ? 'Signing in...' : 'Sign in'}
-                        </button>
-                    </div>
-                </form>
+                <DeviceSessionModal
+                    open={showSessionModal}
+                    onClose={handleModalClose}
+                    sessions={activeSessions}
+                    onTerminateSession={handleSessionTerminate}
+                    isLoading={isLoading}
+                />
             </div>
         </div>
     );

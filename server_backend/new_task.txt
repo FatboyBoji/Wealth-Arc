@@ -1,0 +1,86 @@
+lets work on the steps in @new_task.txt step by step with out changing already existing logic if not needed for the task and build good/preffesional/preoduction rdy code:
+
+Device Session Management Implementation Plan
+
+1. Backend Changes:
+   a. Create new endpoint `/api/auth/active-sessions`
+      - Returns list of active sessions for a user
+      - Include device info, last active time, and session ID
+      [DONE - Fixed type error with userId]
+   
+   b. Modify TokenService.generateToken:
+      - Check session count before generating token
+      - If limit exceeded, throw custom error with code 'MAX_SESSIONS_REACHED'
+      - Include current sessions in error response
+      [DONE]
+   
+   c. Create endpoint `/api/auth/terminate-session`
+      - Accepts session ID to terminate
+      - Validates ownership before termination
+      - Returns success/failure
+      [DONE]
+
+2. Frontend Changes:
+   a. Create new modal component `DeviceSessionModal`:
+      - Shows when MAX_SESSIONS_REACHED error received
+      - Lists all active sessions with device info
+      - Options to select session to terminate or cancel login
+      [DONE]
+   
+   b. Modify auth service:
+      - Add methods to fetch active sessions
+      - Add method to terminate specific session
+      - Handle MAX_SESSIONS_REACHED error in login flow
+      [DONE]
+   
+   c. Update login flow:
+      1. Attempt login
+      2. If MAX_SESSIONS_REACHED:
+         - Show DeviceSessionModal
+         - User selects session to terminate or cancels
+         - If session selected:
+           * Terminate selected session
+           * Retry login
+         - If cancelled:
+           * Return to login form
+    
+
+3. Database Schema Updates:
+   - Add friendly_name to user_sessions_wa table
+   - Add created_from_ip column
+   - Add is_current_session flag
+   [DONE - Updated create_sessions.sql]
+
+4. Implementation Order:
+   1. Backend endpoints and error handling [DONE]
+   2. Frontend modal component [DONE]
+   3. Session management service [DONE]
+   4. Integration into login flow [DONE]
+   5. Testing and refinement [TODO]
+      - Test session limit enforcement [IN PROGRESS]
+        * Fixed error handling for max sessions
+        * Added proper error formatting and propagation
+        * Fixed error status codes
+        * Improved error handling chain
+        * Fixed session modal display for max sessions
+        * Improved error interceptor handling
+        * Added auto-login after session termination
+        * Added loading state for session termination
+        * Fixed date-fns import path
+        * Improved session termination UI/UX
+        * Fixed MUI Dialog props
+        * Enhanced session termination interactivity
+        * Added better debug logging
+        * Redesigned session termination UI for better UX
+        * Simplified component structure
+        * Used native MUI components for reliability
+      - Test session termination flow
+      - Test error handling
+      - Test device info display
+      - Load testing for concurrent sessions
+
+5. Security Considerations:
+   - Validate session ownership
+   - Rate limit session management endpoints
+   - Log all session terminations
+   - Ensure proper error handling

@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import { TokenService, TokenPayload } from '../config/auth';
+import { TokenService } from '../config/auth';
+import { TokenPayload } from '../types/auth';
 import { UserModel } from '../models/User';
 import { RequestHandler } from 'express';
+import { Logger } from '../services/logger';
 
 // Extend Express Request type to include user
 declare global {
@@ -22,7 +24,13 @@ export const authenticateToken: RequestHandler = async (
         const token = authHeader?.split(' ')[1];
 
         if (!token) {
-            console.log('No token provided');
+            Logger.auth('Authentication failed', {
+                reason: 'No token provided',
+                path: req.path,
+                method: req.method,
+                ip: req.ip
+            });
+            
             res.status(401).json({ 
                 error: 'Authentication token required',
                 message: 'No token provided'
@@ -36,11 +44,13 @@ export const authenticateToken: RequestHandler = async (
             // Verify user still exists
             const user = await UserModel.findById(decoded.userId);
             if (!user) {
-                console.log('User no longer exists:', {
+                Logger.auth('Authentication failed', {
+                    reason: 'User not found',
                     userId: decoded.userId,
-                    tokenId: decoded.tokenId
+                    tokenId: decoded.tokenId,
+                    path: req.path
                 });
-                // Clean up the session if user doesn't exist
+
                 await TokenService.invalidateSession(decoded.tokenId);
                 res.status(401).json({ 
                     error: 'Authentication failed',
@@ -50,22 +60,32 @@ export const authenticateToken: RequestHandler = async (
             }
 
             req.user = decoded;
+            Logger.auth('Authentication successful', {
+                userId: decoded.userId,
+                path: req.path,
+                method: req.method
+            });
+            
             next();
         } catch (tokenError) {
-            console.error('Token verification failed:', {
+            Logger.error('Token verification failed', {
                 error: tokenError,
-                timestamp: new Date().toISOString()
+                path: req.path,
+                method: req.method
             });
+            
             res.status(403).json({ 
                 error: 'Authentication failed',
                 message: 'Invalid or expired token'
             });
         }
     } catch (error) {
-        console.error('Authentication middleware error:', {
+        Logger.error('Authentication middleware error', {
             error,
-            timestamp: new Date().toISOString()
+            path: req.path,
+            method: req.method
         });
+        
         res.status(500).json({ 
             error: 'Authentication failed',
             message: 'Internal server error'

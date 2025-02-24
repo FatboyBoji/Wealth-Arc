@@ -1,6 +1,23 @@
 import axios, { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { getDeviceInfo, getDeviceFriendlyName } from '../utils/deviceInfo';
 
-// Types
+// Move interfaces to the top and export them
+export interface DeviceSession {
+    id: string;
+    deviceName: string;
+    deviceType: string;
+    browser: string;
+    os: string;
+    lastActive: string;
+    isCurrentSession: boolean;
+}
+
+export interface SessionResponse {
+    success: boolean;
+    sessions: DeviceSession[];
+}
+
+// Existing interfaces
 export interface LoginCredentials {
     username: string;
     password: string;
@@ -102,13 +119,8 @@ api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
         config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // Add origin and referer headers for CORS
-    const domainConfig = getDomainConfig();
-    if (domainConfig) {
-        config.headers.Origin = domainConfig.mainDomain;
-        config.headers.Referer = domainConfig.mainDomain;
-    }
-
+    // Remove the manual setting of Origin and Referer headers
+    // Let the browser handle these automatically
     return config;
 });
 
@@ -118,29 +130,24 @@ api.interceptors.response.use(
     error => {
         if (error.response) {
             const status = error.response.status;
-            
-            // Handle authentication errors
-            if (status === 401 || status === 403) {
-                authService.logout();
-                window.location.href = '/admin/login';
-                return Promise.reject(new ApiError('Session expired. Please login again.', status));
-            }
-            
             const data = error.response.data || { message: 'Unknown server error' };
             
-            // Log error details without exposing sensitive information
-            console.error('API Response Error:', {
-                status,
-                message: data.message,
-                timestamp: new Date().toISOString(),
-                endpoint: error.config?.url
-            });
-
+            // Special handling for MAX_SESSIONS_REACHED
+            if (status === 400 && data.error === 'MAX_SESSIONS_REACHED') {
+                return Promise.reject(error); // Let the login handler deal with this
+            }
+            
+            // Handle other errors...
             switch (status) {
+                case 401:
+                case 403:
+                    authService.logout();
+                    window.location.href = '/admin/login';
+                    throw new ApiError('Session expired. Please login again.', status);
                 case 404:
                     throw new ApiError(data.message || 'Resource not found', status);
                 case 429:
-                    throw new ApiError(data.message || 'Too many attempts. Please try again later.', status);
+                    throw new ApiError(data.message || 'Too many attempts', status);
                 case 500:
                     throw new ApiError(data.message || 'Internal server error', status);
                 default:
@@ -169,32 +176,73 @@ api.interceptors.response.use(
 export const authService = {
     async login(credentials: LoginCredentials): Promise<AuthResponse> {
         try {
-            const response = await api.post('/auth/login', credentials);
-            const { token, user } = response.data;
-            localStorage.setItem('auth_token', token);
-            return { token, user };
-        } catch (error) {
-            if (error instanceof ApiError) {
+            const deviceInfo = getDeviceInfo();
+            const requestBody = {
+                username: credentials.username,
+                password: credentials.password,
+                deviceInfo
+            };
+            
+            try {
+                const response = await api.post('/auth/login', requestBody);
+                return response.data;
+            } catch (error) {
+                if (axios.isAxiosError(error) && 
+                    error.response?.status === 400 && 
+                    error.response.data?.error === 'MAX_SESSIONS_REACHED') {
+                    
+                    const errorData = error.response.data;
+                    console.log('Received error data:', errorData);
+
+                    // Validate the response data
+                    if (!Array.isArray(errorData.sessions) || typeof errorData.userId !== 'number') {
+                        console.error('Invalid response format:', errorData);
+                        throw new ApiError('Invalid session data received');
+                    }
+
+                    // Store credentials for session termination
+                    sessionStorage.setItem('pendingLogin', JSON.stringify({
+                        username: credentials.username,
+                        password: credentials.password,
+                        userId: errorData.userId
+                    }));
+
+                    throw new MaxSessionsError(errorData.sessions, errorData.userId);
+                }
                 throw error;
             }
-            throw new ApiError('Login failed. Please check your credentials.', 401);
+        } catch (error) {
+            if (error instanceof MaxSessionsError) {
+                throw error;
+            }
+            throw new ApiError(
+                error instanceof Error ? error.message : 'Login failed'
+            );
         }
     },
 
-    async logout() {
+    async logout(): Promise<void> {
         try {
+            // Get current token
             const token = localStorage.getItem('auth_token');
-            if (!token) return;
+            if (!token) {
+                return;
+            }
 
-            // Use the configured axios instance instead of fetch
-            await api.post('/auth/logout');
-            
-            // Clear local storage/token after successful logout
+            // Call logout endpoint with empty object instead of null
+            await api.post('/auth/logout', {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            // Clear all auth data
             localStorage.removeItem('auth_token');
+            localStorage.removeItem('refresh_token');
         } catch (error) {
-            console.error('Logout error:', error);
-            // Clear token even if request fails
+            console.error('Logout failed:', error);
+            // Still remove tokens even if API call fails
             localStorage.removeItem('auth_token');
+            localStorage.removeItem('refresh_token');
+            throw error;
         }
     },
 
@@ -217,6 +265,47 @@ export const authService = {
             // Clear token if verification fails
             this.logout();
             return false;
+        }
+    },
+
+    async getActiveSessions(): Promise<DeviceSession[]> {
+        try {
+            const response = await api.get<SessionResponse>('/auth/active-sessions');
+            return response.data.sessions;
+        } catch (error) {
+            console.error('Failed to fetch active sessions:', error);
+            throw new ApiError('Failed to fetch active sessions');
+        }
+    },
+
+    async terminateSession(sessionId: string): Promise<void> {
+        try {
+            console.log('API: Attempting to terminate session:', sessionId);
+            
+            // Get stored pending login credentials
+            const storedLogin = sessionStorage.getItem('pendingLogin');
+            if (!storedLogin) {
+                throw new Error('No pending login found');
+            }
+            
+            const { userId, username, password } = JSON.parse(storedLogin);
+            
+            const response = await api.delete(`/auth/terminate-session/${sessionId}`, {
+                data: {
+                    userId,
+                    username,
+                    password
+                }
+            });
+
+            console.log('API: Session termination response:', response.data);
+            
+            if (!response.data.success) {
+                throw new Error('Session termination failed');
+            }
+        } catch (error) {
+            console.error('API: Failed to terminate session:', error);
+            throw new ApiError('Failed to terminate session');
         }
     },
 };
@@ -267,6 +356,17 @@ export class ApiError extends Error {
     ) {
         super(message);
         this.name = 'ApiError';
+    }
+}
+
+// Add custom error class for max sessions
+export class MaxSessionsError extends Error {
+    constructor(
+        public sessions: DeviceSession[],
+        public userId: number
+    ) {
+        super('Maximum number of sessions reached');
+        this.name = 'MaxSessionsError';
     }
 }
 

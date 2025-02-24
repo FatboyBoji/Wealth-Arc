@@ -2,16 +2,48 @@ import { query } from '../config/database';
 import { AUTH_CONFIG } from '../config/auth';
 import ms from 'ms';
 import jwt from 'jsonwebtoken';
+import { Logger } from '../services/logger';
 
-export async function cleanupInactiveSessions(): Promise<void> {
+interface CleanupMetrics {
+    startTime: number;
+    sessionsChecked: number;
+    sessionsDeleted: number;
+    errors: number;
+    duration: number;
+}
+
+class RetryableError extends Error {
+    constructor(message: string, public retryCount: number = 0) {
+        super(message);
+        this.name = 'RetryableError';
+    }
+}
+
+export async function cleanupInactiveSessions(retryCount = 0): Promise<void> {
+    const metrics: CleanupMetrics = {
+        startTime: Date.now(),
+        sessionsChecked: 0,
+        sessionsDeleted: 0,
+        errors: 0,
+        duration: 0
+    };
+
     try {
+        Logger.jobs('Starting session cleanup', {
+            attempt: retryCount + 1,
+            timestamp: new Date().toISOString()
+        });
+
         const inactiveThreshold = ms(AUTH_CONFIG.SESSION_INACTIVE_TIMEOUT);
         
         // Get all sessions
         const sessions = await query(
-            'SELECT token_id, user_id, last_active FROM user_sessions_wa'
+            `SELECT token_id, user_id, last_active 
+             FROM user_sessions_wa
+             WHERE last_active < NOW() - INTERVAL '${AUTH_CONFIG.SESSION_INACTIVE_TIMEOUT}'`
         );
 
+        metrics.sessionsChecked = sessions.rows.length;
         const sessionsToDelete: string[] = [];
 
         // Check each session's token
@@ -29,31 +61,91 @@ export async function cleanupInactiveSessions(): Promise<void> {
             } catch (error) {
                 // If token verification fails (expired or invalid), mark for deletion
                 sessionsToDelete.push(session.token_id);
+                metrics.errors++;
             }
         }
 
         if (sessionsToDelete.length > 0) {
-            const result = await query(
-                `DELETE FROM user_sessions_wa 
-                 WHERE token_id = ANY($1)
-                 RETURNING user_id, token_id`,
+            // Also cleanup related refresh tokens
+            await query(
+                `WITH deleted_sessions AS (
+                    DELETE FROM user_sessions_wa 
+                    WHERE token_id = ANY($1)
+                    RETURNING user_id, token_id
+                )
+                UPDATE refresh_tokens 
+                SET is_revoked = true
+                WHERE token_id IN (SELECT token_id FROM deleted_sessions)`,
                 [sessionsToDelete]
             );
 
-            console.log('Cleaned up sessions:', {
-                count: result.rows.length,
-                sessions: result.rows,
-                timestamp: new Date().toISOString(),
-                reasons: 'Token expired or session inactive'
-            });
+            metrics.sessionsDeleted = sessionsToDelete.length;
         }
+
+        metrics.duration = Date.now() - metrics.startTime;
+
+        Logger.jobs('Sessions cleanup completed', {
+            metrics,
+            timestamp: new Date().toISOString()
+        });
+
     } catch (error) {
-        console.error('Session cleanup failed:', {
+        metrics.duration = Date.now() - metrics.startTime;
+        metrics.errors++;
+
+        Logger.error('Session cleanup failed', {
             error,
+            metrics,
+            timestamp: new Date().toISOString()
+        });
+
+        // Implement retry mechanism
+        if (retryCount < 3) {
+            const nextRetryDelay = Math.pow(2, retryCount) * 1000; // Exponential backoff
+            Logger.jobs('Scheduling cleanup retry', {
+                attempt: retryCount + 1,
+                delay: nextRetryDelay,
+                timestamp: new Date().toISOString()
+            });
+
+            setTimeout(() => {
+                cleanupInactiveSessions(retryCount + 1)
+                    .catch(retryError => {
+                        Logger.error('Cleanup retry failed', {
+                            error: retryError,
+                            finalAttempt: retryCount === 2,
+                            timestamp: new Date().toISOString()
+                        });
+                    });
+            }, nextRetryDelay);
+        }
+    }
+}
+
+// Run cleanup every 15 minutes
+const CLEANUP_INTERVAL = 15 * 60 * 1000;
+
+let cleanupInterval: NodeJS.Timeout;
+
+export function startCleanupJob(): void {
+    Logger.jobs('Starting cleanup job service', {
+        interval: CLEANUP_INTERVAL,
+        timestamp: new Date().toISOString()
+    });
+    
+    cleanupInterval = setInterval(cleanupInactiveSessions, CLEANUP_INTERVAL);
+}
+
+export function stopCleanupJob(): void {
+    if (cleanupInterval) {
+        clearInterval(cleanupInterval);
+        Logger.jobs('Cleanup job service stopped', {
             timestamp: new Date().toISOString()
         });
     }
 }
 
-// Run cleanup more frequently (every 15 minutes)
-setInterval(cleanupInactiveSessions, 15 * 60 * 1000); 
+// Handle graceful shutdown
+process.on('SIGTERM', () => {
+    stopCleanupJob();
+}); 

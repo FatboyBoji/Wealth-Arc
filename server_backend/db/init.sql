@@ -50,3 +50,34 @@ VALUES ('admin', '$2b$10$reyuNS2BUwH0hdLmuSqaJ.rPkAlbpKPLd5iWwPGaymcqTn7lzG3i2')
 -- Describe tables
 \d users
 \d news_updates 
+
+-- Initialize database schema
+CREATE SCHEMA IF NOT EXISTS public;
+
+-- Set default privileges
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO PUBLIC;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO PUBLIC;
+
+-- Create extensions if needed
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
+-- Include other SQL files
+\i 'create_test_user.sql'
+\i 'migrations/create_sessions.sql'
+\i 'migrations/create_refresh_tokens.sql'
+
+-- Update references in other tables to point to user_of_wa
+ALTER TABLE user_sessions_wa
+    DROP CONSTRAINT user_sessions_wa_user_id_fkey,
+    ADD CONSTRAINT user_sessions_wa_user_id_fkey 
+    FOREIGN KEY (user_id) REFERENCES user_of_wa(id) ON DELETE CASCADE;
+
+ALTER TABLE refresh_tokens
+    DROP CONSTRAINT refresh_tokens_user_id_fkey,
+    ADD CONSTRAINT refresh_tokens_user_id_fkey 
+    FOREIGN KEY (user_id) REFERENCES user_of_wa(id) ON DELETE CASCADE;
+
+-- Grant permissions
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO PUBLIC;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO PUBLIC; 
