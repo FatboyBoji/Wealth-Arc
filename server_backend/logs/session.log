@@ -1,0 +1,30 @@
+{
+  "timestamp": "2025-02-24T20:19:36.282Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T20:19:36.282Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T20:19:37.175Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T20:19:37.175Z",
+    "poolSize": 2,
+    "idleCount": 1
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T20:20:07.287Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T20:20:07.287Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}

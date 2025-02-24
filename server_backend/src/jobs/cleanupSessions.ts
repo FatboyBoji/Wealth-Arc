@@ -4,6 +4,7 @@ import ms from 'ms';
 import jwt from 'jsonwebtoken';
 import { Logger } from '../services/logger';
 
+
 interface CleanupMetrics {
     startTime: number;
     sessionsChecked: number;
@@ -124,28 +125,48 @@ export async function cleanupInactiveSessions(retryCount = 0): Promise<void> {
 
 // Run cleanup every 15 minutes
 const CLEANUP_INTERVAL = 15 * 60 * 1000;
+const MARKED_SESSION_CHECK_INTERVAL = 1000; // 1 second
 
 let cleanupInterval: NodeJS.Timeout;
+let markedSessionsInterval: NodeJS.Timeout;
 
-export function startCleanupJob(): void {
-    Logger.jobs('Starting cleanup job service', {
-        interval: CLEANUP_INTERVAL,
-        timestamp: new Date().toISOString()
-    });
-    
+export function startCleanupJobs(): void {
+    // Regular cleanup (existing)
     cleanupInterval = setInterval(cleanupInactiveSessions, CLEANUP_INTERVAL);
+    
+    // Marked sessions cleanup (new)
+    markedSessionsInterval = setInterval(async () => {
+        try {
+            const deletedCount = await cleanupMarkedSessions();
+            if (deletedCount > 0) {
+                Logger.jobs('Marked sessions cleanup completed', { deletedCount });
+            }
+        } catch (error) {
+            Logger.error('Marked sessions cleanup failed', { error });
+        }
+    }, MARKED_SESSION_CHECK_INTERVAL);
 }
 
-export function stopCleanupJob(): void {
-    if (cleanupInterval) {
-        clearInterval(cleanupInterval);
-        Logger.jobs('Cleanup job service stopped', {
-            timestamp: new Date().toISOString()
-        });
-    }
+export function stopCleanupJobs(): void {
+    clearInterval(cleanupInterval);
+    clearInterval(markedSessionsInterval);
+    Logger.jobs('All cleanup jobs stopped');
 }
 
 // Handle graceful shutdown
 process.on('SIGTERM', () => {
-    stopCleanupJob();
-}); 
+    stopCleanupJobs();
+});
+
+const MARKED_SESSION_MAX_AGE = 5000; // 5 seconds
+
+export const cleanupMarkedSessions = async () => {
+    const result = await query(
+        `DELETE FROM user_sessions_wa 
+         WHERE is_marked_for_deletion = TRUE 
+         AND marked_at < NOW() - INTERVAL '5 seconds'
+         RETURNING id`
+    );
+    
+    return result.rowCount || 0;
+}; 

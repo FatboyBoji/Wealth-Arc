@@ -4,6 +4,8 @@ import { TokenPayload } from '../types/auth';
 import { UserModel } from '../models/User';
 import { RequestHandler } from 'express';
 import { Logger } from '../services/logger';
+import jwt from 'jsonwebtoken';
+import { AuthError } from '../services/errors';
 
 // Extend Express Request type to include user
 declare global {
@@ -24,71 +26,53 @@ export const authenticateToken: RequestHandler = async (
         const token = authHeader?.split(' ')[1];
 
         if (!token) {
-            Logger.auth('Authentication failed', {
-                reason: 'No token provided',
-                path: req.path,
-                method: req.method,
-                ip: req.ip
-            });
-            
+            Logger.auth('No token provided', { path: req.path });
             res.status(401).json({ 
-                error: 'Authentication token required',
-                message: 'No token provided'
+                error: 'TOKEN_REQUIRED',
+                message: 'Authentication token required'
             });
             return;
         }
 
         try {
             const decoded = await TokenService.verifyToken(token);
+            req.user = decoded;
             
-            // Verify user still exists
-            const user = await UserModel.findById(decoded.userId);
-            if (!user) {
-                Logger.auth('Authentication failed', {
-                    reason: 'User not found',
-                    userId: decoded.userId,
-                    tokenId: decoded.tokenId,
-                    path: req.path
-                });
-
-                await TokenService.invalidateSession(decoded.tokenId);
-                res.status(401).json({ 
-                    error: 'Authentication failed',
-                    message: 'User no longer exists'
+            // Check if refresh token is still valid
+            const refreshTokenValid = await TokenService.isRefreshTokenValid(decoded.tokenId);
+            
+            if (!refreshTokenValid) {
+                // If refresh token is expired/invalid, clean up the session
+                await TokenService.cleanupExpiredSession(decoded.tokenId);
+                throw new AuthError('Session expired', 401);
+            }
+            
+            await TokenService.updateSessionActivity(decoded.tokenId);
+            next();
+        } catch (error) {
+            if (error instanceof jwt.TokenExpiredError) {
+                // Handle expired access token
+                const decoded = jwt.decode(token) as TokenPayload;
+                if (decoded?.tokenId) {
+                    const refreshTokenValid = await TokenService.isRefreshTokenValid(decoded.tokenId);
+                    if (!refreshTokenValid) {
+                        await TokenService.cleanupExpiredSession(decoded.tokenId);
+                    }
+                }
+                
+                res.status(401).json({
+                    error: 'TOKEN_EXPIRED',
+                    message: 'Token has expired'
                 });
                 return;
             }
-
-            req.user = decoded;
-            Logger.auth('Authentication successful', {
-                userId: decoded.userId,
-                path: req.path,
-                method: req.method
-            });
-            
-            next();
-        } catch (tokenError) {
-            Logger.error('Token verification failed', {
-                error: tokenError,
-                path: req.path,
-                method: req.method
-            });
-            
-            res.status(403).json({ 
-                error: 'Authentication failed',
-                message: 'Invalid or expired token'
-            });
+            throw error;
         }
     } catch (error) {
-        Logger.error('Authentication middleware error', {
-            error,
-            path: req.path,
-            method: req.method
-        });
-        
-        res.status(500).json({ 
-            error: 'Authentication failed',
-            message: 'Internal server error'
+        Logger.error('Authentication failed', { error });
+        res.status(401).json({
+            error: 'AUTH_ERROR',
+            message: 'Authentication failed'
         });
     }
 };

@@ -1,0 +1,250 @@
+{
+  "timestamp": "2025-02-24T20:19:36.295Z",
+  "message": "Executed query",
+  "data": {
+    "text": "SELECT * FROM user_of_wa WHERE username = $1",
+    "duration": "13ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:36.381Z",
+  "message": "Executed query",
+  "data": {
+    "text": "SELECT \n                id,\n                token_id,\n                device_type,\n                device_os,\n                device_browser,\n                friendly_name,\n                last_active,\n                created_at\n            FROM user_sessions_wa \n            WHERE user_id = $1 \n            ORDER BY last_active DESC",
+    "duration": "12ms",
+    "rows": 0
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:36.385Z",
+  "message": "Executed query",
+  "data": {
+    "text": "SELECT * FROM user_of_wa WHERE id = $1 AND is_active = true",
+    "duration": "1ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:36.389Z",
+  "message": "Executed query",
+  "data": {
+    "text": "SELECT \n                id,\n                token_id,\n                device_type,\n                device_os,\n                device_browser,\n                friendly_name,\n                last_active,\n                created_at\n            FROM user_sessions_wa \n            WHERE user_id = $1 \n            ORDER BY last_active DESC",
+    "duration": "1ms",
+    "rows": 0
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:36.412Z",
+  "message": "Executed query",
+  "data": {
+    "text": "INSERT INTO refresh_tokens (id, user_id, token_id, expires_at)\n             VALUES ($1, $2, $3, $4)",
+    "duration": "13ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:36.417Z",
+  "message": "Executed query",
+  "data": {
+    "text": "SELECT COUNT(*) FROM user_sessions_wa WHERE user_id = $1",
+    "duration": "3ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:36.422Z",
+  "message": "Executed query",
+  "data": {
+    "text": "INSERT INTO user_sessions_wa (\n                user_id, token_id, device_type, device_os, \n                device_browser, friendly_name\n            ) VALUES ($1, $2, $3, $4, $5, $6)",
+    "duration": "4ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:37.036Z",
+  "message": "Executed query",
+  "data": {
+    "text": "SELECT * FROM user_sessions_wa WHERE token_id = $1 AND user_id = $2",
+    "duration": "2ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:37.042Z",
+  "message": "Executed query",
+  "data": {
+    "text": "UPDATE user_sessions_wa SET last_active = NOW() WHERE token_id = $1",
+    "duration": "4ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:37.050Z",
+  "message": "Executed query",
+  "data": {
+    "text": "SELECT EXISTS (\n                SELECT 1 FROM refresh_tokens \n                WHERE token_id = $1 \n                AND NOT is_revoked \n                AND expires_at > NOW()\n            )",
+    "duration": "4ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:37.054Z",
+  "message": "Executed query",
+  "data": {
+    "text": "UPDATE user_sessions_wa SET last_active = NOW() WHERE token_id = $1",
+    "duration": "2ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:37.067Z",
+  "message": "Executed query",
+  "data": {
+    "text": "SELECT * FROM user_sessions_wa WHERE token_id = $1 AND user_id = $2",
+    "duration": "1ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:37.070Z",
+  "message": "Executed query",
+  "data": {
+    "text": "UPDATE user_sessions_wa SET last_active = NOW() WHERE token_id = $1",
+    "duration": "1ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:37.082Z",
+  "message": "Executed query",
+  "data": {
+    "text": "SELECT EXISTS (\n                SELECT 1 FROM refresh_tokens \n                WHERE token_id = $1 \n                AND NOT is_revoked \n                AND expires_at > NOW()\n            )",
+    "duration": "3ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:37.101Z",
+  "message": "Executed query",
+  "data": {
+    "text": "UPDATE user_sessions_wa SET last_active = NOW() WHERE token_id = $1",
+    "duration": "2ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:37.119Z",
+  "message": "Executed query",
+  "data": {
+    "text": "SELECT * FROM user_sessions_wa WHERE token_id = $1 AND user_id = $2",
+    "duration": "1ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:37.130Z",
+  "message": "Executed query",
+  "data": {
+    "text": "UPDATE user_sessions_wa SET last_active = NOW() WHERE token_id = $1",
+    "duration": "1ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:37.134Z",
+  "message": "Executed query",
+  "data": {
+    "text": "SELECT EXISTS (\n                SELECT 1 FROM refresh_tokens \n                WHERE token_id = $1 \n                AND NOT is_revoked \n                AND expires_at > NOW()\n            )",
+    "duration": "2ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:37.138Z",
+  "message": "Executed query",
+  "data": {
+    "text": "UPDATE user_sessions_wa SET last_active = NOW() WHERE token_id = $1",
+    "duration": "2ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:37.182Z",
+  "message": "Executed query",
+  "data": {
+    "text": "SELECT * FROM news_updates ORDER BY published_at DESC",
+    "duration": "7ms",
+    "rows": 4
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:19:37.192Z",
+  "message": "Executed query",
+  "data": {
+    "text": "SELECT * FROM news_updates ORDER BY published_at DESC",
+    "duration": "3ms",
+    "rows": 4
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:20:07.295Z",
+  "message": "Executed query",
+  "data": {
+    "text": "SELECT * FROM user_sessions_wa WHERE token_id = $1 AND user_id = $2",
+    "duration": "8ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:20:07.299Z",
+  "message": "Executed query",
+  "data": {
+    "text": "UPDATE user_sessions_wa SET last_active = NOW() WHERE token_id = $1",
+    "duration": "2ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:20:07.305Z",
+  "message": "Executed query",
+  "data": {
+    "text": "SELECT EXISTS (\n                SELECT 1 FROM refresh_tokens \n                WHERE token_id = $1 \n                AND NOT is_revoked \n                AND expires_at > NOW()\n            )",
+    "duration": "4ms",
+    "rows": 1
+  },
+  "level": "debug"
+}
+{
+  "timestamp": "2025-02-24T20:20:07.308Z",
+  "message": "Executed query",
+  "data": {
+    "text": "UPDATE user_sessions_wa SET last_active = NOW() WHERE token_id = $1",
+    "duration": "1ms",
+    "rows": 1
+  },
+  "level": "debug"
+}

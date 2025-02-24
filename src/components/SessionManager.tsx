@@ -5,6 +5,7 @@ import { authService } from '@/services/api';
 import { logToFile } from '@/utils/logger';
 import { useAuth } from '../hooks/useAuth';
 import { DeviceInfo } from '@/types/auth';
+import { Logger } from '../../server_backend/src/services/logger';
 
 interface SessionManagerProps {
     isOpen: boolean;
@@ -39,10 +40,15 @@ export const SessionManager: React.FC<SessionManagerProps> = ({
         }
     };
 
-    const handleSessionSwitch = async (oldSessionId: string) => {
+    const handleSessionSwitch = async (oldSessionId: string, retryCount = 0) => {
         setIsTerminating(true);
         try {
-            // Get current device info
+            // First ensure session is terminated
+            await authService.terminateSession(oldSessionId, userId);
+            
+            // Wait briefly to ensure DB consistency
+            await new Promise(r => setTimeout(r, 500));
+            
             const deviceInfo: DeviceInfo = {
                 type: 'browser',
                 os: navigator.platform,
@@ -50,31 +56,33 @@ export const SessionManager: React.FC<SessionManagerProps> = ({
                 name: `Browser on ${navigator.platform}`
             };
 
-            // Immediately start new login
+            // Then try to get new session
             const response = await fetch('/api/auth/pre-login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    sessionToTerminate: {
-                        id: oldSessionId,
-                        userId: currentSession?.userId
-                    },
+                    oldSessionId,
+                    userId: currentSession?.userId,
                     deviceInfo
                 })
             });
 
             if (!response.ok) {
-                throw new Error('Failed to switch session');
+                const { token } = await authService.retryLogin();
+                await login(token);
+            } else {
+                const { token } = await response.json();
+                await login(token);
             }
-
-            const result = await response.json();
             
-            // Update auth context with new session
-            await login(result.token);
-
+            onSessionTerminated?.();
         } catch (error) {
-            console.error('Session switch failed:', error);
-            // Show error to user
+            Logger.error('Session switch failed:', error);
+            if (retryCount < 2) {
+                await new Promise(r => setTimeout(r, Math.pow(2, retryCount) * 1000));
+                return handleSessionSwitch(oldSessionId, retryCount + 1);
+            }
+            throw error; // Let error boundary handle it
         } finally {
             setIsTerminating(false);
         }

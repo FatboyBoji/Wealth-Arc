@@ -116,18 +116,18 @@ export class TokenService {
         );
     }
 
-    static async generateTokens(userId: number, deviceInfo: DeviceInfo): Promise<TokenResponse> {
+    static async generateTokens(userId: number, deviceInfo: DeviceInfo, skipLimitCheck = false): Promise<TokenResponse> {
         const user = await UserModel.findById(userId);
         if (!user) {
             throw new AuthError('User not found', 404);
         }
 
-        // Get current sessions
-        const activeSessions = await this.getActiveSessions(user.id);
-        
-        // Check session limit
-        if (activeSessions.length >= AUTH_CONFIG.MAX_SESSIONS_PER_USER) {
-            throw new MaxSessionsError(activeSessions, user.id);
+        // Skip session limit check for pre-login
+        if (!skipLimitCheck) {
+            const activeSessions = await this.getActiveSessions(user.id);
+            if (activeSessions.length >= AUTH_CONFIG.MAX_SESSIONS_PER_USER) {
+                throw new MaxSessionsError(activeSessions, user.id);
+            }
         }
 
         const tokenId = uuidv4();
@@ -220,11 +220,8 @@ export class TokenService {
                 throw new AuthError('Session not found', 401);
             }
 
-            // Update last active timestamp
-            await query(
-                'UPDATE user_sessions_wa SET last_active = NOW() WHERE token_id = $1',
-                [decoded.tokenId]
-            );
+            // Update last active timestamp using the public method
+            await TokenService.updateSessionActivity(decoded.tokenId);
 
             return decoded;
         } catch (error) {
@@ -246,15 +243,6 @@ export class TokenService {
             [tokenId]
         );
         return result.rows.length > 0;
-    }
-
-    private static async updateSessionActivity(tokenId: string): Promise<void> {
-        const { query } = await import('../config/database');
-        
-        await query(
-            'UPDATE user_sessions_wa SET last_active = CURRENT_TIMESTAMP WHERE token_id = $1',
-            [tokenId]
-        );
     }
 
     static async invalidateSession(tokenId: string): Promise<void> {
@@ -453,10 +441,15 @@ export class TokenService {
 
     static async isRefreshTokenValid(tokenId: string): Promise<boolean> {
         const result = await query(
-            'SELECT id FROM refresh_tokens WHERE token_id = $1 AND NOT is_revoked AND expires_at > NOW()',
+            `SELECT EXISTS (
+                SELECT 1 FROM refresh_tokens 
+                WHERE token_id = $1 
+                AND NOT is_revoked 
+                AND expires_at > NOW()
+            )`,
             [tokenId]
         );
-        return result.rows.length > 0;
+        return result.rows[0].exists;
     }
 
     static async cleanupExpiredTokens(): Promise<{
@@ -495,24 +488,91 @@ export class TokenService {
     static async generateTokensWithPreLogin(userId: number, deviceInfo: DeviceInfo, oldSessionId: string): Promise<TokenResponse> {
         await query('BEGIN');
         try {
-            // Mark old session
+            // Force delete both session and refresh token
             await query(
-                `UPDATE user_sessions_wa SET is_marked_for_deletion = TRUE, marked_at = NOW() 
-                 WHERE id = $1 AND user_id = $2`,
-                [oldSessionId, userId]
+                `DELETE FROM user_sessions_wa WHERE id = $1;
+                 DELETE FROM refresh_tokens WHERE token_id = (
+                     SELECT token_id FROM user_sessions_wa WHERE id = $1
+                 );`,
+                [oldSessionId]
             );
 
-            // Generate new session
-            const tokens = await this.generateTokens(userId, deviceInfo);
+            // Verify deletion completed
+            const verifyDeletion = await query(
+                'SELECT COUNT(*) FROM user_sessions_wa WHERE id = $1',
+                [oldSessionId]
+            );
             
-            // Schedule cleanup
-            scheduleMarkedSessionCleanup(oldSessionId);
+            if (verifyDeletion.rows[0].count > 0) {
+                throw new Error('Failed to delete old session');
+            }
+            
+            // Generate new session
+            const tokens = await this.generateTokens(userId, deviceInfo, true);
             
             await query('COMMIT');
             return tokens;
         } catch (error) {
             await query('ROLLBACK');
             throw error;
+        }
+    }
+
+    static async handleExpiredToken(tokenId: string): Promise<void> {
+        try {
+            // Check if refresh token is still valid
+            const refreshToken = await query(
+                `SELECT * FROM refresh_tokens 
+                 WHERE token_id = $1 AND NOT is_revoked AND expires_at > NOW()`,
+                [tokenId]
+            );
+
+            if (!refreshToken.rows[0]) {
+                // Refresh token expired or revoked - clean up session
+                await this.cleanupExpiredSession(tokenId);
+            }
+            // If refresh token valid, keep session for potential refresh
+        } catch (error) {
+            Logger.error('Error handling expired token', { error, tokenId });
+        }
+    }
+
+    static async cleanupExpiredSession(tokenId: string): Promise<void> {
+        try {
+            await query('BEGIN');
+
+            // Revoke refresh token
+            await query(
+                `UPDATE refresh_tokens 
+                 SET is_revoked = true 
+                 WHERE token_id = $1`,
+                [tokenId]
+            );
+
+            // Delete session
+            await query(
+                'DELETE FROM user_sessions_wa WHERE token_id = $1',
+                [tokenId]
+            );
+
+            await query('COMMIT');
+            
+            Logger.auth('Session cleaned up', { tokenId });
+        } catch (error) {
+            await query('ROLLBACK');
+            Logger.error('Failed to cleanup session', { error, tokenId });
+            throw error;
+        }
+    }
+
+    static async updateSessionActivity(tokenId: string): Promise<void> {
+        try {
+            await query(
+                'UPDATE user_sessions_wa SET last_active = NOW() WHERE token_id = $1',
+                [tokenId]
+            );
+        } catch (error) {
+            Logger.error('Failed to update session activity', { error, tokenId });
         }
     }
 } 

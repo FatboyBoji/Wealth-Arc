@@ -177,22 +177,21 @@ axiosInstance.interceptors.response.use(
 
 // Authentication Service
 export const authService = {
-    async retryLogin(): Promise<void> {
-        const pendingLogin = localStorage.getItem('pending_login');
-        if (!pendingLogin) return;
+    async getStoredCredentials(): Promise<LoginCredentials | null> {
+        const stored = localStorage.getItem('pending_login');
+        return stored ? JSON.parse(stored) : null;
+    },
 
+    async retryLogin(): Promise<{ token: string }> {
         try {
-            const credentials = JSON.parse(pendingLogin);
-            // Add delay to ensure DB is updated
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            await this.login(credentials);
-            localStorage.removeItem('pending_login');
+            const credentials = await this.getStoredCredentials();
+            if (!credentials) {
+                throw new Error('No stored credentials');
+            }
+            const response = await this.login(credentials);
+            return { token: response.token };
         } catch (error) {
             console.error('Failed to retry login:', error);
-            if (error instanceof MaxSessionsError) {
-                // If we still get max sessions, clear pending login
-                localStorage.removeItem('pending_login');
-            }
             throw error;
         }
     },
@@ -263,20 +262,28 @@ export const authService = {
         return localStorage.getItem('auth_token');
     },
 
-    async verifyToken(): Promise<boolean> {
+    async verifyToken(token: string): Promise<boolean> {
         try {
-            const token = localStorage.getItem('auth_token');
-            if (!token) return false;
-
-            const response = await axiosInstance.get('/auth/verify');
-            return response.data.valid;
-        } catch (error) {
-            console.error('Token verification failed:', {
-                error,
-                timestamp: new Date().toISOString()
+            await axiosInstance.get('/auth/verify', {
+                headers: { Authorization: `Bearer ${token}` }
             });
-            // Clear token if verification fails
-            this.logout();
+            return true;
+        } catch (error: any) {
+            if (error.response?.status === 401) {
+                // Token expired or invalid, try to refresh
+                const refreshToken = localStorage.getItem('refreshToken');
+                if (refreshToken) {
+                    try {
+                        const newToken = await this.refreshToken(refreshToken);
+                        localStorage.setItem('token', newToken);
+                        return true;
+                    } catch (refreshError) {
+                        // Refresh failed, logout
+                        this.logout();
+                        return false;
+                    }
+                }
+            }
             return false;
         }
     },
@@ -322,6 +329,17 @@ export const authService = {
             );
         }
         throw error;
+    },
+
+    async refreshToken(refreshToken: string): Promise<string> {
+        try {
+            const response = await axiosInstance.post('/auth/refresh-token', { refreshToken });
+            return response.data.token;
+        } catch (error) {
+            // If refresh fails, force logout
+            this.logout();
+            throw error;
+        }
     }
 };
 

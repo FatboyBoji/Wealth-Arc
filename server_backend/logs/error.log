@@ -1,0 +1,72 @@
+{
+  "timestamp": "2025-02-24T20:20:37.043Z",
+  "message": "Authentication failed",
+  "data": {
+    "error": {
+      "status": 401,
+      "code": "AUTH_ERROR",
+      "name": "AuthError"
+    }
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T20:20:37.079Z",
+  "message": "Authentication failed",
+  "data": {
+    "error": {
+      "status": 401,
+      "code": "AUTH_ERROR",
+      "name": "AuthError"
+    }
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T20:20:37.094Z",
+  "message": "Authentication failed",
+  "data": {
+    "error": {
+      "status": 401,
+      "code": "AUTH_ERROR",
+      "name": "AuthError"
+    }
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T20:20:37.106Z",
+  "message": "Authentication failed",
+  "data": {
+    "error": {
+      "status": 401,
+      "code": "AUTH_ERROR",
+      "name": "AuthError"
+    }
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T20:20:37.112Z",
+  "message": "Authentication failed",
+  "data": {
+    "error": {
+      "status": 401,
+      "code": "AUTH_ERROR",
+      "name": "AuthError"
+    }
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T20:20:37.129Z",
+  "message": "Authentication failed",
+  "data": {
+    "error": {
+      "status": 401,
+      "code": "AUTH_ERROR",
+      "name": "AuthError"
+    }
+  },
+  "level": "error"
+}
