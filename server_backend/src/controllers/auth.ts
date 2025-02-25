@@ -8,7 +8,7 @@ import { UserCreateInput, UserResponse, UserOfWA } from '../types/user';
 import { DeviceInfo } from '../types/auth';
 import { loginRateLimiter, query } from '../config/database';
 import { v4 as uuidv4 } from 'uuid';
-import { scheduleMarkedSessionCleanup } from '../jobs/markedSessionsCleanup';
+import { SessionManager } from '../services/SessionManager';
 
 // Helper function to format user response
 const formatUserResponse = (user: UserOfWA): UserResponse => ({
@@ -26,12 +26,7 @@ const formatUserResponse = (user: UserOfWA): UserResponse => ({
 export const login = async (req: Request, res: Response): Promise<void> => {
     try {
         const { username, password } = req.body;
-        const deviceInfo: DeviceInfo = {
-            type: req.body.deviceType || 'unknown',
-            os: req.body.deviceOs || 'unknown',
-            browser: req.body.deviceBrowser || 'unknown',
-            name: req.body.deviceName || 'Unknown Device'
-        };
+        const deviceInfo = req.body.deviceInfo || {};
 
         try {
             // Check rate limiting
@@ -53,15 +48,17 @@ export const login = async (req: Request, res: Response): Promise<void> => {
             await UserModel.updateLastLogin(user.id);
 
             // Generate tokens
-            const { token, refreshToken } = await TokenService.generateTokens(user.id, deviceInfo);
+            const { token, refreshToken, cookieConfig } = await TokenService.generateTokens(user.id, deviceInfo);
+
+            // Set refresh token as HTTP-only cookie
+            res.cookie('refreshToken', refreshToken, cookieConfig);
 
             // Clear rate limiting on successful login
             loginRateLimiter.clearAttempts(username);
 
             res.json({
                 user: formatUserResponse(user),
-                token,
-                refreshToken
+                token
             });
 
         } catch (error) {
@@ -197,34 +194,33 @@ export const terminateSession = async (req: Request, res: Response): Promise<voi
 // Add new controller method
 export const refreshToken = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { refreshToken } = req.body;
-
+        const refreshToken = req.cookies.refreshToken;
+        
         if (!refreshToken) {
-            throw new ValidationError('Refresh token is required');
+            throw new AuthError('No refresh token provided', 401);
         }
 
-        const result = await TokenService.refreshAccessToken(refreshToken);
-        
-        if (!result) {
-            throw new AuthError('Invalid or expired refresh token', 401);
-        }
+        const { token, refreshToken: newRefreshToken, cookieConfig } = 
+            await TokenService.refreshAccessToken(refreshToken);
 
-        res.json({
-            token: result.token,
-            user: formatUserResponse(result.user)
-        });
+        // Set new refresh token cookie
+        res.cookie('refreshToken', newRefreshToken, cookieConfig);
+
+        res.json({ token });
+
     } catch (error) {
-        Logger.error('Token refresh failed', error);
-        
-        if (error instanceof AppError) {
-            res.status(error.status).json({ 
+        if (error instanceof AuthError) {
+            // Clear cookies on auth error
+            res.clearCookie('refreshToken');
+            res.status(error.status).json({
                 error: error.code,
-                message: error.message 
+                message: error.message
             });
         } else {
-            res.status(500).json({ 
-                error: 'INTERNAL_ERROR',
-                message: 'Internal server error' 
+            Logger.error('Token refresh failed', error);
+            res.status(500).json({
+                error: 'REFRESH_FAILED',
+                message: 'Failed to refresh token'
             });
         }
     }
@@ -313,7 +309,7 @@ export const preLoginWithSessionTermination = async (req: Request, res: Response
         const loginResult = await createLoginSession(username, password, deviceInfo);
 
         // 3. Schedule cleanup of marked session
-        scheduleMarkedSessionCleanup(sessionToTerminate.id);
+        await SessionManager.markSessionForDeletion(sessionToTerminate.id, sessionToTerminate.userId);
 
         await query('COMMIT');
 

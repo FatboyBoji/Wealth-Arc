@@ -1,101 +1,61 @@
-import React, { useState, useEffect } from 'react';
-import { DeviceSessionModal } from './admin/DeviceSessionModal';
-import { DeviceSession } from '@/types/sessions';
-import { authService } from '@/services/api';
-import { logToFile } from '@/utils/logger';
-import { useAuth } from '../hooks/useAuth';
-import { DeviceInfo } from '@/types/auth';
-import { Logger } from '../../server_backend/src/services/logger';
+'use client';
+
+import { useState } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { DeviceSession } from '@/types/auth';
 
 interface SessionManagerProps {
-    isOpen: boolean;
-    onClose: () => void;
     sessions: DeviceSession[];
-    userId: number;
     onSessionTerminated?: () => void;
 }
 
-export const SessionManager: React.FC<SessionManagerProps> = ({
-    isOpen,
-    onClose,
+export const SessionManager = ({
     sessions,
-    userId,
     onSessionTerminated
-}) => {
+}: SessionManagerProps) => {
     const [isTerminating, setIsTerminating] = useState(false);
-    const { login, currentSession } = useAuth();
+    const { terminateSession, currentSession } = useAuth();
 
     const handleTerminateSession = async (sessionId: string) => {
         try {
             setIsTerminating(true);
-            await logToFile('Terminating session', { sessionId, userId });
-            await authService.terminateSession(sessionId, userId);
-            await logToFile('Session terminated successfully', { sessionId, userId });
+            await terminateSession(sessionId);
             onSessionTerminated?.();
         } catch (error) {
-            await logToFile('Failed to terminate session', { sessionId, userId, error });
-            throw error;
-        } finally {
-            setIsTerminating(false);
-        }
-    };
-
-    const handleSessionSwitch = async (oldSessionId: string, retryCount = 0) => {
-        setIsTerminating(true);
-        try {
-            // First ensure session is terminated
-            await authService.terminateSession(oldSessionId, userId);
-            
-            // Wait briefly to ensure DB consistency
-            await new Promise(r => setTimeout(r, 500));
-            
-            const deviceInfo: DeviceInfo = {
-                type: 'browser',
-                os: navigator.platform,
-                browser: navigator.userAgent,
-                name: `Browser on ${navigator.platform}`
-            };
-
-            // Then try to get new session
-            const response = await fetch('/api/auth/pre-login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    oldSessionId,
-                    userId: currentSession?.userId,
-                    deviceInfo
-                })
-            });
-
-            if (!response.ok) {
-                const { token } = await authService.retryLogin();
-                await login(token);
-            } else {
-                const { token } = await response.json();
-                await login(token);
-            }
-            
-            onSessionTerminated?.();
-        } catch (error) {
-            Logger.error('Session switch failed:', error);
-            if (retryCount < 2) {
-                await new Promise(r => setTimeout(r, Math.pow(2, retryCount) * 1000));
-                return handleSessionSwitch(oldSessionId, retryCount + 1);
-            }
-            throw error; // Let error boundary handle it
+            console.error('Failed to terminate session:', error);
         } finally {
             setIsTerminating(false);
         }
     };
 
     return (
-        <DeviceSessionModal
-            open={isOpen}
-            onClose={onClose}
-            sessions={sessions}
-            onTerminateSession={handleTerminateSession}
-            isLoading={isTerminating}
-            isLoginAttempt={true}
-        />
+        <div className="space-y-4">
+            {sessions.map(session => (
+                <div
+                    key={session.id}
+                    className="flex items-center justify-between p-4 bg-white rounded-lg shadow"
+                >
+                    <div>
+                        <p className="font-medium">
+                            {session.deviceName}
+                            {session.id === currentSession?.tokenId && " (Current)"}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                            {session.browser} on {session.os}
+                        </p>
+                    </div>
+                    
+                    {session.id !== currentSession?.tokenId && (
+                        <button
+                            onClick={() => handleTerminateSession(session.id)}
+                            disabled={isTerminating}
+                            className="px-4 py-2 text-sm text-red-600 hover:text-red-800 disabled:opacity-50"
+                        >
+                            {isTerminating ? 'Terminating...' : 'Terminate'}
+                        </button>
+                    )}
+                </div>
+            ))}
+        </div>
     );
 }; 

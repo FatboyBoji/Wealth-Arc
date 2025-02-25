@@ -6,12 +6,13 @@ import helmet from 'helmet';
 import csurf from 'csurf';
 import expressSanitizer from 'express-sanitizer';
 import authRoutes from './routes/auth';
-import newsRoutes from './routes/news';
 import path from 'path';
-import { cleanupInactiveSessions } from './jobs/cleanupSessions';
 import { Request, Response, NextFunction } from 'express';
 import { Logger } from './services/logger';
 import sessionRoutes from './routes/sessions';
+import { SessionManager } from './services/SessionManager';
+import { trackSession } from './middleware/sessionTracking';
+import { TokenService } from './config/auth';
 
 // Extend Express Request type to include csrfToken
 declare global {
@@ -131,7 +132,6 @@ app.get('/api/csrf-token', csrfProtection, (req, res) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/news', newsRoutes);
 app.use('/api/sessions', sessionRoutes);
 
 // Add body parser error handling
@@ -195,12 +195,26 @@ const errorHandler: express.ErrorRequestHandler = (err, req, res, next) => {
 // Apply error handling middleware
 app.use(errorHandler);
 
+// Start session cleanup job
+SessionManager.startCleanupJob();
+
+// Handle graceful shutdown
+process.on('SIGTERM', () => {
+    SessionManager.stopCleanupJob();
+    // ... other cleanup code ...
+});
+
+// Add after auth middleware
+app.use(trackSession);
+
+// Start cleanup jobs
+setInterval(async () => {
+    await TokenService.cleanupExpiredSessions();
+}, 1 * 60 * 1000); // Run every 1 minute
+
 // Start server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-    
-    // Start the cleanup job
-    cleanupInactiveSessions();
 });
 
 export default app;

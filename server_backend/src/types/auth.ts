@@ -1,3 +1,4 @@
+import { CookieOptions } from 'express';
 import { UserRole } from './user';
 
 export interface TokenPayload {
@@ -9,13 +10,15 @@ export interface TokenPayload {
 
 export interface DeviceInfo {
     type: string;
-    os: string;
-    browser: string;
     name: string;
+    browser: string;
+    os: string;
+    ip?: string;
 }
 
 export interface TokenResponse {
     token: string;
     refreshToken: string;
     sessionId: string;
+    cookieConfig: CookieOptions;
 } 

@@ -1,0 +1,2936 @@
+{
+  "timestamp": "2025-02-24T21:08:19.151Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T21:08:26.061Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T21:10:54.001Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T21:11:19.601Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T21:14:43.733Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T21:14:50.597Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T21:20:32.564Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T21:20:56.240Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T21:23:41.037Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T21:31:28.998Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T21:38:32.928Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T21:38:38.614Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T21:38:58.561Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T21:44:06.653Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T21:44:12.405Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T21:44:40.586Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T21:45:14.760Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T21:56:05.954Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:01:21.973Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:24:27.221Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:24:27.771Z",
+  "message": "User created",
+  "data": {
+    "userId": 2,
+    "username": "testuser",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:27:44.025Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:41:33.012Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:41:33.598Z",
+  "message": "User created",
+  "data": {
+    "userId": 3,
+    "username": "testuser_98bfcc53-2527-4ec6-8dd1-9805cf13ac31",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:41:33.704Z",
+  "message": "User created",
+  "data": {
+    "userId": 4,
+    "username": "testuser_bbb24ff3-fbd0-4c2b-9f28-c2704b47c005",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:45:20.571Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:45:20.901Z",
+  "message": "User created",
+  "data": {
+    "userId": 5,
+    "username": "testuser_f502edff-b863-4ca7-8d23-9b566dd1e3f0",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:45:21.042Z",
+  "message": "User created",
+  "data": {
+    "userId": 6,
+    "username": "testuser_5c447ef8-7bf4-44b7-bae6-36d10b1d819c",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:56:21.256Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:56:21.674Z",
+  "message": "User created",
+  "data": {
+    "userId": 7,
+    "username": "testuser_4daf7580-1d7d-4572-80fc-5bfd2581ff27",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:56:21.863Z",
+  "message": "User created",
+  "data": {
+    "userId": 8,
+    "username": "testuser_24630aa2-9041-4f00-a4ba-d4daf64184ac",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:56:22.002Z",
+  "message": "User created",
+  "data": {
+    "userId": 9,
+    "username": "testuser_5ef9138b-051a-4599-a2c4-875a7548ff92",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:56:22.113Z",
+  "message": "User created",
+  "data": {
+    "userId": 10,
+    "username": "testuser_72bb6100-525c-4181-952c-672679f23901",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:56:22.282Z",
+  "message": "User created",
+  "data": {
+    "userId": 11,
+    "username": "testuser_5cbf62d0-28e1-4009-a8a1-1179d3d150f8",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:56:22.383Z",
+  "message": "User created",
+  "data": {
+    "userId": 12,
+    "username": "testuser_73e7e9a0-793b-4ced-9d55-24ab10e77d3a",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:56:22.488Z",
+  "message": "User created",
+  "data": {
+    "userId": 13,
+    "username": "testuser_b10232cd-265d-449d-a568-c118f44c88be",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:56:22.699Z",
+  "message": "User created",
+  "data": {
+    "userId": 14,
+    "username": "testuser_4e1a2438-9b3c-4d06-a5da-d913d7baa9ee",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:56:22.812Z",
+  "message": "User created",
+  "data": {
+    "userId": 15,
+    "username": "testuser_be22d0c1-c928-4fdf-859f-644f984201df",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:57:55.333Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:57:55.729Z",
+  "message": "User created",
+  "data": {
+    "userId": 16,
+    "username": "testuser_bbf1f3f6-8c7a-4e54-86d6-c61bd1e14c51",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:57:55.918Z",
+  "message": "User created",
+  "data": {
+    "userId": 17,
+    "username": "testuser_f19aeba1-3aa3-4e36-a0af-952396ae6a42",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:57:56.065Z",
+  "message": "User created",
+  "data": {
+    "userId": 18,
+    "username": "testuser_355b6929-523c-4e87-a305-708580719463",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:57:56.230Z",
+  "message": "User created",
+  "data": {
+    "userId": 19,
+    "username": "testuser_2fb4004a-6ca9-49e3-bbcc-a82d27176a13",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:57:56.656Z",
+  "message": "User created",
+  "data": {
+    "userId": 20,
+    "username": "testuser_33e9c635-2384-4965-b8cd-196b6e73a255",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:57:56.829Z",
+  "message": "User created",
+  "data": {
+    "userId": 21,
+    "username": "testuser_1a326b94-5452-452e-ab21-9b2ea4d7ac74",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:57:56.998Z",
+  "message": "User created",
+  "data": {
+    "userId": 22,
+    "username": "testuser_362a83f6-e323-4924-b91d-4069204ffd31",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:57:57.274Z",
+  "message": "User created",
+  "data": {
+    "userId": 23,
+    "username": "testuser_3171ac7b-23b3-41cc-8890-b29caf4be55e",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:57:57.427Z",
+  "message": "User created",
+  "data": {
+    "userId": 24,
+    "username": "testuser_de2cb6a1-b60e-41d3-8dfd-69f898702a28",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:59:26.881Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:59:27.314Z",
+  "message": "User created",
+  "data": {
+    "userId": 25,
+    "username": "testuser_0b1f2a6f-6277-41a5-9e10-4875348cfc96",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:59:27.488Z",
+  "message": "User created",
+  "data": {
+    "userId": 26,
+    "username": "testuser_61f9c93f-a128-43f3-9c39-2736626102ea",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:59:27.634Z",
+  "message": "User created",
+  "data": {
+    "userId": 27,
+    "username": "testuser_05e4f618-6276-4c7a-8aa0-1ca7b04cccae",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:59:27.792Z",
+  "message": "User created",
+  "data": {
+    "userId": 28,
+    "username": "testuser_c5d9965d-e774-4d47-a8ff-3f713c4aeb8b",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:59:28.157Z",
+  "message": "User created",
+  "data": {
+    "userId": 29,
+    "username": "testuser_647d45fe-b669-4a57-899e-676b03f43009",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:59:28.303Z",
+  "message": "User created",
+  "data": {
+    "userId": 30,
+    "username": "testuser_05ad2f66-72e9-4d91-99cc-0a78985a23f3",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:59:28.452Z",
+  "message": "User created",
+  "data": {
+    "userId": 31,
+    "username": "testuser_2ea11435-432a-464a-b500-1bc1587ac45f",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:59:28.721Z",
+  "message": "User created",
+  "data": {
+    "userId": 32,
+    "username": "testuser_80e92b8c-d0d0-42bd-9949-5bbf2859f7d3",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T22:59:28.897Z",
+  "message": "User created",
+  "data": {
+    "userId": 33,
+    "username": "testuser_26ee996c-450e-4944-8692-52cc5fcd5717",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:00:32.972Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:00:33.355Z",
+  "message": "User created",
+  "data": {
+    "userId": 34,
+    "username": "testuser_41a8508c-03bc-453e-a8bd-f7a0d7ef928f",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:00:33.551Z",
+  "message": "User created",
+  "data": {
+    "userId": 35,
+    "username": "testuser_2c41c11c-eb95-4dfe-a343-e87d8e87b0cc",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:00:33.722Z",
+  "message": "User created",
+  "data": {
+    "userId": 36,
+    "username": "testuser_cb853a9a-bc36-4819-a3d0-65e7fb93a7b1",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:00:33.895Z",
+  "message": "User created",
+  "data": {
+    "userId": 37,
+    "username": "testuser_0369eca7-83bc-42a9-80e4-96d5a0dbe2ec",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:00:34.293Z",
+  "message": "User created",
+  "data": {
+    "userId": 38,
+    "username": "testuser_bed33ecb-4ef4-472e-be1c-86c0bb91d43b",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:00:34.447Z",
+  "message": "User created",
+  "data": {
+    "userId": 39,
+    "username": "testuser_af24af1f-cb78-4aa5-8548-503c634c4869",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:00:34.601Z",
+  "message": "User created",
+  "data": {
+    "userId": 40,
+    "username": "testuser_e3fab1b9-e5a8-41ce-9bd6-eca0551a71af",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:00:34.862Z",
+  "message": "User created",
+  "data": {
+    "userId": 41,
+    "username": "testuser_22ebdae0-c1a0-4cea-956a-c8b6bfc0d104",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:00:35.038Z",
+  "message": "User created",
+  "data": {
+    "userId": 42,
+    "username": "testuser_cfc09dcf-a8b0-4a93-af84-b76d379f3c3b",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:02:58.258Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:02:58.677Z",
+  "message": "User created",
+  "data": {
+    "userId": 43,
+    "username": "testuser_e9a79ead-51d9-4f2f-a299-79a5ff8da0ac",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:02:58.852Z",
+  "message": "User created",
+  "data": {
+    "userId": 44,
+    "username": "testuser_5634de2e-879f-475f-8949-a3cb0aff0f87",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:02:58.992Z",
+  "message": "User created",
+  "data": {
+    "userId": 45,
+    "username": "testuser_cc6693dd-975f-4855-980c-552435e9fc35",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:02:59.151Z",
+  "message": "User created",
+  "data": {
+    "userId": 46,
+    "username": "testuser_5ba7d617-b879-48bb-9bef-924013d681d7",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:02:59.551Z",
+  "message": "User created",
+  "data": {
+    "userId": 47,
+    "username": "testuser_11b9b441-eede-4c0e-bc75-e4ad72d8f737",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:02:59.709Z",
+  "message": "User created",
+  "data": {
+    "userId": 48,
+    "username": "testuser_ffcb1b5d-974f-4026-a735-42ef19a1c2f3",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:02:59.859Z",
+  "message": "User created",
+  "data": {
+    "userId": 49,
+    "username": "testuser_c8bb9d11-d01d-4923-87ef-fd5108fe0a15",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:03:00.135Z",
+  "message": "User created",
+  "data": {
+    "userId": 50,
+    "username": "testuser_d367122c-4bf1-4a1a-a5e1-1348d5b089e3",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:03:00.313Z",
+  "message": "User created",
+  "data": {
+    "userId": 51,
+    "username": "testuser_82a17f78-bd2b-4f8c-adb6-439bcd33e650",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:06:35.574Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:06:35.946Z",
+  "message": "User created",
+  "data": {
+    "userId": 52,
+    "username": "testuser_cdbd127b-ac41-4a06-8bbe-66afe3e6b6e0",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:06:36.122Z",
+  "message": "User created",
+  "data": {
+    "userId": 53,
+    "username": "testuser_76f07403-10c1-4e7c-a586-e7795c863c76",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:06:36.274Z",
+  "message": "User created",
+  "data": {
+    "userId": 54,
+    "username": "testuser_9fec7f47-1f6b-48aa-a60c-53ee4e73fe90",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:06:36.450Z",
+  "message": "User created",
+  "data": {
+    "userId": 55,
+    "username": "testuser_7d92e493-0ff5-4dd1-96d4-7752412ec74d",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:06:36.834Z",
+  "message": "User created",
+  "data": {
+    "userId": 56,
+    "username": "testuser_0cf5a291-601c-4992-8fa6-e362a1fa1d2d",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:06:37.034Z",
+  "message": "User created",
+  "data": {
+    "userId": 57,
+    "username": "testuser_6194fd45-c232-49ea-971b-21db324b7250",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:06:37.247Z",
+  "message": "User created",
+  "data": {
+    "userId": 58,
+    "username": "testuser_a701792c-8823-4aa9-9b09-49bfad6996e4",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:06:37.563Z",
+  "message": "User created",
+  "data": {
+    "userId": 59,
+    "username": "testuser_6308dd04-7a2f-456b-a585-33ee0c11f727",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:06:37.763Z",
+  "message": "User created",
+  "data": {
+    "userId": 60,
+    "username": "testuser_06fe126c-1c83-4730-b0ef-59c703ed1cf5",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:08:55.973Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:08:56.384Z",
+  "message": "User created",
+  "data": {
+    "userId": 61,
+    "username": "testuser_aa97fe21-4df0-48e6-a9bd-5ba04a7cce74",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:08:56.636Z",
+  "message": "User created",
+  "data": {
+    "userId": 62,
+    "username": "testuser_6e337460-b660-486e-b481-85bf9f371f4a",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:08:56.784Z",
+  "message": "User created",
+  "data": {
+    "userId": 63,
+    "username": "testuser_022000f6-fd57-443a-9888-7796623a8b97",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:08:56.947Z",
+  "message": "User created",
+  "data": {
+    "userId": 64,
+    "username": "testuser_454c64da-7e54-4106-ac58-d151db40ec85",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:08:57.330Z",
+  "message": "User created",
+  "data": {
+    "userId": 65,
+    "username": "testuser_be7a03e0-e6b7-49cb-8d77-864dc8464968",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:08:57.487Z",
+  "message": "User created",
+  "data": {
+    "userId": 66,
+    "username": "testuser_6e6d0cca-cf2c-4b7d-b625-28c61f70b168",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:08:57.649Z",
+  "message": "User created",
+  "data": {
+    "userId": 67,
+    "username": "testuser_ef78b8e9-fa7d-4d02-8989-134b7ad85c53",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:08:57.933Z",
+  "message": "User created",
+  "data": {
+    "userId": 68,
+    "username": "testuser_b5381f8b-50b5-4e40-9f17-1f80a36fe56a",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:08:58.089Z",
+  "message": "User created",
+  "data": {
+    "userId": 69,
+    "username": "testuser_ed00bade-31b6-471c-8695-5d9537ee313f",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:11:06.496Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:11:06.855Z",
+  "message": "User created",
+  "data": {
+    "userId": 70,
+    "username": "testuser_4a8b2d9c-9700-4e5f-a89e-e86f3caa848f",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:11:07.032Z",
+  "message": "User created",
+  "data": {
+    "userId": 71,
+    "username": "testuser_c035d5e9-669f-4ad5-8797-815a04bc3c5c",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:11:07.180Z",
+  "message": "User created",
+  "data": {
+    "userId": 72,
+    "username": "testuser_6b873e3f-59d5-488b-bf38-8c4f15a54914",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:11:07.339Z",
+  "message": "User created",
+  "data": {
+    "userId": 73,
+    "username": "testuser_8b7c387c-e228-47e0-87db-04f83ac6e5f9",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:11:07.737Z",
+  "message": "User created",
+  "data": {
+    "userId": 74,
+    "username": "testuser_1bfedcf2-fe5c-42bc-9c1e-41592d48aa3e",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:11:07.908Z",
+  "message": "User created",
+  "data": {
+    "userId": 75,
+    "username": "testuser_41bf6069-e42f-46f1-b961-cda3ab9165d5",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:11:08.072Z",
+  "message": "User created",
+  "data": {
+    "userId": 76,
+    "username": "testuser_72806788-2c0f-491d-a1a2-9a770442ceb9",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:11:08.364Z",
+  "message": "User created",
+  "data": {
+    "userId": 77,
+    "username": "testuser_089b10b9-2870-407a-bd35-d332d111dc6e",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:11:08.522Z",
+  "message": "User created",
+  "data": {
+    "userId": 78,
+    "username": "testuser_d7672a8f-6688-4f4e-99d2-333533d9eff4",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:13:22.095Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:13:22.594Z",
+  "message": "User created",
+  "data": {
+    "userId": 79,
+    "username": "testuser_58777e8c-bad1-4018-87d5-8b347cf8410d",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:13:22.815Z",
+  "message": "User created",
+  "data": {
+    "userId": 80,
+    "username": "testuser_66ff905f-bc4f-4d99-9b93-26cffb5041ce",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:13:22.989Z",
+  "message": "User created",
+  "data": {
+    "userId": 81,
+    "username": "testuser_33f0a941-c06d-451d-9bf1-d33e129c701d",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:13:23.167Z",
+  "message": "User created",
+  "data": {
+    "userId": 82,
+    "username": "testuser_54d98ba7-b0f9-4249-a4cf-f81d7afcf038",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:13:23.563Z",
+  "message": "User created",
+  "data": {
+    "userId": 83,
+    "username": "testuser_f27b78e5-3dcd-442d-9723-68cd39bb0d32",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:13:23.717Z",
+  "message": "User created",
+  "data": {
+    "userId": 84,
+    "username": "testuser_401a59d9-6f97-4c57-a3a2-5779bbbceca0",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:13:23.884Z",
+  "message": "User created",
+  "data": {
+    "userId": 85,
+    "username": "testuser_f218518f-27ce-4d2e-b351-098d88487a3f",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:13:24.160Z",
+  "message": "User created",
+  "data": {
+    "userId": 86,
+    "username": "testuser_7d93f3b5-9707-4abf-88dd-e8380df168a6",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:13:24.320Z",
+  "message": "User created",
+  "data": {
+    "userId": 87,
+    "username": "testuser_cc9c6dfc-7dc0-4586-a543-e3aa7420e3de",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:16:37.732Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:16:38.618Z",
+  "message": "User created",
+  "data": {
+    "userId": 88,
+    "username": "testuser_fab15b4f-2729-4c60-b405-7df7fd7f482b",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:16:38.815Z",
+  "message": "User created",
+  "data": {
+    "userId": 89,
+    "username": "testuser_3f1b2a68-2a37-4f6d-80f6-1417e95cbe02",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:16:38.997Z",
+  "message": "User created",
+  "data": {
+    "userId": 90,
+    "username": "testuser_be45fc13-a95e-40af-8571-7f2148725a77",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:16:39.162Z",
+  "message": "User created",
+  "data": {
+    "userId": 91,
+    "username": "testuser_e811b57a-530f-4a17-bc35-0ae56d14c18e",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:16:39.575Z",
+  "message": "User created",
+  "data": {
+    "userId": 92,
+    "username": "testuser_9e89d893-1e9e-443e-8eac-c7dc11ed0c49",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:16:39.730Z",
+  "message": "User created",
+  "data": {
+    "userId": 93,
+    "username": "testuser_53c81e28-a762-42fd-a58a-92aadea7d669",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:16:39.903Z",
+  "message": "User created",
+  "data": {
+    "userId": 94,
+    "username": "testuser_1152ec09-8814-4142-bee8-5bfd2c1daabb",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:16:40.235Z",
+  "message": "User created",
+  "data": {
+    "userId": 95,
+    "username": "testuser_6b4ca9c8-cb67-45c1-9fc6-c011651540d7",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:16:40.502Z",
+  "message": "User created",
+  "data": {
+    "userId": 96,
+    "username": "testuser_7ca61ece-9462-43ca-86ac-2fe7e34df236",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:17:48.709Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:17:49.190Z",
+  "message": "User created",
+  "data": {
+    "userId": 97,
+    "username": "testuser_954e35f0-bfb3-466a-b887-d9498f8e2d5b",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:17:49.365Z",
+  "message": "User created",
+  "data": {
+    "userId": 98,
+    "username": "testuser_c599b856-b772-4bfb-b321-5eee4c1b7fb6",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:17:49.506Z",
+  "message": "User created",
+  "data": {
+    "userId": 99,
+    "username": "testuser_10cf5798-b53a-4c2b-a30d-817a4fe64c4f",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:17:49.662Z",
+  "message": "User created",
+  "data": {
+    "userId": 100,
+    "username": "testuser_528ba410-a38e-4cb8-a88e-88ea3212bf8b",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:17:50.050Z",
+  "message": "User created",
+  "data": {
+    "userId": 101,
+    "username": "testuser_aa452c44-882d-4323-9427-6f3d0678c2a4",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:17:50.206Z",
+  "message": "User created",
+  "data": {
+    "userId": 102,
+    "username": "testuser_37d6a8f0-05bf-4b44-aec8-e9240672f46b",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:17:50.371Z",
+  "message": "User created",
+  "data": {
+    "userId": 103,
+    "username": "testuser_f2c23fbf-e93d-49c6-bce3-6d6f8f3442ae",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:17:50.649Z",
+  "message": "User created",
+  "data": {
+    "userId": 104,
+    "username": "testuser_dde37e31-75f4-480f-8a4a-fd2cc52c5b77",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:17:50.808Z",
+  "message": "User created",
+  "data": {
+    "userId": 105,
+    "username": "testuser_72bacab9-e463-4f77-a2e0-c495d3b62548",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:18:51.611Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:18:52.020Z",
+  "message": "User created",
+  "data": {
+    "userId": 106,
+    "username": "testuser_1e9ab203-fcca-4cf3-aff3-bcbb6fcf9e79",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:18:52.194Z",
+  "message": "User created",
+  "data": {
+    "userId": 107,
+    "username": "testuser_8d0860d2-2d75-4e19-8f5a-f9a9f11a91b8",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:18:52.340Z",
+  "message": "User created",
+  "data": {
+    "userId": 108,
+    "username": "testuser_3d54a143-c5b0-4cb4-9bb9-a9a65043e0e3",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:18:52.493Z",
+  "message": "User created",
+  "data": {
+    "userId": 109,
+    "username": "testuser_5b5cd26a-1ae2-47a3-bf27-bd610a3fc28a",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:18:52.870Z",
+  "message": "User created",
+  "data": {
+    "userId": 110,
+    "username": "testuser_e556f50a-8c16-49ee-beb6-eb663434a658",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:18:53.112Z",
+  "message": "User created",
+  "data": {
+    "userId": 111,
+    "username": "testuser_d338a859-19e1-4fad-b3e4-08a62cb63960",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:18:53.309Z",
+  "message": "User created",
+  "data": {
+    "userId": 112,
+    "username": "testuser_28de2a5b-befe-4082-8645-9e34f58bfc97",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:18:53.614Z",
+  "message": "User created",
+  "data": {
+    "userId": 113,
+    "username": "testuser_07f461ef-8d31-4a04-a064-954bd99bb305",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:18:53.790Z",
+  "message": "User created",
+  "data": {
+    "userId": 114,
+    "username": "testuser_c9c1b89b-fe09-4e12-8046-f531cc6cfc0d",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:20:30.173Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:20:30.587Z",
+  "message": "User created",
+  "data": {
+    "userId": 115,
+    "username": "testuser_44e90f9b-e9a7-4844-ade3-d7b21f8e4a33",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:20:30.764Z",
+  "message": "User created",
+  "data": {
+    "userId": 116,
+    "username": "testuser_71f714a6-4c98-4f5a-bc3e-a5515eb9848e",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:20:30.906Z",
+  "message": "User created",
+  "data": {
+    "userId": 117,
+    "username": "testuser_550b6520-f675-4c51-b3d0-4d98e5bf6ef0",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:20:31.060Z",
+  "message": "User created",
+  "data": {
+    "userId": 118,
+    "username": "testuser_8e77b425-4975-48b7-a778-8645b260dd1f",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:20:31.435Z",
+  "message": "User created",
+  "data": {
+    "userId": 119,
+    "username": "testuser_cc30467b-bf5f-4724-921f-9c215d3d6816",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:20:31.591Z",
+  "message": "User created",
+  "data": {
+    "userId": 120,
+    "username": "testuser_b39d63f7-282b-4724-bce3-94feb19507f4",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:20:31.744Z",
+  "message": "User created",
+  "data": {
+    "userId": 121,
+    "username": "testuser_c69e2da9-f0fd-42cc-9644-c9c8c31f8b4b",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:20:32.020Z",
+  "message": "User created",
+  "data": {
+    "userId": 122,
+    "username": "testuser_c9d65a4c-213a-45f9-9850-a271cde96bed",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:20:32.180Z",
+  "message": "User created",
+  "data": {
+    "userId": 123,
+    "username": "testuser_f51196ac-cbf6-4c99-b337-2d8dedde8e71",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:22:17.598Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:22:18.074Z",
+  "message": "User created",
+  "data": {
+    "userId": 124,
+    "username": "testuser_fe387fa2-8152-4ab9-86c5-face6fca5325",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:22:18.246Z",
+  "message": "User created",
+  "data": {
+    "userId": 125,
+    "username": "testuser_b646cd95-71d1-4c4d-8f09-17d3456d676e",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:22:18.399Z",
+  "message": "User created",
+  "data": {
+    "userId": 126,
+    "username": "testuser_c87d20c3-c123-42ab-ba42-c4069b1bd04d",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:22:18.562Z",
+  "message": "User created",
+  "data": {
+    "userId": 127,
+    "username": "testuser_52a8eb57-7d09-4184-80f2-23221942d363",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:22:18.950Z",
+  "message": "User created",
+  "data": {
+    "userId": 128,
+    "username": "testuser_6484c3d5-4389-4b00-983d-eb6ed837c11f",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:22:19.108Z",
+  "message": "User created",
+  "data": {
+    "userId": 129,
+    "username": "testuser_fd86879b-41b9-40ee-bb54-7d47d261a7db",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:22:19.283Z",
+  "message": "User created",
+  "data": {
+    "userId": 130,
+    "username": "testuser_34112e30-70ff-48c5-80c3-7c7de3e214d8",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:22:19.587Z",
+  "message": "User created",
+  "data": {
+    "userId": 131,
+    "username": "testuser_e22a575f-b062-43f7-be7b-1a2478bfc6f1",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:22:19.761Z",
+  "message": "User created",
+  "data": {
+    "userId": 132,
+    "username": "testuser_906de652-a8aa-4d31-921b-5256714e8044",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:24:49.187Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:24:49.582Z",
+  "message": "User created",
+  "data": {
+    "userId": 133,
+    "username": "testuser_6a30fad9-5ebc-4f67-973a-ac5bf640f545",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:24:49.832Z",
+  "message": "User created",
+  "data": {
+    "userId": 134,
+    "username": "testuser_7bbcdc58-6a07-46cd-b0de-9f2048475a9c",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:24:50.005Z",
+  "message": "User created",
+  "data": {
+    "userId": 135,
+    "username": "testuser_71d06772-d028-4f31-82c1-a52d4829b072",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:24:50.182Z",
+  "message": "User created",
+  "data": {
+    "userId": 136,
+    "username": "testuser_c81e63b1-730c-4259-b2b2-93c9c9b09931",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:24:50.570Z",
+  "message": "User created",
+  "data": {
+    "userId": 137,
+    "username": "testuser_9a1ec2e6-f4dc-4d82-a743-49fa652bbac0",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:24:50.790Z",
+  "message": "User created",
+  "data": {
+    "userId": 138,
+    "username": "testuser_1fd868db-9e9c-4fed-98e1-41b174920cf2",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:24:51.011Z",
+  "message": "User created",
+  "data": {
+    "userId": 139,
+    "username": "testuser_890dd622-34c2-4d86-8658-67d93ba93092",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:24:51.296Z",
+  "message": "User created",
+  "data": {
+    "userId": 140,
+    "username": "testuser_e1836dca-5d49-4f1c-a4d7-6d7694e5bf55",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:24:51.466Z",
+  "message": "User created",
+  "data": {
+    "userId": 141,
+    "username": "testuser_b05d9201-4b6c-4c9d-9b9d-2c65da071efc",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:26:48.813Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:40:06.297Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:48:56.074Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:48:56.394Z",
+  "message": "User created",
+  "data": {
+    "userId": 142,
+    "username": "testuser_e36eebd3-5c37-48fd-a365-1b680e661ac5",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:48:56.565Z",
+  "message": "User created",
+  "data": {
+    "userId": 143,
+    "username": "testuser_99a73fec-d8f8-4f23-be1b-ee2cfd536c19",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:48:56.703Z",
+  "message": "User created",
+  "data": {
+    "userId": 144,
+    "username": "testuser_076cfbe3-b1a5-4482-b28c-89f44ac12f01",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:48:56.779Z",
+  "message": "User created",
+  "data": {
+    "userId": 145,
+    "username": "testuser_7b6f80cf-87e1-45c5-8675-ad9c9df09a04",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:48:57.149Z",
+  "message": "User created",
+  "data": {
+    "userId": 146,
+    "username": "testuser_b1087bb1-3c76-4843-83e7-c1ad793d9b72",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:48:57.297Z",
+  "message": "User created",
+  "data": {
+    "userId": 147,
+    "username": "testuser_b87940c6-bdec-4a14-95f7-9f0c6f4ec823",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:48:57.458Z",
+  "message": "User created",
+  "data": {
+    "userId": 148,
+    "username": "testuser_909d92cb-c678-4ed7-ade9-8d986f37f1f6",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:48:57.745Z",
+  "message": "User created",
+  "data": {
+    "userId": 149,
+    "username": "testuser_ce12736c-13c3-461a-8b53-88f2c2bf818c",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:48:57.911Z",
+  "message": "User created",
+  "data": {
+    "userId": 150,
+    "username": "testuser_b15f6eaa-7abc-464c-b126-b248ca9b3347",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:49:29.475Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:50:09.532Z",
+  "message": "Session verification for logout",
+  "data": {
+    "exists": true,
+    "userId": 1,
+    "tokenId": "bc329d59-8805-4b1d-96fe-6aa8bb5989aa"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:50:09.532Z",
+  "message": "Starting logout process",
+  "data": {
+    "userId": 1,
+    "tokenId": "bc329d59-8805-4b1d-96fe-6aa8bb5989aa"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:50:09.556Z",
+  "message": "Logout successful",
+  "data": {
+    "userId": 1,
+    "tokenId": "bc329d59-8805-4b1d-96fe-6aa8bb5989aa",
+    "cleanupVerified": true
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:54:24.296Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:54:24.645Z",
+  "message": "User created",
+  "data": {
+    "userId": 151,
+    "username": "testuser_92a06db5-7b09-414d-af0a-e36e11c63f4d",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:54:24.824Z",
+  "message": "User created",
+  "data": {
+    "userId": 152,
+    "username": "testuser_74f74b15-9abb-42ef-91b4-6a31cf4a30ca",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:54:24.972Z",
+  "message": "User created",
+  "data": {
+    "userId": 153,
+    "username": "testuser_a2a8a9c6-e109-4511-aa7e-aa83e13ed6c7",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:54:25.060Z",
+  "message": "User created",
+  "data": {
+    "userId": 154,
+    "username": "testuser_6e36346b-bed1-4216-861b-c2e3a53494c0",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:54:25.445Z",
+  "message": "User created",
+  "data": {
+    "userId": 155,
+    "username": "testuser_3e4ade5c-2dcd-4a71-8396-5f11d21ef2fd",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:54:25.618Z",
+  "message": "User created",
+  "data": {
+    "userId": 156,
+    "username": "testuser_643c33cd-d379-44c4-85f7-a0f2646ad8c8",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:54:25.790Z",
+  "message": "User created",
+  "data": {
+    "userId": 157,
+    "username": "testuser_29169ed8-263f-4df7-85f0-4c4bd6ff70db",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:54:26.078Z",
+  "message": "User created",
+  "data": {
+    "userId": 158,
+    "username": "testuser_b77d083a-c43d-4c68-a579-cf8225bcea7b",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:54:26.249Z",
+  "message": "User created",
+  "data": {
+    "userId": 159,
+    "username": "testuser_aa9919e6-edf3-428d-a1d1-98aefb11022c",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:54:35.455Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:54:51.921Z",
+  "message": "Session verification for logout",
+  "data": {
+    "exists": true,
+    "userId": 1,
+    "tokenId": "09794a5b-fbb7-423e-a1b1-6baae7cd8929"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:54:51.921Z",
+  "message": "Starting logout process",
+  "data": {
+    "userId": 1,
+    "tokenId": "09794a5b-fbb7-423e-a1b1-6baae7cd8929"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:54:51.946Z",
+  "message": "Logout successful",
+  "data": {
+    "userId": 1,
+    "tokenId": "09794a5b-fbb7-423e-a1b1-6baae7cd8929",
+    "refreshTokenRevoked": true
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-24T23:54:51.950Z",
+  "message": "Logout successful",
+  "data": {
+    "userId": 1,
+    "tokenId": "09794a5b-fbb7-423e-a1b1-6baae7cd8929",
+    "cleanupVerified": true
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:00:54.242Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "30m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:00:54.572Z",
+  "message": "User created",
+  "data": {
+    "userId": 160,
+    "username": "testuser_84f64981-c53e-4d4c-bc99-b4f79a87960c",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:00:54.739Z",
+  "message": "User created",
+  "data": {
+    "userId": 161,
+    "username": "testuser_a8d5f5fd-88ad-4b67-be49-cb1bdaefb433",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:00:54.876Z",
+  "message": "User created",
+  "data": {
+    "userId": 162,
+    "username": "testuser_b191b064-449e-45b9-b710-ef3eacc0fae9",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:00:54.956Z",
+  "message": "User created",
+  "data": {
+    "userId": 163,
+    "username": "testuser_0bf93703-b2cd-410c-b00b-1fed67e77c40",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:00:55.327Z",
+  "message": "User created",
+  "data": {
+    "userId": 164,
+    "username": "testuser_874a479d-f220-406f-8d7e-bdb4c8763e6c",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:00:55.485Z",
+  "message": "User created",
+  "data": {
+    "userId": 165,
+    "username": "testuser_210c0d25-b1b5-425f-803b-92ee87cd1c8c",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:00:55.645Z",
+  "message": "User created",
+  "data": {
+    "userId": 166,
+    "username": "testuser_1ec51d86-6e85-4f12-9da7-56c9a24fe4b4",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:00:55.920Z",
+  "message": "User created",
+  "data": {
+    "userId": 167,
+    "username": "testuser_9acbd5b9-70aa-4575-a0e8-7cfc9d746520",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:00:56.133Z",
+  "message": "User created",
+  "data": {
+    "userId": 168,
+    "username": "testuser_485b0cf7-32bd-4cbe-ac54-1c930eb2bd41",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:03:28.769Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "30m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:03:29.109Z",
+  "message": "User created",
+  "data": {
+    "userId": 169,
+    "username": "testuser_9657bc13-14a8-4e9c-bc66-1082e6411d97",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:03:29.283Z",
+  "message": "User created",
+  "data": {
+    "userId": 170,
+    "username": "testuser_c558b2be-81e5-423b-abb0-3c34758e0430",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:03:29.417Z",
+  "message": "User created",
+  "data": {
+    "userId": 171,
+    "username": "testuser_4dfd919b-2feb-47d4-9f26-b343fda4de8e",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:03:29.495Z",
+  "message": "User created",
+  "data": {
+    "userId": 172,
+    "username": "testuser_6e3b4fa6-179e-481e-8b4d-00a8d2f021ec",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:03:29.846Z",
+  "message": "User created",
+  "data": {
+    "userId": 173,
+    "username": "testuser_5ed533b9-7757-41d8-84a3-063ee49e12fa",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:03:30.002Z",
+  "message": "User created",
+  "data": {
+    "userId": 174,
+    "username": "testuser_185bc0e4-02e5-4e80-a5e7-bca3f4294052",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:03:30.156Z",
+  "message": "User created",
+  "data": {
+    "userId": 175,
+    "username": "testuser_4178bda5-737a-45ef-9ab7-a6a7328244f0",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:03:30.430Z",
+  "message": "User created",
+  "data": {
+    "userId": 176,
+    "username": "testuser_6260397e-666d-439a-8479-03ed9d34c767",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:03:30.589Z",
+  "message": "User created",
+  "data": {
+    "userId": 177,
+    "username": "testuser_970e8f9a-da80-4ab2-9d12-01a2022ae46d",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:03:48.060Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "30m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:04:02.219Z",
+  "message": "Session verification for logout",
+  "data": {
+    "exists": true,
+    "userId": 1,
+    "tokenId": "5864bb72-4992-45a1-ae91-3ba2e57ca4ce"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:04:02.220Z",
+  "message": "Starting logout process",
+  "data": {
+    "userId": 1,
+    "tokenId": "5864bb72-4992-45a1-ae91-3ba2e57ca4ce"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:04:02.266Z",
+  "message": "Logout successful",
+  "data": {
+    "userId": 1,
+    "tokenId": "5864bb72-4992-45a1-ae91-3ba2e57ca4ce",
+    "refreshTokenRevoked": true
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:04:02.276Z",
+  "message": "Logout successful",
+  "data": {
+    "userId": 1,
+    "tokenId": "5864bb72-4992-45a1-ae91-3ba2e57ca4ce",
+    "cleanupVerified": true
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:05:33.279Z",
+  "message": "Starting logout process",
+  "data": {
+    "userId": 1,
+    "tokenId": "74e97c7b-48ad-4d82-b97e-bf50aa3543a4"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:05:33.279Z",
+  "message": "Session verification for logout",
+  "data": {
+    "exists": true,
+    "userId": 1,
+    "tokenId": "74e97c7b-48ad-4d82-b97e-bf50aa3543a4"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:05:33.313Z",
+  "message": "Logout successful",
+  "data": {
+    "userId": 1,
+    "tokenId": "74e97c7b-48ad-4d82-b97e-bf50aa3543a4",
+    "refreshTokenRevoked": true
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:05:33.318Z",
+  "message": "Logout successful",
+  "data": {
+    "userId": 1,
+    "tokenId": "74e97c7b-48ad-4d82-b97e-bf50aa3543a4",
+    "cleanupVerified": true
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:05:36.530Z",
+  "message": "Session verification for logout",
+  "data": {
+    "exists": true,
+    "userId": 1,
+    "tokenId": "d4624663-349d-4a9a-b0a6-d69e41c30ec5"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:05:36.530Z",
+  "message": "Starting logout process",
+  "data": {
+    "userId": 1,
+    "tokenId": "d4624663-349d-4a9a-b0a6-d69e41c30ec5"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:05:36.550Z",
+  "message": "Logout successful",
+  "data": {
+    "userId": 1,
+    "tokenId": "d4624663-349d-4a9a-b0a6-d69e41c30ec5",
+    "refreshTokenRevoked": true
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:05:36.558Z",
+  "message": "Logout successful",
+  "data": {
+    "userId": 1,
+    "tokenId": "d4624663-349d-4a9a-b0a6-d69e41c30ec5",
+    "cleanupVerified": true
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:05:37.736Z",
+  "message": "Session verification for logout",
+  "data": {
+    "exists": true,
+    "userId": 1,
+    "tokenId": "547ad3ee-7b9a-4b23-8fac-9cc61077763d"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:05:37.736Z",
+  "message": "Starting logout process",
+  "data": {
+    "userId": 1,
+    "tokenId": "547ad3ee-7b9a-4b23-8fac-9cc61077763d"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:05:37.785Z",
+  "message": "Logout successful",
+  "data": {
+    "userId": 1,
+    "tokenId": "547ad3ee-7b9a-4b23-8fac-9cc61077763d",
+    "refreshTokenRevoked": true
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:05:37.799Z",
+  "message": "Logout successful",
+  "data": {
+    "userId": 1,
+    "tokenId": "547ad3ee-7b9a-4b23-8fac-9cc61077763d",
+    "cleanupVerified": true
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:08:16.109Z",
+  "message": "Starting logout process",
+  "data": {
+    "userId": 1,
+    "tokenId": "a33c951b-37a7-482c-b725-0b192bd190e7"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:08:16.109Z",
+  "message": "Session verification for logout",
+  "data": {
+    "exists": true,
+    "userId": 1,
+    "tokenId": "a33c951b-37a7-482c-b725-0b192bd190e7"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:08:16.130Z",
+  "message": "Logout successful",
+  "data": {
+    "userId": 1,
+    "tokenId": "a33c951b-37a7-482c-b725-0b192bd190e7",
+    "refreshTokenRevoked": true
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:08:16.136Z",
+  "message": "Logout successful",
+  "data": {
+    "userId": 1,
+    "tokenId": "a33c951b-37a7-482c-b725-0b192bd190e7",
+    "cleanupVerified": true
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:08:18.412Z",
+  "message": "Session verification for logout",
+  "data": {
+    "exists": true,
+    "userId": 1,
+    "tokenId": "c436e795-448a-437a-9a53-1ee5e0a65110"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:08:18.412Z",
+  "message": "Starting logout process",
+  "data": {
+    "userId": 1,
+    "tokenId": "c436e795-448a-437a-9a53-1ee5e0a65110"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:08:18.442Z",
+  "message": "Logout successful",
+  "data": {
+    "userId": 1,
+    "tokenId": "c436e795-448a-437a-9a53-1ee5e0a65110",
+    "refreshTokenRevoked": true
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:08:18.447Z",
+  "message": "Logout successful",
+  "data": {
+    "userId": 1,
+    "tokenId": "c436e795-448a-437a-9a53-1ee5e0a65110",
+    "cleanupVerified": true
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:08:22.891Z",
+  "message": "Session verification for logout",
+  "data": {
+    "exists": true,
+    "userId": 1,
+    "tokenId": "7622acfa-a497-4edb-9fa6-de1fac27af4b"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:08:22.892Z",
+  "message": "Starting logout process",
+  "data": {
+    "userId": 1,
+    "tokenId": "7622acfa-a497-4edb-9fa6-de1fac27af4b"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:08:22.910Z",
+  "message": "Logout successful",
+  "data": {
+    "userId": 1,
+    "tokenId": "7622acfa-a497-4edb-9fa6-de1fac27af4b",
+    "refreshTokenRevoked": true
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:08:22.914Z",
+  "message": "Logout successful",
+  "data": {
+    "userId": 1,
+    "tokenId": "7622acfa-a497-4edb-9fa6-de1fac27af4b",
+    "cleanupVerified": true
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:08:36.006Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:14:23.354Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:14:23.727Z",
+  "message": "User created",
+  "data": {
+    "userId": 178,
+    "username": "testuser_1cd38a72-3f71-4f84-a77b-7f0f229ede08",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:14:23.922Z",
+  "message": "User created",
+  "data": {
+    "userId": 179,
+    "username": "testuser_7d527722-2128-4fa7-82c0-ca009efb5a19",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:14:24.068Z",
+  "message": "User created",
+  "data": {
+    "userId": 180,
+    "username": "testuser_30d0c18c-b7b4-4aed-8bd2-2f7a19e3ca44",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:14:24.152Z",
+  "message": "User created",
+  "data": {
+    "userId": 181,
+    "username": "testuser_cc3870b8-6e5c-4256-9734-13c62f68233b",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:14:24.505Z",
+  "message": "User created",
+  "data": {
+    "userId": 182,
+    "username": "testuser_a9bf901f-1039-4b7a-b82e-d824fb595048",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:14:24.649Z",
+  "message": "User created",
+  "data": {
+    "userId": 183,
+    "username": "testuser_36eae055-07e4-4891-b235-3379129437d1",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:14:24.800Z",
+  "message": "User created",
+  "data": {
+    "userId": 184,
+    "username": "testuser_575d2af5-9121-4bd3-866d-605266d6965b",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:14:25.077Z",
+  "message": "User created",
+  "data": {
+    "userId": 185,
+    "username": "testuser_da3667e0-20ed-4da3-8c77-ff3f3099ccb0",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:14:25.233Z",
+  "message": "User created",
+  "data": {
+    "userId": 186,
+    "username": "testuser_9d8bb70c-09fa-4dcd-8e1e-ddd82423e62a",
+    "role": "user",
+    "action": "CREATE"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:14:49.074Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:15:51.331Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:33:59.126Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:40:46.282Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:42:49.140Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:46:00.320Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}
+{
+  "timestamp": "2025-02-25T00:52:51.273Z",
+  "message": "Auth configuration loaded successfully",
+  "data": {
+    "tokenExpiration": "1m",
+    "maxSessions": 3,
+    "algorithm": "HS256"
+  },
+  "level": "auth"
+}

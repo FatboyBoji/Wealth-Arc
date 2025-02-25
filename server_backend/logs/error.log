@@ -70,3 +70,814 @@
   },
   "level": "error"
 }
+{
+  "timestamp": "2025-02-24T22:01:22.344Z",
+  "message": "Logout failed",
+  "data": {
+    "length": 160,
+    "name": "error",
+    "severity": "FEHLER",
+    "code": "42703",
+    "position": "55",
+    "file": "analyze.c",
+    "line": "2471",
+    "routine": "transformUpdateTargetList"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T22:01:22.344Z",
+  "message": "Failed to terminate session",
+  "data": {
+    "length": 160,
+    "name": "error",
+    "severity": "FEHLER",
+    "code": "42703",
+    "position": "55",
+    "file": "analyze.c",
+    "line": "2471",
+    "routine": "transformUpdateTargetList"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T22:24:27.793Z",
+  "message": "Login failed",
+  "data": {
+    "length": 145,
+    "name": "error",
+    "severity": "FEHLER",
+    "code": "42703",
+    "position": "80",
+    "file": "parse_target.c",
+    "line": "1066",
+    "routine": "checkInsertTargets"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T22:24:27.873Z",
+  "message": "Failed to create user",
+  "data": {
+    "status": 400,
+    "code": "VALIDATION_ERROR",
+    "name": "ValidationError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T22:27:44.300Z",
+  "message": "Failed to create user",
+  "data": {
+    "status": 400,
+    "code": "VALIDATION_ERROR",
+    "name": "ValidationError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T22:27:44.373Z",
+  "message": "Failed to create user",
+  "data": {
+    "status": 400,
+    "code": "VALIDATION_ERROR",
+    "name": "ValidationError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T22:41:33.613Z",
+  "message": "Login failed",
+  "data": {
+    "length": 145,
+    "name": "error",
+    "severity": "FEHLER",
+    "code": "42703",
+    "position": "80",
+    "file": "parse_target.c",
+    "line": "1066",
+    "routine": "checkInsertTargets"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T22:41:33.716Z",
+  "message": "Login failed",
+  "data": {
+    "length": 145,
+    "name": "error",
+    "severity": "FEHLER",
+    "code": "42703",
+    "position": "80",
+    "file": "parse_target.c",
+    "line": "1066",
+    "routine": "checkInsertTargets"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T22:57:55.986Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T22:59:27.556Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:00:33.628Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:02:58.918Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:06:36.189Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:08:56.703Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:11:07.100Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:13:22.893Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:16:38.890Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:17:49.430Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:18:52.259Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:20:30.829Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:22:18.315Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:24:49.917Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:48:56.628Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:48:57.075Z",
+  "message": "Max sessions reached",
+  "data": {
+    "userId": 145,
+    "sessionCount": 3,
+    "maxAllowed": 3
+  },
+  "level": "warn"
+}
+{
+  "timestamp": "2025-02-24T23:48:57.075Z",
+  "message": "Login failed",
+  "data": {
+    "sessions": [],
+    "userId": 145,
+    "name": "MaxSessionsError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:54:24.891Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:54:25.368Z",
+  "message": "Max sessions reached",
+  "data": {
+    "userId": 154,
+    "sessionCount": 3,
+    "maxAllowed": 3
+  },
+  "level": "warn"
+}
+{
+  "timestamp": "2025-02-24T23:54:25.369Z",
+  "message": "Login failed",
+  "data": {
+    "sessions": [],
+    "userId": 154,
+    "name": "MaxSessionsError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:55:30.384Z",
+  "message": "Max sessions reached",
+  "data": {
+    "userId": 1,
+    "sessionCount": 3,
+    "maxAllowed": 3
+  },
+  "level": "warn"
+}
+{
+  "timestamp": "2025-02-24T23:55:30.384Z",
+  "message": "Authentication failed",
+  "data": {
+    "sessions": [],
+    "userId": 1,
+    "name": "MaxSessionsError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:55:57.260Z",
+  "message": "Max sessions reached",
+  "data": {
+    "userId": 1,
+    "sessionCount": 3,
+    "maxAllowed": 3
+  },
+  "level": "warn"
+}
+{
+  "timestamp": "2025-02-24T23:55:57.260Z",
+  "message": "Authentication failed",
+  "data": {
+    "sessions": [],
+    "userId": 1,
+    "name": "MaxSessionsError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:56:03.229Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:56:03.240Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:56:03.252Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:56:03.257Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:56:03.290Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:56:03.313Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:56:11.955Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:56:11.958Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:56:11.981Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:56:11.985Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:56:12.029Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:56:22.188Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:56:22.198Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:56:22.253Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-24T23:56:22.324Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:00:54.802Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:00:55.246Z",
+  "message": "Max sessions reached",
+  "data": {
+    "userId": 163,
+    "sessionCount": 3,
+    "maxAllowed": 3
+  },
+  "level": "warn"
+}
+{
+  "timestamp": "2025-02-25T00:00:55.246Z",
+  "message": "Login failed",
+  "data": {
+    "sessions": [],
+    "userId": 163,
+    "name": "MaxSessionsError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:03:29.344Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:03:29.776Z",
+  "message": "Max sessions reached",
+  "data": {
+    "userId": 172,
+    "sessionCount": 3,
+    "maxAllowed": 3
+  },
+  "level": "warn"
+}
+{
+  "timestamp": "2025-02-25T00:03:29.776Z",
+  "message": "Login failed",
+  "data": {
+    "sessions": [],
+    "userId": 172,
+    "name": "MaxSessionsError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:05:08.385Z",
+  "message": "Max sessions reached",
+  "data": {
+    "userId": 1,
+    "sessionCount": 3,
+    "maxAllowed": 3
+  },
+  "level": "warn"
+}
+{
+  "timestamp": "2025-02-25T00:05:08.386Z",
+  "message": "Authentication failed",
+  "data": {
+    "sessions": [],
+    "userId": 1,
+    "name": "MaxSessionsError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:06:36.922Z",
+  "message": "Max sessions reached",
+  "data": {
+    "userId": 1,
+    "sessionCount": 3,
+    "maxAllowed": 3
+  },
+  "level": "warn"
+}
+{
+  "timestamp": "2025-02-25T00:06:36.922Z",
+  "message": "Authentication failed",
+  "data": {
+    "sessions": [],
+    "userId": 1,
+    "name": "MaxSessionsError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:10:13.237Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:10:13.273Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:10:13.267Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:10:13.293Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:14:23.985Z",
+  "message": "Login failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:14:24.431Z",
+  "message": "Login failed",
+  "data": {
+    "sessions": [],
+    "userId": 181,
+    "name": "MaxSessionsError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:14:24.431Z",
+  "message": "Max sessions reached",
+  "data": {
+    "userId": 181,
+    "sessionCount": 3,
+    "maxAllowed": 3
+  },
+  "level": "warn"
+}
+{
+  "timestamp": "2025-02-25T00:16:53.471Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:16:53.481Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:16:53.502Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:16:53.523Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:16:53.514Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:16:53.536Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:18:27.573Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:18:27.578Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:18:27.591Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:18:27.596Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:18:27.603Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:18:27.623Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:52:58.754Z",
+  "message": "Authentication failed",
+  "data": {},
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:52:58.821Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}
+{
+  "timestamp": "2025-02-25T00:52:58.853Z",
+  "message": "Authentication failed",
+  "data": {
+    "status": 401,
+    "code": "AUTH_ERROR",
+    "name": "AuthError"
+  },
+  "level": "error"
+}

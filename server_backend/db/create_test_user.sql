@@ -84,4 +84,25 @@ INSERT INTO user_of_wa (
     'admin',
     true,
     true
-); 
+);
+
+-- Create test user if not exists
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM user_of_wa WHERE username = 'testuser') THEN
+        INSERT INTO user_of_wa (
+            username,
+            password_hash,  -- Note: column name is password_hash in user_of_wa
+            email,
+            role,
+            is_active
+        ) VALUES (
+            'admin1',
+            '$2b$10$rMz6ZmLc9cRhWFrxCDfFAeIf0qhGL.4wFsH3Zx.VtpHm/h6g0Xz6y', -- 'testpass'
+            'test@example.com',
+            'admin',
+            true
+        );
+    END IF;
+END
+$$; 

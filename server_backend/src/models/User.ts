@@ -4,6 +4,24 @@ import { Logger } from '../services/logger';
 import { ValidationError } from '../services/errors';
 import { UserOfWA, UserCreateInput, UserUpdateInput, UserRole } from '../types/user';
 
+export interface User {
+    id: number;
+    username: string;
+    email: string;
+    password_hash: string;
+    first_name?: string;
+    last_name?: string;
+    role: 'admin' | 'user' | 'manager' | 'readonly';
+    is_active: boolean;
+    is_email_verified: boolean;
+    last_login?: Date;
+    failed_login_attempts: number;
+    created_at: Date;
+    updated_at: Date;
+    created_by?: number;
+    updated_by?: number;
+}
+
 export class UserModel {
     private static readonly SALT_ROUNDS = 10;
 
@@ -112,7 +130,16 @@ export class UserModel {
                 'SELECT * FROM user_of_wa WHERE username = $1',
                 [sanitizedUsername]
             );
-            return result.rows[0] || null;
+
+            if (!result.rows[0]) {
+                return null;
+            }
+
+            // Return the full user object
+            return {
+                ...result.rows[0],
+                is_active: result.rows[0].is_active || false // Ensure is_active is boolean
+            };
         } catch (error) {
             Logger.error('Failed to find user by username', error);
             throw error;

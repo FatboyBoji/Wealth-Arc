@@ -9,7 +9,8 @@ import { TokenPayload, DeviceInfo, TokenResponse } from '../types/auth';
 import { AuthError } from '../services/errors';
 import { UserOfWA } from '../types/user';
 import { QueryResult } from 'pg';
-import { scheduleMarkedSessionCleanup } from '../jobs/markedSessionsCleanup';
+import { CookieOptions } from 'express';
+import { SessionManager } from '../services/SessionManager';
 
 function requireEnvVar(name: string, fallback?: string): string {
     const value = process.env[name];
@@ -74,85 +75,94 @@ export interface RefreshToken {
 // Add new custom error class
 export class MaxSessionsError extends Error {
     constructor(
-        public sessions: any[],
+        public sessions: any[] = [],
         public userId: number
     ) {
         super('Maximum number of sessions reached');
         this.name = 'MaxSessionsError';
         
-        // Ensure userId is set
         if (typeof userId !== 'number') {
-            console.error('Invalid userId type:', { userId, type: typeof userId });
+            Logger.error('Invalid userId type', { userId, type: typeof userId });
             throw new Error('Invalid userId provided to MaxSessionsError');
         }
-        
-        console.log('MaxSessionsError constructor:', {
-            sessions: sessions.length,
-            userId,
-            name: this.name
-        });
     }
 }
 
+// Add cookie configuration
+const COOKIE_CONFIG: CookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    maxAge: ms(AUTH_CONFIG.REFRESH_TOKEN_EXPIRATION),
+    path: '/api/auth'
+};
+
 export class TokenService {
-    private static async createSession(userId: number, tokenId: string, deviceInfo: DeviceInfo): Promise<void> {
+    static async createSession(userId: number, deviceInfo: DeviceInfo, tokenId?: string): Promise<string> {
         await this.enforceSessionLimit(userId);
-
+        
+        // Generate tokenId if not provided
+        const sessionTokenId = tokenId || uuidv4();
+        
         const friendlyName = `${deviceInfo.browser} on ${deviceInfo.os}`;
-
-        await query(
-            `INSERT INTO user_sessions_wa (
-                user_id, token_id, device_type, device_os, 
-                device_browser, friendly_name
-            ) VALUES ($1, $2, $3, $4, $5, $6)`,
+        
+        await query(`
+            INSERT INTO user_sessions_wa (
+                user_id, 
+                token_id,
+                device_type,
+                device_name,
+                browser,
+                os,
+                last_active,
+                last_ip
+            ) VALUES ($1, $2, $3, $4, $5, $6, NOW(), $7)
+            RETURNING id`,
             [
                 userId,
-                tokenId,
+                sessionTokenId,
                 deviceInfo.type,
-                deviceInfo.os,
+                deviceInfo.name,
                 deviceInfo.browser,
-                friendlyName
+                deviceInfo.os,
+                deviceInfo.ip
             ]
         );
+
+        return sessionTokenId;
     }
 
-    static async generateTokens(userId: number, deviceInfo: DeviceInfo, skipLimitCheck = false): Promise<TokenResponse> {
-        const user = await UserModel.findById(userId);
-        if (!user) {
-            throw new AuthError('User not found', 404);
-        }
+    static async generateTokens(userId: number, deviceInfo: DeviceInfo): Promise<TokenResponse> {
+        const tokenId = await this.createSession(userId, deviceInfo);
+        const accessToken = jwt.sign(
+            { userId, tokenId },
+            AUTH_CONFIG.JWT_SECRET,
+            { expiresIn: AUTH_CONFIG.TOKEN_EXPIRATION }
+        );
 
-        // Skip session limit check for pre-login
-        if (!skipLimitCheck) {
-            const activeSessions = await this.getActiveSessions(user.id);
-            if (activeSessions.length >= AUTH_CONFIG.MAX_SESSIONS_PER_USER) {
-                throw new MaxSessionsError(activeSessions, user.id);
-            }
-        }
+        const refreshToken = jwt.sign(
+            { userId, tokenId },
+            AUTH_CONFIG.JWT_SECRET,
+            { expiresIn: AUTH_CONFIG.REFRESH_TOKEN_EXPIRATION }
+        );
 
-        const tokenId = uuidv4();
-        const payload: TokenPayload = {
-            userId: user.id,
-            username: user.username,
-            tokenId,
-            role: user.role
-        };
+        // Store refresh token in database
+        await query(
+            `INSERT INTO refresh_tokens_wa (id, user_id, token_id, expires_at)
+             VALUES ($1, $2, $3, $4)`,
+            [
+                uuidv4(),
+                userId,
+                tokenId,
+                new Date(Date.now() + ms(AUTH_CONFIG.REFRESH_TOKEN_EXPIRATION))
+            ]
+        );
 
-        // Generate access token
-        const token = jwt.sign(payload, AUTH_CONFIG.JWT_SECRET, {
-            expiresIn: AUTH_CONFIG.TOKEN_EXPIRATION
-        });
-
-        // Generate refresh token
-        const refreshToken = await this.generateRefreshToken(user.id, tokenId);
-
-        // Create session
-        await this.createSession(user.id, tokenId, deviceInfo);
-
-        return { 
-            token, 
+        return {
+            token: accessToken,
             refreshToken,
-            sessionId: tokenId
+            sessionId: tokenId,
+            cookieConfig: COOKIE_CONFIG
         };
     }
 
@@ -301,65 +311,25 @@ export class TokenService {
     }
 
     // Add new method to get active sessions
-    static async getActiveSessions(userId: number) {
-        const result = await query(
-            `SELECT 
-                id,
-                token_id,
-                device_type,
-                device_os,
-                device_browser,
-                friendly_name,
-                last_active,
-                created_at
+    static async getActiveSessions(userId: number): Promise<number> {
+        const result = await query(`
+            SELECT COUNT(*) 
             FROM user_sessions_wa 
             WHERE user_id = $1 
-            ORDER BY last_active DESC`,
-            [userId]
-        );
+            AND NOT is_marked_for_deletion
+        `, [userId]);
 
-        return result.rows;
+        return parseInt(result.rows[0].count);
     }
 
     //method to terminate session
-    static async terminateSession(userId: number, sessionId: string): Promise<boolean> {
-        const { query } = await import('../config/database');
-        
+    static async terminateSession(userId: number, sessionId: string): Promise<void> {
         try {
-            console.log('TokenService: Attempting to terminate session:', {
-                userId,
-                sessionId,
-                timestamp: new Date().toISOString()
-            });
-
-            const result = await query(
-                `DELETE FROM user_sessions_wa 
-                 WHERE id = $1 AND user_id = $2 
-                 RETURNING id`,
-                [sessionId, userId]
-            );
-
-            // Add type guard for rowCount
-            const rowCount = result?.rowCount ?? 0;
-            const success = rowCount > 0;
-            
-            console.log('TokenService: Session termination result:', {
-                success,
-                rowsAffected: rowCount,
-                userId,
-                sessionId,
-                timestamp: new Date().toISOString()
-            });
-
-            return success;
+            // Replace old cleanup with new one
+            await SessionManager.markSessionForDeletion(sessionId, userId);
         } catch (error) {
-            console.error('TokenService: Failed to terminate session:', {
-                error,
-                userId,
-                sessionId,
-                timestamp: new Date().toISOString()
-            });
-            return false;
+            Logger.error('Failed to terminate session', error);
+            throw error;
         }
     }
 
@@ -376,33 +346,73 @@ export class TokenService {
         return refreshTokenId;
     }
 
-    static async refreshAccessToken(refreshTokenId: string): Promise<{ token: string; user: UserOfWA } | null> {
-        const result = await query(
-            `SELECT rt.*, u.* FROM refresh_tokens rt
-             JOIN users u ON u.id = rt.user_id
-             WHERE rt.id = $1 AND rt.expires_at > NOW() AND NOT rt.is_revoked`,
-            [refreshTokenId]
-        );
+    static async rotateTokens(refreshToken: string): Promise<TokenResponse> {
+        await query('BEGIN');
+        try {
+            const decoded = jwt.verify(refreshToken, AUTH_CONFIG.JWT_SECRET) as TokenPayload;
+            
+            // Verify token is valid and not revoked
+            const tokenValid = await this.isRefreshTokenValid(refreshToken);
+            if (!tokenValid) {
+                throw new AuthError('Invalid refresh token', 401);
+            }
 
-        if (!result.rows[0]) {
-            return null;
+            // Get device info from session
+            const sessionResult = await query(`
+                SELECT device_type, device_name, browser, os, last_ip 
+                FROM user_sessions_wa 
+                WHERE token_id = $1
+            `, [decoded.tokenId]);
+
+            if (!sessionResult.rows[0]) {
+                throw new AuthError('Session not found', 401);
+            }
+
+            const deviceInfo: DeviceInfo = {
+                type: sessionResult.rows[0].device_type,
+                name: sessionResult.rows[0].device_name,
+                browser: sessionResult.rows[0].browser,
+                os: sessionResult.rows[0].os,
+                ip: sessionResult.rows[0].last_ip
+            };
+
+            // Generate new tokens
+            const newTokens = await this.generateTokens(decoded.userId, deviceInfo);
+
+            // Revoke old refresh token
+            await query(
+                'UPDATE refresh_tokens_wa SET is_revoked = true WHERE token_id = $1',
+                [decoded.tokenId]
+            );
+
+            await query('COMMIT');
+            return newTokens;
+        } catch (error) {
+            await query('ROLLBACK');
+            if (error instanceof AuthError) {
+                throw error;
+            }
+            throw new AuthError('Failed to rotate tokens', 401);
         }
+    }
 
-        const { user_id, token_id } = result.rows[0];
-        const user = await UserModel.findById(user_id);
+    static async refreshAccessToken(refreshToken: string): Promise<TokenResponse> {
+        try {
+            // Verify refresh token is still valid in database
+            const tokenValid = await this.isRefreshTokenValid(refreshToken);
+            if (!tokenValid) {
+                throw new AuthError('Invalid refresh token', 401);
+            }
 
-        if (!user) {
-            return null;
+            // Rotate tokens instead of just refreshing access token
+            return await this.rotateTokens(refreshToken);
+
+        } catch (error) {
+            if (error instanceof jwt.TokenExpiredError) {
+                throw new AuthError('Refresh token expired', 401);
+            }
+            throw error;
         }
-
-        // Generate new access token with same session ID
-        const newToken = jwt.sign(
-            { userId: user.id, username: user.username, tokenId: token_id },
-            AUTH_CONFIG.JWT_SECRET,
-            { expiresIn: AUTH_CONFIG.TOKEN_EXPIRATION }
-        );
-
-        return { token: newToken, user };
     }
 
     static async revokeRefreshToken(refreshTokenId: string): Promise<void> {
@@ -425,31 +435,53 @@ export class TokenService {
                 [userId, tokenId]
             );
 
-            // Mark refresh token as revoked (don't delete)
+            // Mark refresh token as revoked (using correct table name)
             await query(
-                'UPDATE refresh_tokens SET is_revoked = true WHERE user_id = $1 AND token_id = $2',
+                'UPDATE refresh_tokens_wa SET is_revoked = true WHERE user_id = $1 AND token_id = $2',
                 [userId, tokenId]
             );
 
+            // Verify the refresh token was revoked
+            const verifyRevoked = await query(
+                'SELECT is_revoked FROM refresh_tokens_wa WHERE token_id = $1',
+                [tokenId]
+            );
+
+            if (!verifyRevoked.rows[0]?.is_revoked) {
+                throw new Error('Failed to revoke refresh token');
+            }
+
             // Commit transaction
             await query('COMMIT');
+
+            Logger.auth('Logout successful', {
+                userId,
+                tokenId,
+                refreshTokenRevoked: true
+            });
         } catch (error) {
             await query('ROLLBACK');
+            Logger.error('Logout failed', error);
             throw error;
         }
     }
 
-    static async isRefreshTokenValid(tokenId: string): Promise<boolean> {
-        const result = await query(
-            `SELECT EXISTS (
-                SELECT 1 FROM refresh_tokens 
-                WHERE token_id = $1 
-                AND NOT is_revoked 
-                AND expires_at > NOW()
-            )`,
-            [tokenId]
-        );
-        return result.rows[0].exists;
+    static async isRefreshTokenValid(refreshToken: string): Promise<boolean> {
+        try {
+            const decoded = jwt.verify(refreshToken, AUTH_CONFIG.JWT_SECRET) as TokenPayload;
+            const result = await query(
+                `SELECT EXISTS (
+                    SELECT 1 FROM refresh_tokens_wa 
+                    WHERE token_id = $1 
+                    AND NOT is_revoked 
+                    AND expires_at > NOW()
+                )`,
+                [decoded.tokenId]
+            );
+            return result.rows[0].exists;
+        } catch (error) {
+            return false;
+        }
     }
 
     static async cleanupExpiredTokens(): Promise<{
@@ -508,7 +540,7 @@ export class TokenService {
             }
             
             // Generate new session
-            const tokens = await this.generateTokens(userId, deviceInfo, true);
+            const tokens = await this.generateTokens(userId, deviceInfo);
             
             await query('COMMIT');
             return tokens;
@@ -520,48 +552,77 @@ export class TokenService {
 
     static async handleExpiredToken(tokenId: string): Promise<void> {
         try {
-            // Check if refresh token is still valid
-            const refreshToken = await query(
-                `SELECT * FROM refresh_tokens 
-                 WHERE token_id = $1 AND NOT is_revoked AND expires_at > NOW()`,
-                [tokenId]
-            );
-
-            if (!refreshToken.rows[0]) {
-                // Refresh token expired or revoked - clean up session
-                await this.cleanupExpiredSession(tokenId);
-            }
-            // If refresh token valid, keep session for potential refresh
-        } catch (error) {
-            Logger.error('Error handling expired token', { error, tokenId });
-        }
-    }
-
-    static async cleanupExpiredSession(tokenId: string): Promise<void> {
-        try {
             await query('BEGIN');
+            
+            // Mark session for deletion
+            await query(`
+                UPDATE user_sessions_wa 
+                SET is_marked_for_deletion = true,
+                marked_at = NOW()
+                WHERE token_id = $1
+            `, [tokenId]);
 
             // Revoke refresh token
-            await query(
-                `UPDATE refresh_tokens 
-                 SET is_revoked = true 
-                 WHERE token_id = $1`,
-                [tokenId]
-            );
+            await query(`
+                UPDATE refresh_tokens_wa 
+                SET is_revoked = true 
+                WHERE token_id = $1
+            `, [tokenId]);
 
-            // Delete session
-            await query(
-                'DELETE FROM user_sessions_wa WHERE token_id = $1',
-                [tokenId]
-            );
+            // Delete session immediately if refresh token is also expired
+            const refreshTokenValid = await query(`
+                SELECT EXISTS (
+                    SELECT 1 FROM refresh_tokens_wa 
+                    WHERE token_id = $1 
+                    AND NOT is_revoked 
+                    AND expires_at > NOW()
+                )
+            `, [tokenId]);
+
+            if (!refreshTokenValid.rows[0].exists) {
+                await query(`
+                    DELETE FROM user_sessions_wa 
+                    WHERE token_id = $1
+                `, [tokenId]);
+            }
 
             await query('COMMIT');
             
-            Logger.auth('Session cleaned up', { tokenId });
+            Logger.auth('Token expired - Session handled', { 
+                tokenId,
+                refreshTokenValid: refreshTokenValid.rows[0].exists 
+            });
         } catch (error) {
             await query('ROLLBACK');
-            Logger.error('Failed to cleanup session', { error, tokenId });
-            throw error;
+            Logger.error('Failed to handle expired token', { error, tokenId });
+        }
+    }
+
+    // Add this method to clean up expired sessions
+    static async cleanupExpiredSessions(): Promise<void> {
+        try {
+            await query('BEGIN');
+
+            // Delete marked sessions older than 5 minutes
+            await query(`
+                DELETE FROM user_sessions_wa 
+                WHERE is_marked_for_deletion = true 
+                AND marked_at < NOW() - INTERVAL '5 minutes'
+            `);
+
+            // Clean up orphaned refresh tokens
+            await query(`
+                UPDATE refresh_tokens_wa 
+                SET is_revoked = true 
+                WHERE token_id NOT IN (
+                    SELECT token_id FROM user_sessions_wa
+                )
+            `);
+
+            await query('COMMIT');
+        } catch (error) {
+            await query('ROLLBACK');
+            Logger.error('Failed to cleanup sessions', error);
         }
     }
 

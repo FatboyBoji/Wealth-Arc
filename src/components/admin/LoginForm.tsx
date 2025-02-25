@@ -1,6 +1,8 @@
+'use client';
+
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { authService, MaxSessionsError } from '@/services/api';
+import { useAuth } from '@/contexts/AuthContext';
 import { DeviceSessionModal } from './DeviceSessionModal';
 import { DeviceSession } from '@/types/sessions';
 import { logToFile } from '@/utils/logger';
@@ -23,7 +25,7 @@ interface LoginFormProps {
     onSuccess?: () => void;
 }
 
-export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
+export function LoginForm({ onSuccess }: LoginFormProps) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -32,6 +34,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
     const [showSessionModal, setShowSessionModal] = useState(false);
     const [sessions, setSessions] = useState<DeviceSession[]>([]);
     const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     
     // Store credentials temporarily for retry after session termination
     const [pendingUserId, setPendingUserId] = useState<number | null>(null);
@@ -48,6 +51,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
 
     // Add new states for smooth transitions
     const [loginState, setLoginState] = useState<'idle' | 'attempting' | 'retrying'>('idle');
+
+    const { login } = useAuth();
 
     const validateField = (name: string, value: string): string => {
         switch (name) {
@@ -99,25 +104,22 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!validateForm()) return;
+
+        setError('');
+        setIsLoading(true);
+
         try {
-            setIsLoading(true);
-            setError(null);
-            
-            const response = await authService.login(formData);
-            
-            await logToFile('Login successful', { username: formData.username });
-            
-            // Make sure we call onSuccess after successful login
-            if (onSuccess) {
-                onSuccess();
-            }
-        } catch (error) {
-            if (error instanceof MaxSessionsError) {
-                setSessions(error.sessions);
-                setPendingUserId(error.userId);
+            await login(formData.username, formData.password);
+            router.push('/admin/dashboard');
+        } catch (error: any) {
+            console.error('Login error:', error);
+            if (error.response?.data?.error === 'MAX_SESSIONS_REACHED') {
+                setSessions(error.response.data.sessions);
+                setPendingUserId(error.response.data.userId);
                 setShowSessionModal(true);
             } else {
-                setError(error instanceof Error ? error.message : 'Login failed');
+                setError(error.response?.data?.message || 'Login failed');
             }
         } finally {
             setIsLoading(false);
@@ -211,7 +213,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
                     disabled={isLoading}
                     startIcon={isLoading ? <CircularProgress size={20} /> : null}
                 >
-                    {isLoading ? 'Signing in...' : 'Sign in'}
+                    {isLoading ? 'Logging in...' : 'Login'}
                 </Button>
             </form>
 
@@ -250,4 +252,4 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
             </Fade>
         </Box>
     );
-}; 
+} 

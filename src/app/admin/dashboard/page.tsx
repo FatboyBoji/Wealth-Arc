@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { newsService, NewsUpdate, NewsType, ApiError } from '@/services/api';
+import { newsService, NewsUpdate, NewsType, ApiErrorImpl as ApiError } from '@/services/api';
 import { withAuth } from '@/components/auth/withAuth';
 
 function DashboardPage() {

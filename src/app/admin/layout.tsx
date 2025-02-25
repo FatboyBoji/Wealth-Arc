@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { authService } from '@/services/api';
+import { useAuth } from '@/contexts/AuthContext';
+import { SessionHandler } from '@/components/auth/SessionHandler';
 import Link from 'next/link';
+import { authService } from '@/services/api';
 
 interface AdminLayoutProps {
     children: React.ReactNode;
@@ -13,43 +15,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     const router = useRouter();
     const pathname = usePathname();
     const [isLoading, setIsLoading] = useState(true);
-
-    // Function to verify token and handle expiration
-    const checkTokenValidity = async () => {
-        try {
-            // Skip auth check for login page
-            if (pathname === '/admin/login') {
-                setIsLoading(false);
-                return;
-            }
-
-            // Check if token exists and is valid
-            if (!authService.isAuthenticated()) {
-                throw new Error('No token found');
-            }
-
-            // Verify token with backend
-            const isValid = await authService.verifyToken();
-            if (!isValid) {
-                throw new Error('Token expired');
-            }
-
-            setIsLoading(false);
-        } catch (error) {
-            console.log('Auth error:', error);
-            authService.logout();
-            router.push('/admin/login');
-        }
-    };
+    const { isAuthenticated } = useAuth();
 
     useEffect(() => {
-        checkTokenValidity();
-
-        // Set up interval to check token validity every 30 seconds
-        const intervalId = setInterval(checkTokenValidity, 30000);
-
-        return () => clearInterval(intervalId);
-    }, [pathname, router]);
+        if (!isAuthenticated && pathname !== '/admin/login') {
+            router.push('/admin/login');
+        }
+        setIsLoading(false);
+    }, [isAuthenticated, pathname, router]);
 
     // Don't show navigation on login page
     if (pathname === '/admin/login') {
@@ -66,6 +39,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
     return (
         <div className="min-h-screen bg-gray-100">
+            <SessionHandler />
             {/* Navigation Header */}
             <nav className="bg-white shadow-md">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

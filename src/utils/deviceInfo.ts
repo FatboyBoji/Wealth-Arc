@@ -3,66 +3,42 @@ export interface DeviceInfo {
     browser: string;
     os: string;
     timestamp: string;
-    screenSize?: {
+    screenSize: {
         width: number;
         height: number;
     };
 }
 
-export function getDeviceInfo(): DeviceInfo {
-    console.log('Getting device info...');
-
-    if (typeof window === 'undefined') {
-        console.log('Window is undefined (server-side)');
-        return {
-            type: 'unknown',
-            browser: 'unknown',
-            os: 'unknown',
-            timestamp: new Date().toISOString(),
-            screenSize: typeof window !== 'undefined' ? {
-                width: (window as Window & typeof globalThis).screen.width,
-                height: (window as Window & typeof globalThis).screen.height
-            } : undefined
-        };
-    }
-
-    const ua = window.navigator.userAgent.toLowerCase();
-    console.log('User Agent:', ua);
-    
-    // Device type detection
-    const isMobile = /mobile|android|iphone|ipad|ipod/i.test(ua);
-    const isTablet = /tablet|ipad/i.test(ua);
-    const type = isTablet ? 'tablet' : (isMobile ? 'mobile' : 'desktop');
-    
-    // Browser detection
-    let browser = 'unknown';
-    if (ua.includes('chrome')) browser = 'Chrome';
-    else if (ua.includes('firefox')) browser = 'Firefox';
-    else if (ua.includes('safari')) browser = 'Safari';
-    else if (ua.includes('edge')) browser = 'Edge';
-    else if (ua.includes('opera')) browser = 'Opera';
-    
-    // OS detection
-    let os = 'unknown';
-    if (ua.includes('win')) os = 'Windows';
-    else if (ua.includes('mac')) os = 'MacOS';
-    else if (ua.includes('linux')) os = 'Linux';
-    else if (ua.includes('android')) os = 'Android';
-    else if (ua.includes('ios') || ua.includes('iphone') || ua.includes('ipad')) os = 'iOS';
-
-    const deviceInfo = {
-        type,
-        browser,
-        os,
+export async function getDeviceInfo(): Promise<DeviceInfo> {
+    return {
+        type: 'desktop', // You can make this more sophisticated
+        browser: getBrowserInfo(),
+        os: getOSInfo(),
         timestamp: new Date().toISOString(),
-        screenSize: typeof window !== 'undefined' ? {
-            width: (window as Window & typeof globalThis).screen.width,
-            height: (window as Window & typeof globalThis).screen.height
-        } : undefined
+        screenSize: {
+            width: window.innerWidth,
+            height: window.innerHeight
+        }
     };
+}
 
-    console.log('Detected device info:', deviceInfo);
-    return deviceInfo;
+function getBrowserInfo(): string {
+    const ua = navigator.userAgent;
+    if (ua.includes('Chrome')) return 'Chrome';
+    if (ua.includes('Firefox')) return 'Firefox';
+    if (ua.includes('Safari')) return 'Safari';
+    if (ua.includes('Edge')) return 'Edge';
+    return 'Unknown';
+}
+
+function getOSInfo(): string {
+    const ua = navigator.userAgent;
+    if (ua.includes('Windows')) return 'Windows';
+    if (ua.includes('Mac')) return 'MacOS';
+    if (ua.includes('Linux')) return 'Linux';
+    if (ua.includes('Android')) return 'Android';
+    if (ua.includes('iOS')) return 'iOS';
+    return 'Unknown';
 }
 
 // Optional: Add a function to get a friendly device name

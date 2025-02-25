@@ -28,3 +28,1227 @@
   },
   "level": "info"
 }
+{
+  "timestamp": "2025-02-24T21:08:19.459Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T21:08:19.459Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T21:08:26.226Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T21:08:26.226Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T21:10:54.241Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T21:10:54.241Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T21:11:19.783Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T21:11:19.783Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T21:14:44.021Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T21:14:44.021Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T21:14:50.730Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T21:14:50.730Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T21:20:32.808Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T21:20:32.808Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T21:20:56.402Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T21:20:56.402Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T21:23:41.550Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T21:23:41.550Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T21:31:29.426Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T21:31:29.426Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T22:01:22.291Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T22:01:22.291Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T22:24:27.627Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T22:24:27.627Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T22:27:44.244Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T22:27:44.243Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T22:41:33.488Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T22:41:33.488Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T22:45:20.796Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T22:45:20.796Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T22:56:21.564Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T22:56:21.563Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T22:57:55.616Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T22:57:55.616Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T22:59:27.202Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T22:59:27.202Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:00:33.229Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:00:33.229Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:02:58.573Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:02:58.572Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:06:35.846Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:06:35.846Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:08:56.239Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:08:56.239Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:11:06.743Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:11:06.743Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:13:22.431Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:13:22.431Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:16:38.497Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:16:38.497Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:17:49.088Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:17:49.088Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:18:51.913Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:18:51.913Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:20:30.471Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:20:30.471Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:22:17.958Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:22:17.958Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:24:49.450Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:24:49.450Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:27:19.434Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:27:19.434Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:48:56.295Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:48:56.295Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:49:39.465Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:49:39.465Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:49:39.971Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:49:39.991Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:54:24.533Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:54:24.533Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:54:44.542Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:54:44.542Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:54:44.880Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:54:44.896Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:55:03.234Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:55:03.247Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:55:11.997Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::ffff:127.0.0.1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:55:12.010Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::ffff:127.0.0.1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:55:12.061Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:55:12.061Z",
+    "poolSize": 3,
+    "idleCount": 1
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:55:12.073Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-24T23:55:12.073Z",
+    "poolSize": 3,
+    "idleCount": 1
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:55:22.222Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::ffff:127.0.0.1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-24T23:55:22.229Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::ffff:127.0.0.1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:00:54.460Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:00:54.460Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:03:29.012Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:03:29.012Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:03:57.041Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:03:57.041Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:03:57.423Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:03:57.439Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:04:11.796Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:04:11.810Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:04:22.016Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::ffff:127.0.0.1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:04:22.028Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::ffff:127.0.0.1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:04:22.072Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:04:22.071Z",
+    "poolSize": 3,
+    "idleCount": 1
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:04:22.072Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:04:22.072Z",
+    "poolSize": 3,
+    "idleCount": 1
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:04:32.107Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::ffff:127.0.0.1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:04:32.109Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::ffff:127.0.0.1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:05:32.123Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:05:32.123Z",
+    "poolSize": 2,
+    "idleCount": 1
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:06:03.595Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:06:03.605Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:06:11.776Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::ffff:127.0.0.1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:06:11.778Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::ffff:127.0.0.1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:06:11.835Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:06:11.835Z",
+    "poolSize": 3,
+    "idleCount": 1
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:06:11.846Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:06:11.846Z",
+    "poolSize": 3,
+    "idleCount": 1
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:06:20.504Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::ffff:127.0.0.1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:06:20.509Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::ffff:127.0.0.1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:07:11.803Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:07:11.803Z",
+    "poolSize": 2,
+    "idleCount": 1
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:08:43.393Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:08:43.393Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:08:43.659Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:08:43.671Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:09:42.707Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:09:42.717Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:10:36.661Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:10:36.661Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:14:23.614Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:14:23.614Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:15:38.212Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:15:38.212Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:15:53.138Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:15:53.138Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:15:53.518Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:15:53.537Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:17:27.258Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:17:27.258Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:17:27.608Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:17:27.628Z",
+  "message": "Incoming request",
+  "data": {
+    "method": "GET",
+    "path": "/api/news",
+    "body": {},
+    "query": {},
+    "ip": "::1"
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:18:51.861Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:18:51.861Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:19:51.765Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:19:51.765Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:20:51.766Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:20:51.766Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:21:51.769Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:21:51.769Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:22:51.774Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:22:51.774Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:23:51.782Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:23:51.782Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:24:51.784Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:24:51.784Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:25:51.797Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:25:51.797Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:26:51.796Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:26:51.796Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:27:51.799Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:27:51.799Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:28:51.810Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:28:51.810Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:29:51.825Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:29:51.825Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:30:51.827Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:30:51.827Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:34:30.252Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:34:30.252Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:35:59.577Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:35:59.577Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:36:59.564Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:36:59.564Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:37:59.573Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:37:59.573Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:41:46.836Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:41:46.836Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:42:24.306Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:42:24.306Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:42:58.700Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:42:58.700Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:43:49.550Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:43:49.550Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:44:49.554Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:44:49.554Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:46:06.994Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:46:06.994Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:47:00.749Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:47:00.749Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:48:00.750Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:48:00.750Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:49:00.761Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:49:00.761Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:50:00.781Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:50:00.781Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:51:00.770Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:51:00.770Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:52:00.774Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:52:00.774Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:52:58.662Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:52:58.662Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:53:51.710Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:53:51.710Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}
+{
+  "timestamp": "2025-02-25T00:54:51.726Z",
+  "message": "Database client connected",
+  "data": {
+    "timestamp": "2025-02-25T00:54:51.726Z",
+    "poolSize": 1,
+    "idleCount": 0
+  },
+  "level": "info"
+}

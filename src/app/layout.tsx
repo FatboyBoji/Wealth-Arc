@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import './globals.css';
-import { Chakra_Petch } from 'next/font/google'
+import { Chakra_Petch } from 'next/font/google';
+import { AuthProviderWrapper } from '@/components/auth/AuthProviderWrapper';
 
 const chakraPetch = Chakra_Petch({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   display: 'swap',
-})
+});
 
 export const metadata: Metadata = {
   title: "Budget App",
@@ -20,7 +21,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={chakraPetch.className}>
-      <body className="bg-background text-light">{children}</body>
+      <body className="bg-background text-light">
+        <AuthProviderWrapper>
+          {children}
+        </AuthProviderWrapper>
+      </body>
     </html>
   );
 }

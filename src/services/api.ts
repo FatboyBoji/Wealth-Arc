@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig, AxiosError } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig, AxiosError, AxiosInstance } from 'axios';
 import { getDeviceInfo, getDeviceFriendlyName } from '../utils/deviceInfo';
 import { DeviceInfo } from '../types/sessions';
 import { logToFile } from '@/utils/logger';
@@ -89,13 +89,13 @@ const getDomainConfig = () => {
 const domainConfig = getDomainConfig();
 const API_BASE_URL = domainConfig?.apiBase || 'http://178.254.26.117:45600/api';
 
-export const axiosInstance = axios.create({
-    baseURL: API_BASE_URL,
-    withCredentials: true,
+// Create axios instance with default config
+export const api = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api',
     headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    }
+        'Content-Type': 'application/json'
+    },
+    withCredentials: true
 });
 
 // Simplified CSRF token management
@@ -105,7 +105,7 @@ const getCsrfToken = async (): Promise<string> => {
     if (csrfToken) return csrfToken;
 
     try {
-        const response = await axiosInstance.get<{ csrfToken: string }>('/csrf-token');
+        const response = await api.get<{ csrfToken: string }>('/csrf-token');
         csrfToken = response.data.csrfToken;
         return csrfToken;
     } catch (error) {
@@ -115,65 +115,80 @@ const getCsrfToken = async (): Promise<string> => {
 };
 
 // Request interceptor with domain-aware configuration
-axiosInstance.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
-    // Add auth token if it exists
-    const token = localStorage.getItem('auth_token');
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
-
-    // Remove the manual setting of Origin and Referer headers
-    // Let the browser handle these automatically
     return config;
 });
 
-// Modified response interceptor with better error handling
-axiosInstance.interceptors.response.use(
+// Keep the original ApiError interface
+export interface ApiError extends Error {
+    response?: {
+        data: {
+            error: string;
+            message?: string;
+        };
+        status: number;
+    };
+    config?: any;
+}
+
+// Create a class that implements the interface
+export class ApiErrorImpl extends Error implements ApiError {
+    response?: ApiError['response'];
+    config?: any;
+    status?: number;
+
+    constructor(message: string, status?: number, response?: ApiError['response']) {
+        super(message);
+        this.name = 'ApiError';
+        this.status = status;
+        this.response = response;
+    }
+}
+
+// Update the error handling in the interceptor
+api.interceptors.response.use(
     response => response,
     error => {
         if (error.response) {
             const status = error.response.status;
             const data = error.response.data || { message: 'Unknown server error' };
             
-            // Special handling for MAX_SESSIONS_REACHED
-            if (status === 400 && data.error === 'MAX_SESSIONS_REACHED') {
-                return Promise.reject(error); // Let the login handler deal with this
-            }
-            
-            // Handle other errors...
             switch (status) {
                 case 401:
                 case 403:
                     authService.logout();
                     window.location.href = '/admin/login';
-                    throw new ApiError('Session expired. Please login again.', status);
+                    throw new ApiErrorImpl('Session expired. Please login again.', status);
                 case 404:
-                    throw new ApiError(data.message || 'Resource not found', status);
+                    throw new ApiErrorImpl(data.message || 'Resource not found', status);
                 case 429:
-                    throw new ApiError(data.message || 'Too many attempts', status);
+                    throw new ApiErrorImpl(data.message || 'Too many attempts', status);
                 case 500:
-                    throw new ApiError(data.message || 'Internal server error', status);
+                    throw new ApiErrorImpl(data.message || 'Internal server error', status);
                 default:
-                    throw new ApiError(
+                    throw new ApiErrorImpl(
                         data.message || 'An unexpected error occurred',
                         status
                     );
             }
         } else if (error.request) {
-            console.error('Request Error:', {
-                error: error.request,
-                timestamp: new Date().toISOString()
-            });
-            throw new ApiError('No response received from server', 0);
+            throw new ApiErrorImpl('No response received from server', 0);
         } else {
-            console.error('Error:', {
-                error: error.message,
-                timestamp: new Date().toISOString()
-            });
-            throw new ApiError(error.message, 0);
+            throw new ApiErrorImpl(error.message, 0);
         }
     }
 );
+
+// Export the response type
+export interface ApiResponse<T = any> {
+    data: T;
+    status: number;
+    statusText: string;
+}
 
 // Authentication Service
 export const authService = {
@@ -204,7 +219,7 @@ export const authService = {
                 localStorage.setItem('pending_login', JSON.stringify(credentials));
             }
 
-            const response = await axiosInstance.post<AuthResponse>('/auth/login', {
+            const response = await api.post<AuthResponse>('/auth/login', {
                 ...credentials,
                 deviceInfo
             });
@@ -238,7 +253,7 @@ export const authService = {
             }
 
             // Call logout endpoint with empty object instead of null
-            await axiosInstance.post('/auth/logout', {}, {
+            await api.post('/auth/logout', {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
@@ -259,54 +274,50 @@ export const authService = {
     },
 
     getToken(): string | null {
-        return localStorage.getItem('auth_token');
+        return localStorage.getItem('token');
     },
 
-    async verifyToken(token: string): Promise<boolean> {
+    setToken(token: string): void {
+        localStorage.setItem('token', token);
+        api.defaults.headers.Authorization = `Bearer ${token}`;
+    },
+
+    removeToken(): void {
+        localStorage.removeItem('token');
+        delete api.defaults.headers.Authorization;
+    },
+
+    async verifyToken(token?: string): Promise<boolean> {
         try {
-            await axiosInstance.get('/auth/verify', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            return true;
-        } catch (error: any) {
-            if (error.response?.status === 401) {
-                // Token expired or invalid, try to refresh
-                const refreshToken = localStorage.getItem('refreshToken');
-                if (refreshToken) {
-                    try {
-                        const newToken = await this.refreshToken(refreshToken);
-                        localStorage.setItem('token', newToken);
-                        return true;
-                    } catch (refreshError) {
-                        // Refresh failed, logout
-                        this.logout();
-                        return false;
-                    }
-                }
-            }
+            const useToken = token || this.getToken();
+            if (!useToken) return false;
+            
+            const response = await api.post('/auth/verify', { token: useToken });
+            return response.data.valid;
+        } catch (error) {
             return false;
         }
     },
 
     async getActiveSessions(): Promise<DeviceSession[]> {
         try {
-            const response = await axiosInstance.get<SessionResponse>('/auth/active-sessions');
+            const response = await api.get<SessionResponse>('/auth/active-sessions');
             return response.data.sessions;
         } catch (error) {
             console.error('Failed to fetch active sessions:', error);
-            throw new ApiError('Failed to fetch active sessions');
+            throw new ApiErrorImpl('Failed to fetch active sessions');
         }
     },
 
     async terminateSession(sessionId: string, userId: number): Promise<void> {
         try {
-            const response = await axiosInstance.post('/sessions/terminate-pre-login', {
+            const response = await api.post('/sessions/terminate-pre-login', {
                 userId,
                 sessionId
             });
 
             if (!response.data.success) {
-                throw new Error(response.data.message || 'Failed to terminate session');
+                throw new ApiErrorImpl(response.data.message || 'Failed to terminate session', 0);
             }
 
             // Wait for session cleanup
@@ -333,7 +344,7 @@ export const authService = {
 
     async refreshToken(refreshToken: string): Promise<string> {
         try {
-            const response = await axiosInstance.post('/auth/refresh-token', { refreshToken });
+            const response = await api.post('/auth/refresh-token', { refreshToken });
             return response.data.token;
         } catch (error) {
             // If refresh fails, force logout
@@ -347,18 +358,18 @@ export const authService = {
 export const newsService = {
     async getAll(type?: NewsType): Promise<NewsUpdate[]> {
         const params = type ? { type } : undefined;
-        const response = await axiosInstance.get('/news', { params });
+        const response = await api.get('/news', { params });
         return response.data.data;
     },
 
     async getById(id: number): Promise<NewsUpdate> {
-        const response = await axiosInstance.get(`/news/${id}`);
+        const response = await api.get(`/news/${id}`);
         return response.data.data;
     },
 
     async create(news: Omit<NewsUpdate, 'id' | 'published_at' | 'updated_at'>): Promise<NewsUpdate> {
         const token = await getCsrfToken();
-        const response = await axiosInstance.post('/news', news, {
+        const response = await api.post('/news', news, {
             headers: { 'CSRF-Token': token }
         });
         return response.data.data;
@@ -366,7 +377,7 @@ export const newsService = {
 
     async update(id: number, news: Partial<NewsUpdate>): Promise<NewsUpdate> {
         const token = await getCsrfToken();
-        const response = await axiosInstance.put(`/news/${id}`, news, {
+        const response = await api.put(`/news/${id}`, news, {
             headers: { 'CSRF-Token': token }
         });
         return response.data.data;
@@ -374,21 +385,21 @@ export const newsService = {
 
     async delete(id: number): Promise<void> {
         const token = await getCsrfToken();
-        await axiosInstance.delete(`/news/${id}`, {
+        await api.delete(`/news/${id}`, {
             headers: { 'CSRF-Token': token }
         });
     }
 };
 
-// Error handling
-export class ApiError extends Error {
+// Keep the ApiError class but rename it to avoid conflict
+export class ApiRequestError extends Error {
     constructor(
         message: string,
         public status?: number,
         public code?: string
     ) {
         super(message);
-        this.name = 'ApiError';
+        this.name = 'ApiRequestError';
     }
 }
 

@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import rateLimit from 'express-rate-limit';
 import { Logger } from '../services/logger';
+import { RateLimiter } from '../services/RateLimiter';
 
 // Load environment variables based on NODE_ENV
 const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
@@ -27,52 +28,6 @@ const config: PoolConfig = {
     options: `-c search_path=${process.env.NODE_ENV === 'production' ? 'u0155' : 'public'}`
 };
 
-// Custom rate limiter for login attempts
-export class RateLimiter {
-    private attempts: Map<string, { count: number, lastAttempt: number }> = new Map();
-    private readonly maxAttempts: number = 5;
-    private readonly windowMs: number = 15 * 60 * 1000; // 15 minutes
-    private readonly blockDuration: number = 30 * 60 * 1000; // 30 minutes
-
-    public checkRateLimit(identifier: string): boolean {
-        const now = Date.now();
-        const userAttempts = this.attempts.get(identifier);
-
-        if (!userAttempts) {
-            this.attempts.set(identifier, { count: 1, lastAttempt: now });
-            return true;
-        }
-
-        // Reset attempts if window has passed
-        if (now - userAttempts.lastAttempt > this.windowMs) {
-            this.attempts.set(identifier, { count: 1, lastAttempt: now });
-            return true;
-        }
-
-        // Check if user is blocked
-        if (userAttempts.count >= this.maxAttempts) {
-            const timeLeft = Math.ceil((this.blockDuration - (now - userAttempts.lastAttempt)) / 1000);
-            if (timeLeft > 0) {
-                throw new Error(`Too many login attempts. Please try again in ${timeLeft} seconds.`);
-            }
-            // Reset after block duration
-            this.attempts.set(identifier, { count: 1, lastAttempt: now });
-            return true;
-        }
-
-        // Increment attempts
-        userAttempts.count += 1;
-        userAttempts.lastAttempt = now;
-        this.attempts.set(identifier, userAttempts);
-
-        return true;
-    }
-
-    public clearAttempts(identifier: string): void {
-        this.attempts.delete(identifier);
-    }
-}
-
 class DatabasePool {
     private pool: Pool;
     private static instance: DatabasePool;
@@ -86,7 +41,7 @@ class DatabasePool {
         this.setupEventHandlers();
     }
 
-    private setupEventHandlers() {
+    private setupEventHandlers(): void {
         this.pool.on('error', (err) => {
             Logger.error('Unexpected database error', err);
             this.handleConnectionError(err);
@@ -103,7 +58,7 @@ class DatabasePool {
         });
     }
 
-    private async handleConnectionError(error: Error) {
+    private async handleConnectionError(error: Error): Promise<void> {
         this.isConnected = false;
         
         if (this.reconnectAttempts < this.MAX_RECONNECT_ATTEMPTS) {
@@ -124,7 +79,7 @@ class DatabasePool {
             Logger.error('Max reconnection attempts reached', {
                 attempts: this.reconnectAttempts
             });
-            process.exit(1); // Exit if we can't reconnect
+            process.exit(1);
         }
     }
 
@@ -168,6 +123,9 @@ export const query = async <T extends QueryResultRow = any>(
 ): Promise<QueryResult<T>> => {
     return DatabasePool.getInstance().query<T>(text, params);
 };
+
+// Export the end method for cleanup
+export const closeDatabase = () => DatabasePool.getInstance().end();
 
 // General API rate limiting
 export const rateLimiter = rateLimit({

@@ -1,0 +1,3 @@
+ALTER TABLE user_sessions_wa 
+ADD COLUMN IF NOT EXISTS is_marked_for_deletion BOOLEAN DEFAULT FALSE,
+ADD COLUMN IF NOT EXISTS marked_at TIMESTAMP; 
